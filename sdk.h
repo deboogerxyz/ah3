@@ -211,15 +211,15 @@ typedef struct {
 } WeaponInfo;
 
 typedef struct {
-	const float realtime;
-	const int framecount;
-	const float absoluteframetime;
-	const char pad[4];
+	float realtime;
+	int framecount;
+	float absoluteframetime;
+	char pad[4];
 	float currenttime;
 	float frametime;
-	const int maxclients;
-	const int tickcount;
-	const float intervalpertick;
+	int maxclients;
+	int tickcount;
+	float intervalpertick;
 } GlobalVars;
 
 ClientClass *sdk_getallclasses(void);
