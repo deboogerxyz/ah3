@@ -1,4 +1,3 @@
-#include <stdlib.h> /* calloc, exit, ... */
 #include <string.h> /* strlen */
 
 #include "util.h"
