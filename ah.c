@@ -31,6 +31,7 @@ static void
 __attribute__((destructor))
 onunload(void)
 {
+	intf_clean();
 	mem_clean();
 	hk_clean();
 }
