@@ -53,7 +53,7 @@ find(const char *libname, const char *ptrn)
 	           *first, *second;
 
 	lib = getlibinfo(libname);
-	if (!lib->addr || !lib->size)
+	if (!lib || !lib->addr || !lib->size)
 		return 0;
 
 	start = (const char *)lib->addr;
