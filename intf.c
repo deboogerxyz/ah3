@@ -8,12 +8,12 @@
 Intf *intf;
 
 static uintptr_t *
-find(const char *mod, const char *name)
+find(const char *lib, const char *name)
 {
 	uintptr_t *(*create)(const char *, int *);
 	uintptr_t *found;
 
-	*(void **)&create = dlsym(dlopen(mod, RTLD_NOLOAD | RTLD_LAZY),
+	*(void **)&create = dlsym(dlopen(lib, RTLD_NOLOAD | RTLD_LAZY),
 	                          "CreateInterface");
 	if (create) {
 		found = create(name, 0);
