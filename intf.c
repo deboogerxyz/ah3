@@ -3,7 +3,6 @@
 #include <stdlib.h> /* exit, calloc, ... */
 
 #include "intf.h"
-#include "util.h"
 
 Intf *intf;
 
@@ -20,15 +19,14 @@ find(const char *libname, const char *name)
 		if (found)
 			return found;
 	}
-	fatal("Failed to find %s interface!", name);
 
-	return NULL; /* NOT REACHED */
+	return NULL;
 }
 
 void
 intf_init(void)
 {
-	intf = ecalloc(1, sizeof(Intf));
+	intf = calloc(1, sizeof(Intf));
 
 	intf->client = find("csgo/bin/linux64/client_client.so", "VClient018");
 }

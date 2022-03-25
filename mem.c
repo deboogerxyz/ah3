@@ -1,10 +1,8 @@
 #include <dlfcn.h>  /* dl_iterate_phdr, dlopen, dlsym, ... */
 #include <link.h>   /* dl_phdr_info */
-#include <stddef.h> /* size_t, required by util.h */
 #include <stdint.h>
 
 #include "cvector.h"
-#include "util.h"
 #include "mem.h"
 
 typedef struct {
@@ -43,9 +41,8 @@ getlibinfo(const char *name)
 			continue;
 		return it;
 	}
-	fatal("Could not find %s library!", name);
 
-	return NULL; /* NOT REACHED */
+	return NULL;
 }
 
 static uintptr_t
@@ -57,7 +54,7 @@ find(const char *libname, const char *ptrn)
 
 	lib = getlibinfo(libname);
 	if (!lib->addr || !lib->size)
-		fatal("Library address or size is 0!");
+		return 0;
 
 	start = (const char *)lib->addr;
 	end   = start + lib->size;
@@ -76,9 +73,7 @@ find(const char *libname, const char *ptrn)
 	if (!*second)
 		return (uintptr_t)start;
 
-	fatal("Could not find a pattern!");
-
-	return 0; /* NOT REACHED */
+	return 0;
 }
 
 static uintptr_t
@@ -92,7 +87,7 @@ mem_init(void)
 {
 	void *tier0;
 
-	mem = ecalloc(1, sizeof(Mem));
+	mem = calloc(1, sizeof(Mem));
 
 	tier0 = dlopen("libtier0_client.so", RTLD_NOLOAD | RTLD_NOW);
 	*(void **)&mem->debugmsg = dlsym(tier0, "Msg");
