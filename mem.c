@@ -98,3 +98,9 @@ mem_init(void)
 	*(void **)&mem->debugmsg = dlsym(tier0, "Msg");
 	dlclose(tier0);
 }
+
+void
+mem_onunload(void)
+{
+	cvector_free(libs);
+}

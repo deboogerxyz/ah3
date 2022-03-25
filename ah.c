@@ -24,3 +24,10 @@ onload(void)
 
 	return 0;
 }
+
+static void
+__attribute__((destructor))
+onunload(void)
+{
+	mem_onunload();
+}
