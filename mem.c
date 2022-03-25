@@ -45,7 +45,7 @@ getlibinfo(const char *name)
 	}
 	fatal("Could not find %s library!", name);
 
-	return NULL; /* NOT REACHABLE */
+	return NULL; /* NOT REACHED */
 }
 
 static uintptr_t
@@ -78,7 +78,7 @@ find(const char *libname, const char *ptrn)
 
 	fatal("Could not find a pattern!");
 
-	return 0; /* NOT REACHABLE */
+	return 0; /* NOT REACHED */
 }
 
 static uintptr_t
