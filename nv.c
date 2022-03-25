@@ -10,9 +10,9 @@
 typedef struct {
 	unsigned int hash;
 	size_t offset;
-} Offset;
+} NetVar;
 
-static cvector_vector_type(Offset) offsets = NULL;
+static cvector_vector_type(NetVar) netvars = NULL;
 
 void
 dump(const char *class, RecvTable *table, size_t offset)
@@ -20,7 +20,7 @@ dump(const char *class, RecvTable *table, size_t offset)
 	int i;
 	RecvProp *prop;
 	char name[256];
-	Offset o;
+	NetVar nv;
 
 	for (i = 0; i < table->count; i++) {
 		prop = &table->props[i];
@@ -35,9 +35,9 @@ dump(const char *class, RecvTable *table, size_t offset)
 			dump(class, prop->table, prop->offset + offset);
 
 		sprintf(name, "%s->%s", class, prop->name);
-		o.hash = hash(name);
-		o.offset = prop->offset + offset;
-		cvector_push_back(offsets, o);
+		nv.hash = hash(name);
+		nv.offset = prop->offset + offset;
+		cvector_push_back(netvars, nv);
 	}
 }
 
@@ -54,9 +54,9 @@ nv_init(void)
 unsigned int
 nv_get(const char *name)
 {
-	Offset *it;
+	NetVar *it;
 
-	for (it = cvector_begin(offsets); it != cvector_end(offsets); it++)
+	for (it = cvector_begin(netvars); it != cvector_end(netvars); it++)
 		if (it->hash == hash(name))
 			return it->offset;
 	return 0;
@@ -65,5 +65,5 @@ nv_get(const char *name)
 void
 nv_clean(void)
 {
-	cvector_free(offsets);
+	cvector_free(netvars);
 }
