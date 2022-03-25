@@ -1,6 +1,8 @@
 include config.mk
 
 SRC = ah.c hk.c intf.c mem.c nv.c sdk.c util.c
+HDR = cvector.h hk.h intf.h mem.h nv.h sdk.h util.h
+
 OBJ = ${SRC:.c=.o}
 
 all: options libah.so
@@ -14,12 +16,21 @@ options:
 .c.o:
 	${CC} -c ${CFLAGS} $<
 
-${OBJ}: config.mk Makefile hk.h intf.h mem.h nv.h sdk.h util.h
+${OBJ}: config.mk Makefile ${HDR}
 
 libah.so: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 clean:
-	rm -f libah.so ${OBJ}
+	rm -f libah.so ${OBJ} ah.tar.gz
 
-.PHONY: all options clean
+dist: clean
+	mkdir -p ah
+	cp -R config.mk Makefile LICENSE \
+	LICENSE.cvector README.md ${SRC} \
+	${HDR} ah-load.sh ah-unload.sh ah
+	tar -cf ah.tar ah
+	gzip ah.tar
+	rm -rf ah
+
+.PHONY: all options clean dist
