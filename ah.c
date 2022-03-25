@@ -1,5 +1,5 @@
 #include <pthread.h>
-#include <stdint.h>
+#include <stdint.h> /* Required by inf.h */
 
 #include "intf.h"
 #include "mem.h"
