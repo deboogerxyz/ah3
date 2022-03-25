@@ -1,6 +1,7 @@
 #include <pthread.h>
 #include <stdint.h> /* Required by inf.h */
 
+#include "hk.h"
 #include "intf.h"
 #include "mem.h"
 
@@ -11,6 +12,7 @@ thrd_main(void *vargp)
 {
 	intf_init();
 	mem_init();
+	hk_init();
 
 	return NULL;
 }
@@ -30,4 +32,5 @@ __attribute__((destructor))
 onunload(void)
 {
 	mem_onunload();
+	hk_onunload();
 }
