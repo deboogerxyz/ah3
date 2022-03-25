@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #include "intf.h"
+#include "mem.h"
 
 static pthread_t thrd;
 
@@ -9,6 +10,7 @@ static void *
 thrd_main(void *vargp)
 {
 	intf_init();
+	mem_init();
 
 	return NULL;
 }
