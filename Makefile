@@ -1,6 +1,6 @@
 include config.mk
 
-SRC = ah.c intf.c util.c
+SRC = ah.c intf.c mem.c util.c
 OBJ = ${SRC:.c=.o}
 
 all: options libah.so
@@ -14,7 +14,7 @@ options:
 .c.o:
 	${CC} -c ${CFLAGS} $<
 
-${OBJ}: config.mk Makefile intf.h util.h
+${OBJ}: config.mk Makefile intf.h mem.h util.h
 
 libah.so: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
