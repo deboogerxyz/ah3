@@ -65,7 +65,7 @@ hk_init(void)
 }
 
 void
-hk_onunload(void)
+hk_clean(void)
 {
 
 }

@@ -95,7 +95,10 @@ mem_init(void)
 }
 
 void
-mem_onunload(void)
+mem_clean(void)
 {
 	cvector_free(libs);
+
+	if (mem)
+		free(mem);
 }

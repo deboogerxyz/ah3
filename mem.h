@@ -3,6 +3,6 @@ typedef struct {
 } Mem;
 
 void mem_init(void);
-void mem_onunload(void);
+void mem_clean(void);
 
 extern Mem *mem;

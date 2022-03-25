@@ -30,3 +30,10 @@ intf_init(void)
 
 	intf->client = find("csgo/bin/linux64/client_client.so", "VClient018");
 }
+
+void
+intf_clean(void)
+{
+	if (intf)
+		free(intf);
+}
