@@ -43,7 +43,7 @@ hookvmt(uintptr_t addr, Vmt *vmt)
 }
 
 static void
-hookfunc(Vmt *vmt, int i, uintptr_t addr)
+hookfn(Vmt *vmt, int i, uintptr_t addr)
 {
 	vmt->new[i + 2] = addr;
 }
