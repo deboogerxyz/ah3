@@ -1,3 +1,10 @@
+#ifndef SDK_H
+#define SDK_H
+
+#include <stdint.h>
+
+#include "nv.h"
+
 typedef struct {
 	char *name;
 	int type;
@@ -71,4 +78,166 @@ typedef struct ClientClass {
 	ClassId classid;
 } ClientClass;
 
-ClientClass *getallclasses(void);
+typedef struct {
+	float x, y, z;
+} Vector;
+
+typedef float Matrix3x4[3][4];
+
+typedef enum {
+	IN_ATTACK = 1 << 0,
+	IN_JUMP = 1 << 1,
+	IN_DUCK = 1 << 2,
+	IN_FORWARD = 1 << 3,
+	IN_BACK = 1 << 4,
+	IN_USE = 1 << 5,
+	IN_MOVELEFT = 1 << 9,
+	IN_MOVERIGHT = 1 << 10,
+	IN_ATTACK2 = 1 << 11,
+	IN_SCORE = 1 << 16,
+	IN_BULLRUSH = 1 << 22
+} UserCmdButtons;
+
+typedef struct {
+	char pad0[8];
+	int cmdnumber;
+	int tickcount;
+	Vector viewangles;
+	Vector aimdirection;
+	float forwardmove;
+	float sidemove;
+	float upmove;
+	UserCmdButtons buttons;
+	char pad1[13];
+	short mousedx;
+	short mousedy;
+	char hasbeenpredicted;
+} UserCmd;
+
+typedef enum {
+	WEAPONID_NONE,
+	WEAPONID_DEAGLE = 1,
+	WEAPONID_ELITE,
+	WEAPONID_FIVESEVEN,
+	WEAPONID_GLOCK,
+	WEAPONID_AK47 = 7,
+	WEAPONID_AUG,
+	WEAPONID_AWP,
+	WEAPONID_FAMAS,
+	WEAPONID_G3SG1,
+	WEAPONID_GALILAR = 13,
+	WEAPONID_M249,
+	WEAPONID_M4A1 = 16,
+	WEAPONID_MAC10,
+	WEAPONID_P90 = 19,
+	WEAPONID_ZONEREPULSOR,
+	WEAPONID_MP5SD = 23,
+	WEAPONID_UMP45,
+	WEAPONID_XM1014,
+	WEAPONID_BIZON,
+	WEAPONID_MAG7,
+	WEAPONID_NEGEV,
+	WEAPONID_SAWEDOFF,
+	WEAPONID_TEC9,
+	WEAPONID_TASER,
+	WEAPONID_HKP2000,
+	WEAPONID_MP7,
+	WEAPONID_MP9,
+	WEAPONID_NOVA,
+	WEAPONID_P250,
+	WEAPONID_SHIELD,
+	WEAPONID_SCAR20,
+	WEAPONID_SG553,
+	WEAPONID_SSG08,
+	WEAPONID_GOLDENKNIFE,
+	WEAPONID_KNIFE,
+	WEAPONID_FLASHBANG = 43,
+	WEAPONID_HEGRENADE,
+	WEAPONID_SMOKEGRENADE,
+	WEAPONID_MOLOTOV,
+	WEAPONID_DECOY,
+	WEAPONID_INCGRENADE,
+	WEAPONID_C4,
+	WEAPONID_HEALTHSHOT = 57,
+	WEAPONID_KNIFET = 59,
+	WEAPONID_M4A1_S,
+	WEAPONID_USP_S,
+	WEAPONID_CZ75A = 63,
+	WEAPONID_REVOLVER,
+	WEAPONID_TAGRENADE = 68,
+	WEAPONID_AXE = 75,
+	WEAPONID_HAMMER,
+	WEAPONID_SPANNER = 78,
+	WEAPONID_GHOSTKNIFE = 80,
+	WEAPONID_FIREBOMB,
+	WEAPONID_DIVERSION,
+	WEAPONID_FRAGGRENADE,
+	WEAPONID_SNOWBALL,
+	WEAPONID_BUMPMINE
+} WeaponId;
+
+typedef struct {
+	char pad0[32];
+	int maxclip;
+	char pad1[204];
+	const char* name;
+	char pad2[72];
+	int type;
+	char pad3[4];
+	int price;
+	char pad4[12];
+	float cycletime;
+	char pad5[12];
+	char fullauto;
+	char pad6[3];
+	int damage;
+	float headshotmult;
+	float armorratio;
+	int bullets;
+	float penetration;
+	char pad7[8];
+	float range;
+	float rangemod;
+	char pad8[16];
+	char silencer;
+	char pad9[23];
+	float maxspeed;
+	float maxspeedalt;
+	char pad10[100];
+	float recoilmagnitude;
+	float recoilmagnitudealt;
+	char pad11[16];
+	float recoverytimestand;
+} WeaponInfo;
+
+typedef struct {
+	const float realtime;
+	const int framecount;
+	const float absoluteframetime;
+	const char pad[4];
+	float currenttime;
+	float frametime;
+	const int maxclients;
+	const int tickcount;
+	const float intervalpertick;
+} GlobalVars;
+
+ClientClass *sdk_getallclasses(void);
+int sdk_dispatchusermsg(int type, int flags, int size, void *data);
+int sdk_istakingscreenshot(void);
+int sdk_getlocalplayer(void);
+uintptr_t sdk_getentity(int i);
+int ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max,
+                   int mask, float curtime);
+int ent_isdormant(uintptr_t ent);
+int ent_isalive(uintptr_t ent);
+Vector ent_geteyepos(uintptr_t ent);
+Vector ent_getaimpunch(uintptr_t ent);
+uintptr_t ent_getactiveweapon(uintptr_t ent);
+WeaponInfo *ent_getweaponinfo(uintptr_t ent);
+void sdk_setviewangles(Vector *ang);
+float sdk_getservertime(UserCmd *cmd);
+
+NV(tickbase, int);
+
+#endif /* SDK_H */

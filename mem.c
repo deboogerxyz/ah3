@@ -1,9 +1,10 @@
 #include <dlfcn.h>  /* dl_iterate_phdr, dlopen, dlsym, ... */
 #include <link.h>   /* dl_phdr_info */
-#include <stdint.h>
 
 #include "cvector.h"
+#include "intf.h"
 #include "mem.h"
+#include "util.h"
 
 typedef struct {
 	const char *name;
@@ -95,6 +96,8 @@ mem_init(void)
 	tier0 = dlopen("libtier0_client.so", RTLD_NOLOAD | RTLD_NOW);
 	*(void **)&mem->debugmsg = dlsym(tier0, "Msg");
 	dlclose(tier0);
+
+	*(void **)&mem->gvars = *(void **)reltoabs(VMT(intf->client)[11] + 16);
 }
 
 void

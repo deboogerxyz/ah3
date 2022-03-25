@@ -2,9 +2,7 @@
 #include <stdio.h>  /* sprintf */
 #include <stddef.h> /* size_t */
 
-#include "mem.h"
 #include "cvector.h"
-#include "nv.h"
 #include "sdk.h"
 #include "util.h"
 
@@ -49,7 +47,7 @@ nv_init(void)
 
 	cvector_grow(netvars, 1800);
 
-	for (class = getallclasses(); class; class = class->next)
+	for (class = sdk_getallclasses(); class; class = class->next)
 		if (class->table)
 			dump(class->name, class->table, 0);
 }

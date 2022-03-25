@@ -1,5 +1,4 @@
 #include <dlfcn.h>  /* dlsym, ... */
-#include <stdint.h>
 #include <stdlib.h> /* exit, calloc, ... */
 
 #include "intf.h"
@@ -28,7 +27,11 @@ intf_init(void)
 {
 	intf = calloc(1, sizeof(Intf));
 
-	intf->client = find("csgo/bin/linux64/client_client.so", "VClient018");
+	intf->client  = find("csgo/bin/linux64/client_client.so",
+	                     "VClient018");
+	intf->engine  = find("engine_client.so", "VEngineClient014");
+	intf->entlist = find("csgo/bin/linux64/client_client.so",
+	                     "VClientEntityList003");
 }
 
 void

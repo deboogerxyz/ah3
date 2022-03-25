@@ -1,5 +1,4 @@
 #include <pthread.h>
-#include <stdint.h> /* Required by intf.h */
 
 #include "hk.h"
 #include "intf.h"
