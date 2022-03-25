@@ -34,8 +34,11 @@ getlibinfo(const char *name)
 {
 	Lib *it;
 
-	if (cvector_empty(libs))
+	if (cvector_empty(libs)) {
+		cvector_grow(libs, 150);
 		dl_iterate_phdr(callback, NULL);
+	}
+
 	for (it = cvector_begin(libs); it != cvector_end(libs); it++) {
 		if (!strstr(it->name, name))
 			continue;
