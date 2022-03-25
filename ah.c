@@ -4,6 +4,7 @@
 #include "hk.h"
 #include "intf.h"
 #include "mem.h"
+#include "nv.h"
 
 static pthread_t thrd;
 
@@ -13,6 +14,7 @@ thrd_main(void *vargp)
 	intf_init();
 	mem_init();
 	hk_init();
+	nv_init();
 
 	return NULL;
 }
@@ -34,4 +36,5 @@ onunload(void)
 	intf_clean();
 	mem_clean();
 	hk_clean();
+	nv_clean();
 }
