@@ -29,13 +29,8 @@ getlerp()
 	if (hash(sdk_getserveraddress(netchan)) == hash("loopback"))
 		return 0.0f;
 
-	ratio = CLAMP(convar_getfloat(interpratio),
-	              convar_getfloat(mininterpratio),
-	              convar_getfloat(maxinterpratio));
-	return MAX(convar_getfloat(interp),
-	           (ratio / (maxupdaterate ?
-	                     convar_getfloat(maxupdaterate) :
-	                     convar_getfloat(updaterate))));
+	ratio = CLAMP(convar_getfloat(interpratio), convar_getfloat(mininterpratio), convar_getfloat(maxinterpratio));
+	return MAX(convar_getfloat(interp), (ratio / (maxupdaterate ? convar_getfloat(maxupdaterate) : convar_getfloat(updaterate))));
 }
 
 static int
@@ -53,8 +48,7 @@ isvalid(float simtime)
 	if (simtime < deadtime)
 		return 0;
 
-	delta = CLAMP(sdk_getlatency(netchan, 0) + sdk_getlatency(netchan, 1) + getlerp(),
-	              0.0f, convar_getfloat(maxunlag)) - (sdk_getservertime(NULL) - simtime);
+	delta = CLAMP(sdk_getlatency(netchan, 0) + sdk_getlatency(netchan, 1) + getlerp(), 0.0f, convar_getfloat(maxunlag)) - (sdk_getservertime(NULL) - simtime);
 	return fabs(delta) <= 0.2f;
 }
 
@@ -86,8 +80,7 @@ bt_update(FrameStage stage)
 		if (!ent_isalive(ent) || ent_isdormant(ent))
 			continue;
 
-		if (!cvector_empty(records[i]) &&
-		    cvector_end(records[i])->simtime == *ent_simtime(ent))
+		if (!cvector_empty(records[i]) && cvector_end(records[i])->simtime == *ent_simtime(ent))
 			continue;
 
 		record.origin  = *ent_getabsorigin(ent);
@@ -96,8 +89,7 @@ bt_update(FrameStage stage)
 
 		cvector_push_back(records[i], record);
 
-		while (cvector_size(records[i]) > 3 &&
-		       cvector_size(records[i]) > sdk_timetoticks(0.2f))
+		while (cvector_size(records[i]) > 3 && cvector_size(records[i]) > sdk_timetoticks(0.2f))
 			cvector_erase(records[i], 0);
 
 		for (j = 0; j < cvector_size(records[i]); j++) {
@@ -157,8 +149,8 @@ bt_run(UserCmd *cmd)
 		if (!isvalid(records[bestidx][i].simtime))
 			continue;
 
-		int bones[6] = {8, 4, 3, 6, 7, 5};
-		for (j = 0; j < 6; j++) {
+		int bones[8] = {8, 4, 3, 6, 7, 5}; /* TODO: Use hitboxes instead */
+		for (j = 0; j < 8; j++) {
 			bonepos = mat_origin(records[bestidx][i].matrix[bones[j]]);
 			ang = vec_calcang(eyepos, bonepos, viewangles);
 			fov = hypot(ang.x, ang.y);
