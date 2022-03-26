@@ -7,11 +7,25 @@
 #include "util.h"
 
 typedef struct {
+	RecvProxy *addr;
+	RecvProxy old;
+} Proxy;
+
+typedef struct {
 	unsigned int hash;
 	size_t offset;
 } NetVar;
 
+static Proxy spottedproxy;
 static cvector_vector_type(NetVar) netvars = NULL;
+
+static void
+spotted(RecvProxyData *data, void *arg2, void *arg3)
+{
+	data->val.i = 1;
+
+	spottedproxy.old(data, arg2, arg3);
+}
 
 void
 dump(const char *class, RecvTable *table, size_t offset)
@@ -37,6 +51,12 @@ dump(const char *class, RecvTable *table, size_t offset)
 		nv.hash = hash(name);
 		nv.offset = prop->offset + offset;
 		cvector_push_back(netvars, nv);
+
+		if (nv.hash == hash("CBaseEntity->m_bSpotted")) {
+			spottedproxy.old = prop->proxy;
+			spottedproxy.addr = &prop->proxy;
+			prop->proxy = spotted;
+		}
 	}
 }
 
@@ -66,5 +86,7 @@ nv_get(const char *name)
 void
 nv_clean(void)
 {
+	*spottedproxy.addr = spottedproxy.old;
+
 	cvector_free(netvars);
 }

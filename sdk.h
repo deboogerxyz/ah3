@@ -6,12 +6,32 @@
 #include "nv.h"
 
 typedef struct {
+	float x, y, z;
+} Vector;
+
+typedef struct {
+	char pad[8];
+	union {
+		float f;
+		long i;
+		char* s;
+		void* data;
+		Vector v;
+		int64_t i64;
+	} val;
+} RecvProxyData;
+
+typedef void (*RecvProxy)(RecvProxyData *, void *, void *);
+
+typedef struct {
 	char *name;
 	int type;
-	char pad0[52];
+	char pad0[36];
+	RecvProxy proxy;
+	char pad1[8];
 	struct RecvTable *table;
 	int offset;
-	char pad1[16];
+	char pad2[16];
 } RecvProp;
 
 typedef struct RecvTable {
@@ -77,10 +97,6 @@ typedef struct ClientClass {
 	struct ClientClass *next;
 	ClassId classid;
 } ClientClass;
-
-typedef struct {
-	float x, y, z;
-} Vector;
 
 typedef float Matrix3x4[3][4];
 
