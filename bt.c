@@ -149,8 +149,8 @@ bt_run(UserCmd *cmd)
 		if (!isvalid(records[bestidx][i].simtime))
 			continue;
 
-		int bones[8] = {8, 4, 3, 6, 7, 5}; /* TODO: Use hitboxes instead */
-		for (j = 0; j < 8; j++) {
+		int bones[6] = {8, 4, 3, 6, 7, 5}; /* TODO: Use hitboxes instead */
+		for (j = 0; j < 6; j++) {
 			bonepos = mat_origin(records[bestidx][i].matrix[bones[j]]);
 			ang = vec_calcang(eyepos, bonepos, viewangles);
 			fov = hypot(ang.x, ang.y);
