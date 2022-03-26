@@ -222,6 +222,24 @@ typedef struct {
 	float intervalpertick;
 } GlobalVars;
 
+typedef enum {
+	FS_UNDEFINED = -1,
+	FS_START,
+	FS_NET_UPDATE_START,
+	FS_NET_UPDATE_POSTDATAUPDATE_START,
+	FS_NET_UPDATE_POSTDATAUPDATE_END,
+	FS_NET_UPDATE_END,
+	FS_RENDER_START,
+	FS_RENDER_END
+} FrameStage;
+
+typedef struct ConVar {
+	char pad[56];
+	struct ConVar *parent;
+	const char *defval;
+	const char *str;
+} ConVar;
+
 ClientClass *sdk_getallclasses(void);
 int sdk_dispatchusermsg(int type, int flags, int size, void *data);
 int sdk_istakingscreenshot(void);
@@ -230,14 +248,31 @@ uintptr_t sdk_getentity(int i);
 int ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max,
                    int mask, float curtime);
 int ent_isdormant(uintptr_t ent);
+Vector *ent_getabsorigin(uintptr_t ent);
 int ent_isalive(uintptr_t ent);
 Vector ent_geteyepos(uintptr_t ent);
 Vector ent_getaimpunch(uintptr_t ent);
 uintptr_t ent_getactiveweapon(uintptr_t ent);
 WeaponInfo *ent_getweaponinfo(uintptr_t ent);
 void sdk_setviewangles(Vector *ang);
+ConVar *cvar_find(const char *name);
+float convar_getfloat(ConVar *var);
+int sdk_getmaxclients(void);
+int sdk_isingame(void);
+uintptr_t sdk_getnetchan(void);
+const char *sdk_getserveraddress(uintptr_t netchan);
+float sdk_getlatency(uintptr_t netchan, int flow);
 float sdk_getservertime(UserCmd *cmd);
+Vector vec_add(Vector a, Vector b);
+Vector vec_sub(Vector a, Vector b);
+Vector vec_toang(Vector v);
+Vector vec_norm(Vector v);
+Vector vec_calcang(Vector locpos, Vector entpos, Vector ang);
+Vector mat_origin(Matrix3x4 m);
+Vector ent_getbonepos(uintptr_t ent, int bone);
+int sdk_timetoticks(float time);
 
+NV(simtime, float);
 NV(tickbase, int);
 
 #endif /* SDK_H */

@@ -1,7 +1,11 @@
 #include <stdlib.h> /* malloc, ... */
 #include <string.h> /* memcpy */
 
+#include "bt.h"
 #include "hk.h"
+#include "intf.h"
+#include "mem.h"
+#include "sdk.h"
 #include "util.h"
 
 typedef struct {
@@ -10,6 +14,8 @@ typedef struct {
 	uintptr_t *new;
 	size_t size;
 } Vmt;
+
+static Vmt client, clientmode;
 
 static size_t
 getvmtsize(uintptr_t *vmt)
@@ -57,14 +63,55 @@ unhookvmt(Vmt *vmt)
 	free(vmt->new);
 }
 
+static char
+createmove(void *this, float inputsampletime, UserCmd *cmd)
+{
+	char result;
+
+	result = VFN(char (*)(void *, float, UserCmd *),
+	             clientmode.old, 25)
+	         (mem->clientmode, inputsampletime, cmd);
+
+	if (!cmd->cmdnumber)
+		return result;
+	
+	sdk_getservertime(cmd);
+
+	bt_run(cmd);
+
+	return 0;
+}
+
+static void
+framestagenotify(void *this, FrameStage stage)
+{
+	static int once;
+
+	if (!once) {
+		bt_init();
+		once = 1;
+	}
+
+	/* TODO: In game only */
+	bt_update(stage);
+
+	VFN(void (*)(uintptr_t *, FrameStage), client.old, 37)
+            (intf->client, stage);
+}
+
 void
 hk_init(void)
 {
+	hookvmt((uintptr_t)intf->client, &client);
+	hookfn(&client, 37, &framestagenotify);
 
+	hookvmt((uintptr_t)mem->clientmode, &clientmode);
+	hookfn(&clientmode, 25, &createmove);
 }
 
 void
 hk_clean(void)
 {
-
+	unhookvmt(&client);
+	unhookvmt(&clientmode);
 }

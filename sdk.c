@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdint.h>
 
 #include "intf.h"
@@ -53,6 +54,12 @@ ent_isdormant(uintptr_t ent)
                    (ent + sizeof(uintptr_t) * 2);
 }
 
+Vector *
+ent_getabsorigin(uintptr_t ent)
+{
+	return VFN(Vector *(*)(uintptr_t), VMT(ent), 12)(ent);
+}
+
 int
 ent_isalive(uintptr_t ent)
 {
@@ -90,6 +97,53 @@ sdk_setviewangles(Vector *ang)
 	    (intf->engine, ang);
 }
 
+ConVar *
+cvar_find(const char *name)
+{
+	return VFN(ConVar *(*)(uintptr_t *, const char *),
+	           VMT(intf->cvar), 15)(intf->cvar, name);
+}
+
+float
+convar_getfloat(ConVar *var)
+{
+	return VFN(float (*)(ConVar *), VMT(var), 15)(var);
+}
+
+int
+sdk_getmaxclients(void)
+{
+	return VFN(int (*)(uintptr_t *),
+	           VMT(intf->engine), 20)(intf->engine);
+}
+
+int
+sdk_isingame(void)
+{
+	return VFN(char (*)(uintptr_t *),
+	           VMT(intf->engine), 26)(intf->engine);
+}
+
+uintptr_t
+sdk_getnetchan(void)
+{
+	return VFN(uintptr_t (*)(uintptr_t *),
+	           VMT(intf->engine), 78)(intf->engine);
+}
+
+const char *
+sdk_getserveraddress(uintptr_t netchan)
+{
+	return VFN(const char *(*)(uintptr_t), VMT(netchan), 1)(netchan);
+}
+
+float
+sdk_getlatency(uintptr_t netchan, int flow)
+{
+	return VFN(float (*)(uintptr_t, int), VMT(netchan), 9)
+	           (netchan, flow);
+}
+
 float
 sdk_getservertime(UserCmd *cmd)
 {
@@ -105,7 +159,93 @@ sdk_getservertime(UserCmd *cmd)
 			tick++;
 		lastcmd = cmd;
 	}
+
 	return tick * mem->gvars->intervalpertick;
 }
 
+Vector
+vec_add(Vector a, Vector b)
+{
+	Vector c;
+
+	c.x = a.x + b.x;
+	c.y = a.y + b.y;
+	c.z = a.z + b.z;
+	return c;
+}
+
+Vector
+vec_sub(Vector a, Vector b)
+{
+	Vector c;
+
+	c.x = a.x - b.x;
+	c.y = a.y - b.y;
+	c.z = a.z - b.z;
+
+	return c;
+}
+
+Vector
+vec_toang(Vector v)
+{
+	Vector a;
+
+	a.x = atan2(-v.z, hypot(v.x, v.y)) * (180.0f / M_PI);
+	a.y = atan2(v.y, v.x) * (180.0f / M_PI);
+	a.z = 0.0f;
+	return a;
+}
+
+Vector
+vec_norm(Vector v)
+{
+	Vector a;
+
+	a.x = isfinite(v.x) ? remainder(v.x, 360.0f) : 0.0f;
+	a.y = isfinite(v.y) ? remainder(v.y, 360.0f) : 0.0f;
+	a.z = 0.0f;
+	return a;
+}
+
+Vector
+vec_calcang(Vector locpos, Vector entpos, Vector ang)
+{
+	Vector a, b;
+
+	a = vec_sub(entpos, locpos);
+	b = vec_sub(vec_toang(a), ang);
+
+	return vec_norm(b);
+}
+
+Vector
+mat_origin(Matrix3x4 m)
+{
+	Vector v;
+
+	v.x = m[0][3];
+	v.y = m[1][3];
+	v.z = m[2][3];
+
+	return v;
+}
+
+Vector
+ent_getbonepos(uintptr_t ent, int bone)
+{
+	Matrix3x4 m[256] = {0};
+
+	ent_setupbones(ent, m, 256, 256, 0.0f);
+
+	return mat_origin(m[bone]);
+}
+
+int
+sdk_timetoticks(float time)
+{
+	return (int)(0.5f + time / mem->gvars->intervalpertick);
+}
+
+NVDEF(simtime, "CBaseEntity", "m_flSimulationTime", 0, float)
 NVDEF(tickbase, "CBasePlayer", "m_nTickBase", 0, int)

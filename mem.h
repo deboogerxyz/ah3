@@ -5,7 +5,10 @@
 
 typedef struct {
 	void (*debugmsg)(const char *msg, ...);
+	int (*isotherenemy)(uintptr_t, uintptr_t);
+	uintptr_t *clientmode;
 	GlobalVars *gvars;
+	void (*setabsorigin)(uintptr_t, Vector *);
 } Mem;
 
 void mem_init(void);

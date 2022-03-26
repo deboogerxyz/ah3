@@ -1,5 +1,6 @@
 #include <pthread.h>
 
+#include "bt.h"
 #include "hk.h"
 #include "intf.h"
 #include "mem.h"
@@ -36,4 +37,5 @@ onunload(void)
 	mem_clean();
 	hk_clean();
 	nv_clean();
+	bt_clean();
 }

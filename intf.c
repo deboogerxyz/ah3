@@ -29,6 +29,7 @@ intf_init(void)
 
 	intf->client  = find("csgo/bin/linux64/client_client.so",
 	                     "VClient018");
+	intf->cvar    = find("libvstdlib_client.so", "VEngineCvar007");
 	intf->engine  = find("engine_client.so", "VEngineClient014");
 	intf->entlist = find("csgo/bin/linux64/client_client.so",
 	                     "VClientEntityList003");
