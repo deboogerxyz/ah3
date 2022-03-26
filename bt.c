@@ -7,7 +7,7 @@
 
 typedef struct {
 	Vector origin;
-	Vector headpos;
+	Matrix3x4 matrix[256];
 	float simtime;
 } Record;
 
@@ -91,7 +91,7 @@ bt_update(FrameStage stage)
 			continue;
 
 		record.origin  = *ent_getabsorigin(ent);
-		record.headpos = ent_getbonepos(ent, 8);
+		ent_setupbones(ent, record.matrix, 256, 256, 0.0f);
 		record.simtime = *ent_simtime(ent);
 
 		cvector_push_back(records[i], record);
@@ -110,7 +110,7 @@ bt_update(FrameStage stage)
 void
 bt_run(UserCmd *cmd)
 {
-	int i, bestidx = 0, bestrecord = 0, maxclients;
+	int i, j, bestidx = 0, bestrecord = 0, maxclients;
 	uintptr_t localplayer, ent, besttarget = 0;
 	Vector eyepos, aimpunch, viewangles, bonepos, ang;
 	float fov, bestfov = 255.0f;
@@ -157,13 +157,16 @@ bt_run(UserCmd *cmd)
 		if (!isvalid(records[bestidx][i].simtime))
 			continue;
 
-		ang = vec_calcang(eyepos, records[bestidx][i].headpos,
-		                  viewangles);
-		fov = hypot(ang.x, ang.y);
+		int bones[6] = {8, 4, 3, 6, 7, 5};
+		for (j = 0; j < 6; j++) {
+			bonepos = mat_origin(records[bestidx][i].matrix[bones[j]]);
+			ang = vec_calcang(eyepos, bonepos, viewangles);
+			fov = hypot(ang.x, ang.y);
 
-		if (fov < bestfov) {
-			bestfov = fov;
-			bestrecord = i;
+			if (fov < bestfov) {
+				bestfov = fov;
+				bestrecord = i;
+			}
 		}
 	}
 
