@@ -27,7 +27,7 @@ getlerp()
 
 	/* HACK: Do not compensate for lerp when in local match */
 	if (hash(sdk_getserveraddress(netchan)) == hash("loopback"))
-	return 0.0f;
+		return 0.0f;
 
 	ratio = CLAMP(convar_getfloat(interpratio),
 	              convar_getfloat(mininterpratio),
