@@ -26,8 +26,8 @@ getlerp()
 		return 0.0f;
 
 	/* HACK: Do not compensate for lerp when in local match */
-	if (hash(sdk_getserveraddress(netchan)) == hash("loopback"))
-		return 0.0f;
+//	if (hash(sdk_getserveraddress(netchan)) == hash("loopback"))
+//		return 0.0f;
 
 	ratio = CLAMP(convar_getfloat(interpratio), convar_getfloat(mininterpratio), convar_getfloat(maxinterpratio));
 	return MAX(convar_getfloat(interp), (ratio / (maxupdaterate ? convar_getfloat(maxupdaterate) : convar_getfloat(updaterate))));
