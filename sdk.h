@@ -4,13 +4,14 @@
 #include <stdint.h>
 
 #include "nv.h"
+#include "util.h"
 
 typedef struct {
 	float x, y, z;
 } Vector;
 
 typedef struct {
-	char pad[8];
+	PAD(8);
 	union {
 		float f;
 		long i;
@@ -26,20 +27,20 @@ typedef void (*RecvProxy)(RecvProxyData *, void *, void *);
 typedef struct {
 	char *name;
 	int type;
-	char pad0[36];
+	PAD(36);
 	RecvProxy proxy;
-	char pad1[8];
+	PAD(8);
 	struct RecvTable *table;
 	int offset;
-	char pad2[16];
+	PAD(16);
 } RecvProp;
 
 typedef struct RecvTable {
 	RecvProp *props;
 	int count;
-	char pad0[8];
+	PAD(8);
 	char *name;
-	char pad1[2];
+	PAD(12);
 } RecvTable;
 
 typedef enum {
@@ -91,7 +92,7 @@ typedef enum {
 } ClassId;
 
 typedef struct ClientClass {
-	char pad0[16];
+	PAD(16);
 	char *name;
 	RecvTable *table;
 	struct ClientClass *next;
@@ -115,7 +116,7 @@ typedef enum {
 } UserCmdButtons;
 
 typedef struct {
-	char pad0[8];
+	PAD(8);
 	int cmdnumber;
 	int tickcount;
 	Vector viewangles;
@@ -124,7 +125,7 @@ typedef struct {
 	float sidemove;
 	float upmove;
 	UserCmdButtons buttons;
-	char pad1[13];
+	PAD(13);
 	short mousedx;
 	short mousedy;
 	char hasbeenpredicted;
@@ -193,36 +194,36 @@ typedef enum {
 } WeaponId;
 
 typedef struct {
-	char pad0[32];
+	PAD(32);
 	int maxclip;
-	char pad1[204];
+	PAD(204);
 	const char* name;
-	char pad2[72];
+	PAD(72);
 	int type;
-	char pad3[4];
+	PAD(4);
 	int price;
-	char pad4[12];
+	PAD(12);
 	float cycletime;
-	char pad5[12];
+	PAD(12);
 	char fullauto;
-	char pad6[3];
+	PAD(3);
 	int damage;
 	float headshotmult;
 	float armorratio;
 	int bullets;
 	float penetration;
-	char pad7[8];
+	PAD(8);
 	float range;
 	float rangemod;
-	char pad8[16];
+	PAD(16);
 	char silencer;
-	char pad9[23];
+	PAD(23);
 	float maxspeed;
 	float maxspeedalt;
-	char pad10[100];
+	PAD(100);
 	float recoilmagnitude;
 	float recoilmagnitudealt;
-	char pad11[16];
+	PAD(16);
 	float recoverytimestand;
 } WeaponInfo;
 
@@ -230,7 +231,7 @@ typedef struct {
 	float realtime;
 	int framecount;
 	float absoluteframetime;
-	char pad[4];
+	PAD(4);
 	float currenttime;
 	float frametime;
 	int maxclients;
@@ -250,7 +251,7 @@ typedef enum {
 } FrameStage;
 
 typedef struct ConVar {
-	char pad[56];
+	PAD(56);
 	struct ConVar *parent;
 	const char *defval;
 	const char *str;
