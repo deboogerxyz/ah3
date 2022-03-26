@@ -40,7 +40,7 @@ typedef struct RecvTable {
 	int count;
 	PAD(8);
 	char *name;
-	PAD(12);
+	PAD(2);
 } RecvTable;
 
 typedef enum {
