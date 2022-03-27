@@ -262,8 +262,7 @@ int sdk_dispatchusermsg(int type, int flags, int size, void *data);
 int sdk_istakingscreenshot(void);
 int sdk_getlocalplayer(void);
 uintptr_t sdk_getentity(int i);
-int ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max,
-                   int mask, float curtime);
+int ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max, int mask, float curtime);
 int ent_isdormant(uintptr_t ent);
 Vector *ent_getabsorigin(uintptr_t ent);
 int ent_isalive(uintptr_t ent);
@@ -284,7 +283,7 @@ Vector vec_add(Vector a, Vector b);
 Vector vec_sub(Vector a, Vector b);
 Vector vec_toang(Vector v);
 Vector vec_norm(Vector v);
-Vector vec_calcang(Vector locpos, Vector entpos, Vector ang);
+Vector vec_calcang(Vector startpos, Vector endpos, Vector ang);
 Vector mat_origin(Matrix3x4 m);
 Vector ent_getbonepos(uintptr_t ent, int bone);
 int sdk_timetoticks(float time);

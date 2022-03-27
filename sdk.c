@@ -8,16 +8,13 @@
 ClientClass *
 sdk_getallclasses(void)
 {
-	return VFN(ClientClass *(*)(uintptr_t *),
-	           VMT(intf->client), 8)(intf->client);
+	return VFN(ClientClass *(*)(uintptr_t *), VMT(intf->client), 8)(intf->client);
 }
 
 int
 sdk_dispatchusermsg(int type, int flags, int size, void *data)
 {
-	return VFN(char (*)(uintptr_t *, int, int, int, void *),
-	           VMT(intf->client), 38)(intf->client, type,
-	                                  flags, size, data);
+	return VFN(char (*)(uintptr_t *, int, int, int, void *), VMT(intf->client), 38)(intf->client, type, flags, size, data);
 }
 
 int
@@ -35,23 +32,19 @@ sdk_getlocalplayer(void)
 uintptr_t
 sdk_getentity(int i)
 {
-	return VFN(uintptr_t (*)(uintptr_t *, int),
-	           VMT(intf->entlist), 3)(intf->entlist, i);
+	return VFN(uintptr_t (*)(uintptr_t *, int), VMT(intf->entlist), 3)(intf->entlist, i);
 }
 
 int
 ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max, int mask, float curtime)
 {
-	return VFN(char (*)(uintptr_t, Matrix3x4 *, int, int, float),
-	           VMT(ent + sizeof(uintptr_t)), 13)(ent + sizeof(uintptr_t),
-	                                             out, max, mask, curtime);
+	return VFN(char (*)(uintptr_t, Matrix3x4 *, int, int, float), VMT(ent + sizeof(uintptr_t)), 13)(ent + sizeof(uintptr_t), out, max, mask, curtime);
 }
 
 int
 ent_isdormant(uintptr_t ent)
 {
-	return VFN(char (*)(uintptr_t), VMT(ent + sizeof(uintptr_t) * 2), 9)
-                   (ent + sizeof(uintptr_t) * 2);
+	return VFN(char (*)(uintptr_t), VMT(ent + sizeof(uintptr_t) * 2), 9)(ent + sizeof(uintptr_t) * 2);
 }
 
 Vector *
@@ -93,15 +86,13 @@ ent_getweaponinfo(uintptr_t ent)
 void
 sdk_setviewangles(Vector *ang)
 {
-	VFN(void (*)(uintptr_t *, Vector *), VMT(intf->engine), 19)
-	    (intf->engine, ang);
+	VFN(void (*)(uintptr_t *, Vector *), VMT(intf->engine), 19)(intf->engine, ang);
 }
 
 ConVar *
 cvar_find(const char *name)
 {
-	return VFN(ConVar *(*)(uintptr_t *, const char *),
-	           VMT(intf->cvar), 15)(intf->cvar, name);
+	return VFN(ConVar *(*)(uintptr_t *, const char *), VMT(intf->cvar), 15)(intf->cvar, name);
 }
 
 float
@@ -120,15 +111,13 @@ sdk_getmaxclients(void)
 int
 sdk_isingame(void)
 {
-	return VFN(char (*)(uintptr_t *),
-	           VMT(intf->engine), 26)(intf->engine);
+	return VFN(char (*)(uintptr_t *), VMT(intf->engine), 26)(intf->engine);
 }
 
 uintptr_t
 sdk_getnetchan(void)
 {
-	return VFN(uintptr_t (*)(uintptr_t *),
-	           VMT(intf->engine), 78)(intf->engine);
+	return VFN(uintptr_t (*)(uintptr_t *), VMT(intf->engine), 78)(intf->engine);
 }
 
 const char *
@@ -140,8 +129,7 @@ sdk_getserveraddress(uintptr_t netchan)
 float
 sdk_getlatency(uintptr_t netchan, int flow)
 {
-	return VFN(float (*)(uintptr_t, int), VMT(netchan), 9)
-	           (netchan, flow);
+	return VFN(float (*)(uintptr_t, int), VMT(netchan), 9)(netchan, flow);
 }
 
 float
@@ -149,10 +137,9 @@ sdk_getservertime(UserCmd *cmd)
 {
 	static int tick;
 	static UserCmd *lastcmd;
-	uintptr_t localplayer;
 
 	if (cmd) {
-		localplayer = sdk_getentity(sdk_getlocalplayer());
+		uintptr_t localplayer = sdk_getentity(sdk_getlocalplayer());
 		if (localplayer && (!lastcmd || lastcmd->hasbeenpredicted))
 			tick = *ent_tickbase(localplayer);
 		else
@@ -166,22 +153,23 @@ sdk_getservertime(UserCmd *cmd)
 Vector
 vec_add(Vector a, Vector b)
 {
-	Vector c;
+	Vector c = {
+		.x = a.x + b.x,
+		.y = a.y + b.y,
+		.z = a.z + b.z
+	};
 
-	c.x = a.x + b.x;
-	c.y = a.y + b.y;
-	c.z = a.z + b.z;
 	return c;
 }
 
 Vector
 vec_sub(Vector a, Vector b)
 {
-	Vector c;
-
-	c.x = a.x - b.x;
-	c.y = a.y - b.y;
-	c.z = a.z - b.z;
+	Vector c = {
+		.x = a.x - b.x,
+		.y = a.y - b.y,
+		.z = a.z - b.z
+	};
 
 	return c;
 }
@@ -189,31 +177,33 @@ vec_sub(Vector a, Vector b)
 Vector
 vec_toang(Vector v)
 {
-	Vector a;
+	Vector a = {
+		.x = atan2(-v.z, hypot(v.x, v.y)) * (180.0f / M_PI),
+		.y = atan2(v.y, v.x) * (180.0f / M_PI),
+		.z = 0.0f
+	};
 
-	a.x = atan2(-v.z, hypot(v.x, v.y)) * (180.0f / M_PI);
-	a.y = atan2(v.y, v.x) * (180.0f / M_PI);
-	a.z = 0.0f;
 	return a;
 }
 
 Vector
 vec_norm(Vector v)
 {
-	Vector a;
+	Vector a = {
+		.x = isfinite(v.x) ? remainder(v.x, 360.0f) : 0.0f,
+		.y = isfinite(v.y) ? remainder(v.y, 360.0f) : 0.0f,
+		.z = 0.0f
+	};
 
-	a.x = isfinite(v.x) ? remainder(v.x, 360.0f) : 0.0f;
-	a.y = isfinite(v.y) ? remainder(v.y, 360.0f) : 0.0f;
-	a.z = 0.0f;
 	return a;
 }
 
 Vector
-vec_calcang(Vector locpos, Vector entpos, Vector ang)
+vec_calcang(Vector startpos, Vector endpos, Vector ang)
 {
 	Vector a, b;
 
-	a = vec_sub(entpos, locpos);
+	a = vec_sub(endpos, startpos);
 	b = vec_sub(vec_toang(a), ang);
 
 	return vec_norm(b);
@@ -222,11 +212,11 @@ vec_calcang(Vector locpos, Vector entpos, Vector ang)
 Vector
 mat_origin(Matrix3x4 m)
 {
-	Vector v;
-
-	v.x = m[0][3];
-	v.y = m[1][3];
-	v.z = m[2][3];
+	Vector v = {
+		.x = m[0][3],
+		.y = m[1][3],
+		.z = m[2][3]
+	};
 
 	return v;
 }
