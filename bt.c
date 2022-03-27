@@ -128,6 +128,9 @@ bt_run(UserCmd *cmd)
 		}
 	}
 
+	if (!besttarget)
+		return;
+
 	if (cvector_empty(records[bestidx]))
 		return;
 
@@ -153,12 +156,13 @@ bt_run(UserCmd *cmd)
 		}
 	}
 
-	if (bestrecord && besttarget) {
-		Record *record = &records[bestidx][bestrecord];
+	if (!bestrecord)
+		return;
 
-		mem->setabsorigin(besttarget, &record->origin);
-		cmd->tickcount = sdk_timetoticks(record->simtime + getlerp());
-	}
+	Record *record = &records[bestidx][bestrecord];
+
+	mem->setabsorigin(besttarget, &record->origin);
+	cmd->tickcount = sdk_timetoticks(record->simtime + getlerp());
 }
 
 void
