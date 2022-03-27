@@ -15,7 +15,7 @@ static ConVar *updaterate, *maxupdaterate, *interp, *interpratio, *mininterprati
 static cvector_vector_type(Record) records[65] = {NULL};
 
 static float
-getlerp()
+getlerp(void)
 {
 	uintptr_t netchan = sdk_getnetchan();
 	if (!netchan)
