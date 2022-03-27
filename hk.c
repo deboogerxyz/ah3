@@ -31,19 +31,16 @@ getvmtsize(uintptr_t *vmt)
 static void
 hookvmt(uintptr_t addr, Vmt *vmt)
 {
-	uintptr_t *new;
-
 	vmt->addr = addr;
 	vmt->old  = VMT(addr);
 	vmt->size = getvmtsize(vmt->old) + 2;
 
-	new = malloc(vmt->size * sizeof(uintptr_t));
+	uintptr_t *new = malloc(vmt->size * sizeof(uintptr_t));
 	if (!new)
 		return;
 
 	vmt->new = new;
-	memcpy(vmt->new, vmt->old - 2,
-	       vmt->size * sizeof(uintptr_t));
+	memcpy(vmt->new, vmt->old - 2, vmt->size * sizeof(uintptr_t));
 	VMT(vmt->addr) = vmt->new + 2;
 }
 
@@ -68,9 +65,7 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 {
 	char result;
 
-	result = VFN(char (*)(void *, float, UserCmd *),
-	             clientmode.old, 25)
-	         (mem->clientmode, inputsampletime, cmd);
+	result = VFN(char (*)(void *, float, UserCmd *), clientmode.old, 25)(mem->clientmode, inputsampletime, cmd);
 
 	if (!cmd->cmdnumber)
 		return result;
@@ -92,11 +87,9 @@ framestagenotify(void *this, FrameStage stage)
 		once = 1;
 	}
 
-	/* TODO: In game only */
 	bt_update(stage);
 
-	VFN(void (*)(uintptr_t *, FrameStage), client.old, 37)
-            (intf->client, stage);
+	VFN(void (*)(uintptr_t *, FrameStage), client.old, 37)(intf->client, stage);
 }
 
 void
