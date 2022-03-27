@@ -79,10 +79,9 @@ bt_update(FrameStage stage)
 		while (cvector_size(records[i]) > 3 && cvector_size(records[i]) > sdk_timetoticks(0.2f))
 			cvector_erase(records[i], 0);
 
-		for (int j = 0; j < cvector_size(records[i]); j++) {
+		for (int j = 0; j < cvector_size(records[i]); j++)
 			if (!isvalid(records[i][j].simtime))
 				cvector_erase(records[i], j);
-		}
 	}
 }
 
