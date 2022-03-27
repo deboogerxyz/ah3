@@ -237,5 +237,5 @@ sdk_timetoticks(float time)
 	return (int)(0.5f + time / mem->gvars->intervalpertick);
 }
 
-NVDEF(simtime, "CBaseEntity", "m_flSimulationTime", 0, float)
-NVDEF(tickbase, "CBasePlayer", "m_nTickBase", 0, int)
+NV_IMPL(simtime, "CBaseEntity", "m_flSimulationTime", 0, float)
+NV_IMPL(tickbase, "CBasePlayer", "m_nTickBase", 0, int)

@@ -288,7 +288,7 @@ Vector mat_origin(Matrix3x4 m);
 Vector ent_getbonepos(uintptr_t ent, int bone);
 int sdk_timetoticks(float time);
 
-NV(simtime, float);
-NV(tickbase, int);
+NV_DECL(simtime, float);
+NV_DECL(tickbase, int);
 
 #endif /* SDK_H */

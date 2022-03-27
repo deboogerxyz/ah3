@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#define NV(name, type) type *ent_##name(uintptr_t ent)
-#define NVDEF(name, class, var, offset, type)                           \
+#define NV_DECL(name, type) type *ent_##name(uintptr_t ent)
+#define NV_IMPL(name, class, var, offset, type)                         \
         type *                                                          \
         ent_##name(uintptr_t ent)                                       \
         {                                                               \
