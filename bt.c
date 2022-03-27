@@ -165,13 +165,13 @@ bt_run(UserCmd *cmd)
 void
 bt_init(void)
 {
-	updaterate = cvar_find("cl_updaterate");
-	maxupdaterate = cvar_find("sv_maxupdaterate");
-	interp = cvar_find("cl_interp");
-	interpratio = cvar_find("cl_interp_ratio");
+	updaterate     = cvar_find("cl_updaterate");
+	maxupdaterate  = cvar_find("sv_maxupdaterate");
+	interp         = cvar_find("cl_interp");
+	interpratio    = cvar_find("cl_interp_ratio");
 	mininterpratio = cvar_find("sv_client_min_interp_ratio");
 	maxinterpratio = cvar_find("sv_client_max_interp_ratio");
-	maxunlag = cvar_find("sv_maxunlag");
+	maxunlag       = cvar_find("sv_maxunlag");
 }
 
 void
