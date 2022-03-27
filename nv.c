@@ -38,8 +38,7 @@ dump(const char *class, RecvTable *table, size_t offset)
 		if (hash(prop->name) == hash("baseclass"))
 			continue;
 
-		if (prop->type == 6 && prop->table &&
-		    prop->table->name[0] == 'D')
+		if (prop->type == 6 && prop->table && prop->table->name[0] == 'D')
 			dump(class, prop->table, prop->offset + offset);
 
 		char name[256];
