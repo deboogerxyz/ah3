@@ -30,13 +30,8 @@ spotted(RecvProxyData *data, void *arg2, void *arg3)
 void
 dump(const char *class, RecvTable *table, size_t offset)
 {
-	int i;
-	RecvProp *prop;
-	char name[256];
-	NetVar nv;
-
-	for (i = 0; i < table->count; i++) {
-		prop = &table->props[i];
+	for (int i = 0; i < table->count; i++) {
+		RecvProp *prop = &table->props[i];
 		if (!prop || isdigit(prop->name[0]))
 			continue;
 
@@ -47,9 +42,14 @@ dump(const char *class, RecvTable *table, size_t offset)
 		    prop->table->name[0] == 'D')
 			dump(class, prop->table, prop->offset + offset);
 
+		char name[256];
 		sprintf(name, "%s->%s", class, prop->name);
-		nv.hash = hash(name);
-		nv.offset = prop->offset + offset;
+
+		NetVar nv = {
+			.hash = hash(name),
+			.offset = prop->offset + offset
+		};
+
 		cvector_push_back(netvars, nv);
 
 		if (nv.hash == hash("CBaseEntity->m_bSpotted")) {
@@ -63,11 +63,9 @@ dump(const char *class, RecvTable *table, size_t offset)
 void
 nv_init(void)
 {
-	ClientClass *class;
-
 	cvector_grow(netvars, 1800);
 
-	for (class = sdk_getallclasses(); class; class = class->next)
+	for (ClientClass *class = sdk_getallclasses(); class; class = class->next)
 		if (class->table)
 			dump(class->name, class->table, 0);
 }
@@ -75,9 +73,7 @@ nv_init(void)
 unsigned int
 nv_get(const char *name)
 {
-	NetVar *it;
-
-	for (it = cvector_begin(netvars); it != cvector_end(netvars); it++)
+	for (NetVar *it = cvector_begin(netvars); it != cvector_end(netvars); it++)
 		if (it->hash == hash(name))
 			return it->offset;
 	return 0;
