@@ -1,5 +1,19 @@
+#include <GL/glew.h>
 #include <stdlib.h> /* malloc, ... */
 #include <string.h> /* memcpy */
+
+#define NK_INCLUDE_FIXED_TYPES
+#define NK_INCLUDE_STANDARD_IO
+#define NK_INCLUDE_STANDARD_VARARGS
+#define NK_INCLUDE_DEFAULT_ALLOCATOR
+#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+#define NK_INCLUDE_FONT_BAKING
+#define NK_INCLUDE_DEFAULT_FONT
+#include "nuklear.h"
+#include "nuklear_sdl_gl3.h"
+
+#define MAX_VERTEX_MEMORY 512 * 1024
+#define MAX_ELEMENT_MEMORY 128 * 1024
 
 #include "bt.h"
 #include "hk.h"
@@ -15,6 +29,9 @@ typedef struct {
 	size_t size;
 } Vmt;
 
+static int (*origpollevent)(SDL_Event *);
+static void (*origswapwindow)(SDL_Window *);
+static int open = 1;
 static Vmt client, clientmode;
 
 static size_t
@@ -60,12 +77,59 @@ unhookvmt(Vmt *vmt)
 	free(vmt->new);
 }
 
+static int
+pollevent(SDL_Event *event)
+{
+	int result = origpollevent(event);
+
+	if (result && nk_sdl_handle_event(event) && open)
+		event->type = 0;
+
+	return result;
+}
+
+static void
+swapwindow(SDL_Window *win)
+{
+	static struct nk_context *ctx;
+	static struct nk_font_atlas *atlas;
+
+	if (!ctx) {
+		glewExperimental = 1;
+		glewInit();
+		ctx = nk_sdl_init(win);
+		nk_sdl_font_stash_begin(&atlas);
+		nk_sdl_font_stash_end();
+	}
+
+	struct nk_input *in = &ctx->input;
+
+	if (nk_input_is_key_released(in, NK_KEY_TEXT_START)) {
+		open = !open;
+		if (!open)
+			sdk_resetinputstate();
+	}
+
+	if (open) {
+		int flags = NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE;
+		if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
+			nk_layout_row_dynamic(ctx, 30, 2);
+			nk_button_label(ctx, "Hello, world!");
+		}
+		nk_end(ctx);
+	}
+
+	nk_sdl_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_MEMORY, MAX_ELEMENT_MEMORY);
+
+	nk_input_begin(ctx);
+	origswapwindow(win);
+	nk_input_end(ctx);
+}
+
 static char
 createmove(void *this, float inputsampletime, UserCmd *cmd)
 {
-	char result;
-
-	result = VFN(char (*)(void *, float, UserCmd *), clientmode.old, 25)(mem->clientmode, inputsampletime, cmd);
+	char result = VFN(char (*)(void *, float, UserCmd *), clientmode.old, 25)(mem->clientmode, inputsampletime, cmd);
 
 	if (!cmd->cmdnumber)
 		return result;
@@ -102,6 +166,12 @@ framestagenotify(void *this, FrameStage stage)
 void
 hk_init(void)
 {
+	*(void **)&origpollevent = *(void **)mem->pollevent;
+	*(void ***)mem->pollevent = (void *)pollevent;
+
+	*(void **)&origswapwindow = *(void **)mem->swapwindow;
+	*(void ***)mem->swapwindow = (void *)swapwindow;
+
 	hookvmt((uintptr_t)intf->client, &client);
 	hookfn(&client, 37, &framestagenotify);
 
@@ -114,4 +184,7 @@ hk_clean(void)
 {
 	unhookvmt(&client);
 	unhookvmt(&clientmode);
+
+	*(void ***)mem->pollevent = (void *)origpollevent;
+	*(void ***)mem->swapwindow = (void *)origswapwindow;
 }

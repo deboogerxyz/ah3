@@ -104,8 +104,7 @@ convar_getfloat(ConVar *var)
 int
 sdk_getmaxclients(void)
 {
-	return VFN(int (*)(uintptr_t *),
-	           VMT(intf->engine), 20)(intf->engine);
+	return VFN(int (*)(uintptr_t *), VMT(intf->engine), 20)(intf->engine);
 }
 
 int
@@ -130,6 +129,12 @@ float
 sdk_getlatency(uintptr_t netchan, int flow)
 {
 	return VFN(float (*)(uintptr_t, int), VMT(netchan), 9)(netchan, flow);
+}
+
+void
+sdk_resetinputstate(void)
+{
+	VFN(void (*)(uintptr_t *), VMT(intf->inputsys), 39)(intf->inputsys);
 }
 
 float

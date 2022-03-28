@@ -4,6 +4,8 @@
 #include "sdk.h"
 
 typedef struct {
+	uintptr_t pollevent;
+	uintptr_t swapwindow;
 	void (*debugmsg)(const char *msg, ...);
 	int (*isotherenemy)(uintptr_t, uintptr_t);
 	uintptr_t *clientmode;

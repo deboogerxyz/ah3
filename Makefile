@@ -1,7 +1,7 @@
 include config.mk
 
-SRC = ah.c bt.c hk.c intf.c mem.c nv.c sdk.c util.c
-HDR = bt.h cvector.h hk.h intf.h mem.h nv.h sdk.h util.h
+SRC = ah.c bt.c hk.c intf.c mem.c nv.c sdk.c util.c pch.c
+HDR = bt.h cvector.h hk.h intf.h mem.h nv.h sdk.h util.h nuklear.h nuklear_sdl_gl3.h pch.h
 
 OBJ = ${SRC:.c=.o}
 

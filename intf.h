@@ -8,6 +8,7 @@ typedef struct {
 	uintptr_t *cvar;
 	uintptr_t *engine;
 	uintptr_t *entlist;
+	uintptr_t *inputsys;
 } Intf;
 
 void intf_init(void);

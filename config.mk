@@ -1,5 +1,5 @@
 # Libraries
-LIBS = -lpthread
+LIBS = -lGL -lGLEW -lm -lpthread -lSDL2
 
 # Flags
 CPPFLAGS = -D_DEFAULT_SOURCE -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L

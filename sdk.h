@@ -278,6 +278,7 @@ int sdk_isingame(void);
 uintptr_t sdk_getnetchan(void);
 const char *sdk_getserveraddress(uintptr_t netchan);
 float sdk_getlatency(uintptr_t netchan, int flow);
+void sdk_resetinputstate(void);
 float sdk_getservertime(UserCmd *cmd);
 Vector vec_add(Vector a, Vector b);
 Vector vec_sub(Vector a, Vector b);
