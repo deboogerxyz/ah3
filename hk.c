@@ -100,6 +100,7 @@ swapwindow(SDL_Window *win)
 		ctx = nk_sdl_init(win);
 		nk_sdl_font_stash_begin(&atlas);
 		nk_sdl_font_stash_end();
+		nk_style_load_all_cursors(ctx, atlas->cursors);
 	}
 
 	struct nk_input *in = &ctx->input;
