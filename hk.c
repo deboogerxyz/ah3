@@ -126,14 +126,15 @@ swapwindow(SDL_Window *win)
 	}
 	nk_end(ctx);
 
-	if (open) {
-		flags = NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE;
-		if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
-			nk_layout_row_dynamic(ctx, 30, 2);
-			nk_button_label(ctx, "Hello, world!");
-		}
-		nk_end(ctx);
+	flags |= NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE;
+	if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
+		nk_layout_row_dynamic(ctx, 30, 2);
+		nk_button_label(ctx, "Hello, world!");
 	}
+	nk_end(ctx);
+
+	nk_window_show_if(ctx, "ah3", NK_SHOWN, open);
+	nk_window_show_if(ctx, "ah3", NK_HIDDEN, !open);
 
 	nk_sdl_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_MEMORY, MAX_ELEMENT_MEMORY);
 
