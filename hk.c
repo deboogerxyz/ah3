@@ -93,15 +93,22 @@ swapwindow(SDL_Window *win)
 {
 	static struct nk_context *ctx;
 	static struct nk_font_atlas *atlas;
+	static SDL_GLContext origglctx, glctx;
 
 	if (!ctx) {
-		glewExperimental = 1;
+		origglctx = SDL_GL_GetCurrentContext();
+		glctx = SDL_GL_CreateContext(win);
+		SDL_GL_MakeCurrent(win, glctx);
+
 		glewInit();
+
 		ctx = nk_sdl_init(win);
 		nk_sdl_font_stash_begin(&atlas);
 		nk_sdl_font_stash_end();
 		nk_style_load_all_cursors(ctx, atlas->cursors);
 	}
+
+	SDL_GL_MakeCurrent(win, glctx);
 
 	struct nk_input *in = &ctx->input;
 
@@ -129,6 +136,8 @@ swapwindow(SDL_Window *win)
 	}
 
 	nk_sdl_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_MEMORY, MAX_ELEMENT_MEMORY);
+
+	SDL_GL_MakeCurrent(win, origglctx);
 
 	nk_input_begin(ctx);
 	origswapwindow(win);
