@@ -109,10 +109,18 @@ swapwindow(SDL_Window *win)
 		open = !open;
 		if (!open)
 			sdk_resetinputstate();
+		ctx->style.cursor_visible = open;
 	}
 
+	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE;
+	if (nk_begin(ctx, "helo?", nk_rect(50, 50, 230, 250), flags)) {
+		nk_layout_row_dynamic(ctx, 30, 2);
+		nk_button_label(ctx, "helo word");
+	}
+	nk_end(ctx);
+
 	if (open) {
-		int flags = NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE;
+		flags = NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE;
 		if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
 			nk_layout_row_dynamic(ctx, 30, 2);
 			nk_button_label(ctx, "Hello, world!");
