@@ -32,12 +32,17 @@ spotted(RecvProxyData *data, void *arg2, void *arg3)
 void
 dump(const char *class, RecvTable *table, size_t offset)
 {
+	static unsigned int baseclass;
+
+	if (!baseclass)
+		baseclass = hash("baseclass");
+
 	for (int i = 0; i < table->count; i++) {
 		RecvProp *prop = &table->props[i];
 		if (!prop || isdigit(prop->name[0]))
 			continue;
 
-		if (hash(prop->name) == hash("baseclass"))
+		if (hash(prop->name) == baseclass)
 			continue;
 
 		if (prop->type == 6 && prop->table && prop->table->name[0] == 'D')
