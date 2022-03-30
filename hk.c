@@ -99,7 +99,6 @@ swapwindow(SDL_Window *win)
 	if (!ctx) {
 		origglctx = SDL_GL_GetCurrentContext();
 		glctx = SDL_GL_CreateContext(win);
-		SDL_GL_MakeCurrent(win, glctx);
 
 		glewInit();
 
