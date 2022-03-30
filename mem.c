@@ -1,10 +1,11 @@
 #include <dlfcn.h>  /* dl_iterate_phdr, dlopen, dlsym, ... */
 #include <link.h>   /* dl_phdr_info */
 
-#include "cvector.h"
+#include "deps/cvector.h"
 #include "intf.h"
-#include "mem.h"
 #include "util.h"
+
+#include "mem.h"
 
 typedef struct {
 	const char *name;

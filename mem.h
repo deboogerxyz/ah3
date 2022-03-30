@@ -1,5 +1,5 @@
-#ifndef MEM_H
-#define MEM_H
+#ifndef MEM_H_
+#define MEM_H_
 
 #include "sdk.h"
 
@@ -18,4 +18,4 @@ void mem_clean(void);
 
 extern Mem *mem;
 
-#endif /* MEM_H */
+#endif /* MEM_H_ */

@@ -1,9 +1,11 @@
 #include <math.h>
 
-#include "cvector.h"
-#include "mem.h"
-#include "sdk.h"
-#include "util.h"
+#include "../deps/cvector.h"
+#include "../mem.h"
+#include "../sdk.h"
+#include "../util.h"
+
+#include "bt.h"
 
 typedef struct {
 	Vector origin;

@@ -9,18 +9,19 @@
 #define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
-#include "nuklear.h"
-#include "nuklear_sdl_gl3.h"
+#include "deps/nuklear.h"
+#include "deps/nuklear_sdl_gl3.h"
 
 #define MAX_VERTEX_MEMORY 512 * 1024
 #define MAX_ELEMENT_MEMORY 128 * 1024
 
-#include "bt.h"
-#include "hk.h"
+#include "hax/bt.h"
 #include "intf.h"
 #include "mem.h"
 #include "sdk.h"
 #include "util.h"
+
+#include "hk.h"
 
 typedef struct {
 	uintptr_t addr;

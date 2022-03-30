@@ -1,5 +1,5 @@
-#ifndef SDK_H
-#define SDK_H
+#ifndef SDK_H_
+#define SDK_H_
 
 #include <stdint.h>
 
@@ -292,4 +292,4 @@ int sdk_timetoticks(float time);
 NV_DECL(simtime, float);
 NV_DECL(tickbase, int);
 
-#endif /* SDK_H */
+#endif /* SDK_H_ */

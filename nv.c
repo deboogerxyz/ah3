@@ -2,9 +2,11 @@
 #include <stdio.h>  /* sprintf */
 #include <stddef.h> /* size_t */
 
-#include "cvector.h"
+#include "deps/cvector.h"
 #include "sdk.h"
 #include "util.h"
+
+#include "nv.h"
 
 typedef struct {
 	RecvProxy *addr;

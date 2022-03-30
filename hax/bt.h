@@ -1,7 +1,7 @@
 #ifndef BT_H
 #define BT_H
 
-#include "sdk.h"
+#include "../sdk.h"
 
 void bt_update(FrameStage stage);
 void bt_run(UserCmd *cmd);

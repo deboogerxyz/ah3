@@ -1,5 +1,5 @@
-#ifndef INTF_H
-#define INTF_H
+#ifndef INTF_H_
+#define INTF_H_
 
 #include <stdint.h>
 
@@ -16,4 +16,4 @@ void intf_clean(void);
 
 extern Intf *intf;
 
-#endif /* INTF_H */
+#endif /* INTF_H_ */

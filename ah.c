@@ -1,6 +1,6 @@
 #include <pthread.h>
 
-#include "bt.h"
+#include "hax/bt.h"
 #include "hk.h"
 #include "intf.h"
 #include "mem.h"

@@ -5,6 +5,8 @@
 #include "mem.h"
 #include "util.h"
 
+#include "sdk.h"
+
 ClientClass *
 sdk_getallclasses(void)
 {

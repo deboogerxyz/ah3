@@ -1,5 +1,5 @@
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef UTIL_H_
+#define UTIL_H_
 
 #include <stdint.h>
 
@@ -16,4 +16,4 @@
 
 unsigned int hash(const char *data);
 
-#endif /* UTIL_H */
+#endif /* UTIL_H_ */

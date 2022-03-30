@@ -1,5 +1,5 @@
-#ifndef PCH_H
-#define PCH_H
+#ifndef PCH_H_
+#define PCH_H_
 
 #include <GL/glew.h>
 
@@ -12,7 +12,7 @@
 #define NK_INCLUDE_DEFAULT_FONT
 #define NK_IMPLEMENTATION
 #define NK_SDL_GL3_IMPLEMENTATION
-#include "nuklear.h"
-#include "nuklear_sdl_gl3.h"
+#include "deps/nuklear.h"
+#include "deps/nuklear_sdl_gl3.h"
 
-#endif /* PCH_H */
+#endif /* PCH_H_ */

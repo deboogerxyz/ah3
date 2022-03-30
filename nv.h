@@ -1,5 +1,5 @@
-#ifndef NV_H
-#define NV_H
+#ifndef NV_H_
+#define NV_H_
 
 #include <stdint.h>
 
@@ -15,4 +15,4 @@ void nv_init(void);
 unsigned int nv_get(const char *hash);
 void nv_clean(void);
 
-#endif /* NV_H */
+#endif /* NV_H_ */
