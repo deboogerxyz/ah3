@@ -9,8 +9,8 @@
 
 typedef struct {
 	Vector origin;
+	Vector headpos;
 	float simtime;
-	Matrix3x4 matrix[256];
 } Record;
 
 static ConVar *updaterate, *maxupdaterate, *interp, *interpratio, *mininterpratio, *maxinterpratio, *maxunlag;
@@ -72,9 +72,9 @@ bt_update(FrameStage stage)
 
 		Record record = {
 			.origin  = *ent_getabsorigin(ent),
+			.headpos = ent_getbonepos(ent, 8),
 			.simtime = *ent_simtime(ent)
 		};
-		ent_setupbones(ent, record.matrix, 256, 256, 0.0f);
 
 		cvector_push_back(records[i], record);
 
@@ -145,16 +145,12 @@ bt_run(UserCmd *cmd)
 		if (!isvalid(record->simtime))
 			continue;
 
-		int bones[6] = {8, 4, 3, 6, 7, 5}; /* TODO: Use hitboxes instead */
-		for (int j = 0; j < 6; j++) {
-			Vector bonepos = mat_origin(record->matrix[bones[j]]);
-			Vector ang     = vec_calcang(eyepos, bonepos, viewangles);
-			float  fov     = hypot(ang.x, ang.y);
+		Vector ang = vec_calcang(eyepos, record->headpos, viewangles);
+		float  fov = hypot(ang.x, ang.y);
 
-			if (fov < bestfov) {
-				bestfov    = fov;
-				bestrecord = i;
-			}
+		if (fov < bestfov) {
+			bestfov    = fov;
+			bestrecord = i;
 		}
 	}
 
