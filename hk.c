@@ -133,8 +133,7 @@ swapwindow(SDL_Window *win)
 	}
 	nk_end(ctx);
 
-	nk_window_show_if(ctx, "ah3", NK_SHOWN, open);
-	nk_window_show_if(ctx, "ah3", NK_HIDDEN, !open);
+	nk_window_show(ctx, "ah3", open);
 
 	nk_sdl_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_MEMORY, MAX_ELEMENT_MEMORY);
 
