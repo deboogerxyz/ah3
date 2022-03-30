@@ -2,20 +2,11 @@
 #include <stdlib.h> /* malloc, ... */
 #include <string.h> /* memcpy */
 
-#define NK_INCLUDE_FIXED_TYPES
-#define NK_INCLUDE_STANDARD_IO
-#define NK_INCLUDE_STANDARD_VARARGS
-#define NK_INCLUDE_DEFAULT_ALLOCATOR
-#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
-#define NK_INCLUDE_FONT_BAKING
-#define NK_INCLUDE_DEFAULT_FONT
-#include "deps/nuklear.h"
-#include "deps/nuklear_sdl_gl3.h"
-
 #define MAX_VERTEX_MEMORY 512 * 1024
 #define MAX_ELEMENT_MEMORY 128 * 1024
 
 #include "hax/bt.h"
+#include "gui.h"
 #include "intf.h"
 #include "mem.h"
 #include "sdk.h"
@@ -83,7 +74,7 @@ pollevent(SDL_Event *event)
 {
 	int result = origpollevent(event);
 
-	if (result && nk_sdl_handle_event(event) && open)
+	if (result && nk_sdl_handle_event(event) && gui_isopen())
 		event->type = 0;
 
 	return result;
@@ -110,30 +101,9 @@ swapwindow(SDL_Window *win)
 
 	SDL_GL_MakeCurrent(win, glctx);
 
-	struct nk_input *in = &ctx->input;
-
-	if (nk_input_is_key_released(in, NK_KEY_TEXT_START)) {
-		open = !open;
-		if (!open)
-			sdk_resetinputstate();
-		ctx->style.cursor_visible = open;
-	}
-
-	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE;
-	if (nk_begin(ctx, "helo?", nk_rect(50, 50, 230, 250), flags)) {
-		nk_layout_row_dynamic(ctx, 30, 2);
-		nk_button_label(ctx, "helo word");
-	}
-	nk_end(ctx);
-
-	flags |= NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE;
-	if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
-		nk_layout_row_dynamic(ctx, 30, 2);
-		nk_button_label(ctx, "Hello, world!");
-	}
-	nk_end(ctx);
-
-	nk_window_show(ctx, "ah3", open);
+	gui_handletoggle(ctx);
+	gui_dummy(ctx);
+	gui_render(ctx);
 
 	nk_sdl_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_MEMORY, MAX_ELEMENT_MEMORY);
 

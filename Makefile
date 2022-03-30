@@ -2,6 +2,7 @@ include config.mk
 
 SRC = ah.c \
       hax/bt.c \
+      gui.c \
       hk.c \
       intf.c \
       mem.c \
@@ -12,6 +13,7 @@ SRC = ah.c \
 
 HDR = hax/bt.h \
       deps/cvector.h \
+      gui.h \
       hk.h \
       intf.h \
       mem.h \
