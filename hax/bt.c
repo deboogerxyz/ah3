@@ -171,6 +171,17 @@ bt_run(UserCmd *cmd)
 }
 
 void
+bt_drawgui(struct nk_context *ctx)
+{
+	if (nk_tree_push(ctx, NK_TREE_TAB, "Backtrack", NK_MINIMIZED)) {
+		nk_checkbox_label(ctx, "Enabled", &cfg->bt.enabled);
+		nk_property_int(ctx, "Time limit [ms]", 0, &cfg->bt.limit, 200, 1, 1);
+
+		nk_tree_pop(ctx);
+	}
+}
+
+void
 bt_init(void)
 {
 	updaterate     = cvar_find("cl_updaterate");
