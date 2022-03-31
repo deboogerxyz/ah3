@@ -1,3 +1,4 @@
+#include "cfg.h"
 #include "sdk.h"
 
 #include "gui.h"
@@ -23,14 +24,27 @@ gui_handletoggle(struct nk_context *ctx)
 	}
 }
 
+
 void
 gui_render(struct nk_context *ctx)
 {
 	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE;
 
 	if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
-		if (nk_tree_push(ctx, NK_TREE_TAB, "tree", NK_MINIMIZED)) {
-			nk_button_label(ctx, "Hello, world!");
+		if (nk_tree_push(ctx, NK_TREE_TAB, "Config", NK_MINIMIZED)) {
+			static char buf[256];
+
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, buf, sizeof(buf), nk_filter_ascii);
+
+			if (nk_button_label(ctx, "Load"))
+				cfg_load(buf);
+
+			if (nk_button_label(ctx, "Save"))
+				cfg_save(buf);
+
+			if (nk_button_label(ctx, "Delete"))
+				cfg_delete(buf);
+
 			nk_tree_pop(ctx);
 		}
 	}

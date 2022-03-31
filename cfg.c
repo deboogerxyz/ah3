@@ -108,6 +108,19 @@ cfg_save(const char *name)
 }
 
 void
+cfg_delete(const char *name)
+{
+	const char *dir = getcfgdir();
+
+	char *buf = malloc(sizeof(char) * 256);
+	sprintf(buf, "%s/ah3/%s", dir, name);
+
+	remove(buf);
+
+	free(buf);
+}
+
+void
 cfg_init(void)
 {
 	cfg = calloc(1, sizeof(Cfg));
