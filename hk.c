@@ -102,7 +102,6 @@ swapwindow(SDL_Window *win)
 	SDL_GL_MakeCurrent(win, glctx);
 
 	gui_handletoggle(ctx);
-	gui_dummy(ctx);
 	gui_render(ctx);
 
 	nk_sdl_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_MEMORY, MAX_ELEMENT_MEMORY);

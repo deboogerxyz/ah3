@@ -13,7 +13,6 @@
 
 int gui_isopen(void);
 void gui_handletoggle(struct nk_context *ctx);
-void gui_dummy(struct nk_context *ctx);
 void gui_render(struct nk_context *ctx);
 
 #endif /* GUI_H_ */
