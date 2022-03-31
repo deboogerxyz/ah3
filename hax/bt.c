@@ -1,5 +1,6 @@
 #include <math.h>
 
+#include "../cfg.h"
 #include "../deps/cvector.h"
 #include "../mem.h"
 #include "../sdk.h"
@@ -45,6 +46,9 @@ isvalid(float simtime)
 void
 bt_update(FrameStage stage)
 {
+	if (!cfg->bt.enabled)
+		return;
+
 	if (stage != FS_RENDER_START)
 		return;
 
@@ -78,7 +82,7 @@ bt_update(FrameStage stage)
 
 		cvector_push_back(records[i], record);
 
-		while (cvector_size(records[i]) > 3 && cvector_size(records[i]) > sdk_timetoticks(0.2f))
+		while (cvector_size(records[i]) > 3 && cvector_size(records[i]) > sdk_timetoticks((float)cfg->bt.limit / 1000.0f))
 			cvector_erase(records[i], 0);
 
 		for (int j = 0; j < cvector_size(records[i]); j++)
@@ -93,6 +97,9 @@ bt_run(UserCmd *cmd)
 	float bestfov;
 	uintptr_t besttarget = 0;
 	int bestidx = 0;
+
+	if (!cfg->bt.enabled)
+		return;
 
 	if (!(cmd->buttons & IN_ATTACK))
 		return;

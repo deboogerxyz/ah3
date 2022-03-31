@@ -2,11 +2,12 @@
 #define CFG_H_
 
 typedef struct {
-	int bhop;
-} MiscCfg;
+	int enabled;
+	int limit;
+} BtCfg;
 
 typedef struct {
-	MiscCfg misc;
+	BtCfg bt;
 } Cfg;
 
 void cfg_load(const char *name);

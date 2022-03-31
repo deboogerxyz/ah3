@@ -31,6 +31,12 @@ gui_render(struct nk_context *ctx)
 	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE;
 
 	if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
+		if (nk_tree_push(ctx, NK_TREE_TAB, "Backtrack", NK_MINIMIZED)) {
+			nk_checkbox_label(ctx, "Enabled", &cfg->bt.enabled);
+			nk_property_int(ctx, "Time limit [ms]", 0, &cfg->bt.limit, 200, 1, 1);
+
+			nk_tree_pop(ctx);
+		}
 		if (nk_tree_push(ctx, NK_TREE_TAB, "Config", NK_MINIMIZED)) {
 			static char buf[256];
 

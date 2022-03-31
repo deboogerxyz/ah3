@@ -65,11 +65,14 @@ cfg_load(const char *name)
 		return;
 
 	{
-		cJSON* miscjson = cJSON_GetObjectItem(json, "Misc");
+		cJSON* btjson = cJSON_GetObjectItem(json, "Backtrack");
 
-		cJSON* bhop = cJSON_GetObjectItem(miscjson, "Bunny hop");
-		if (cJSON_IsBool(bhop))
-			cfg->misc.bhop = cJSON_IsTrue(bhop);
+		cJSON* enabled = cJSON_GetObjectItem(btjson, "Enabled");
+		if (cJSON_IsBool(enabled))
+			cfg->bt.enabled = enabled->valueint;
+		cJSON* limit = cJSON_GetObjectItem(btjson, "Time limit");
+		if (cJSON_IsNumber(limit))
+			cfg->bt.limit = limit->valueint;
 	}
 
 	cJSON_Delete(json);
@@ -82,11 +85,12 @@ cfg_save(const char *name)
 	cJSON *json = cJSON_CreateObject();
 
 	{
-		cJSON* miscjson = cJSON_CreateObject();
+		cJSON* btjson = cJSON_CreateObject();
 
-		cJSON_AddBoolToObject(miscjson, "Bunny hop", cfg->misc.bhop);
+		cJSON_AddBoolToObject(btjson, "Enabled", cfg->bt.enabled);
+		cJSON_AddNumberToObject(btjson, "Time limit", cfg->bt.limit);
 
-		cJSON_AddItemToObject(json, "Misc", miscjson);
+		cJSON_AddItemToObject(json, "Backtrack", btjson);
 	}
 
 	const char *dir = getcfgdir();
