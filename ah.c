@@ -1,6 +1,7 @@
 #include <pthread.h>
 
 #include "hax/bt.h"
+#include "cfg.h"
 #include "hk.h"
 #include "intf.h"
 #include "mem.h"
@@ -15,6 +16,7 @@ thrd_main(void *vargp)
 	mem_init();
 	hk_init();
 	nv_init();
+	cfg_init();
 
 	return NULL;
 }
@@ -38,4 +40,5 @@ onunload(void)
 	nv_clean();
 	bt_clean();
 	mem_clean();
+	cfg_clean();
 }
