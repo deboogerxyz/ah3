@@ -23,7 +23,6 @@ typedef struct {
 
 static int (*origpollevent)(SDL_Event *);
 static void (*origswapwindow)(SDL_Window *);
-static int open = 1;
 static Vmt client, clientmode;
 
 static size_t
