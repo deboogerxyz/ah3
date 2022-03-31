@@ -5,6 +5,8 @@
 #include <pwd.h>      /* getpwuid */
 #include <unistd.h>   /* getuid */
 
+#include "hax/bt.h"
+
 #include "cfg.h"
 
 Cfg *cfg;
@@ -64,16 +66,7 @@ cfg_load(const char *name)
 	if (!json)
 		return;
 
-	{
-		cJSON* btjson = cJSON_GetObjectItem(json, "Backtrack");
-
-		cJSON* enabled = cJSON_GetObjectItem(btjson, "Enabled");
-		if (cJSON_IsBool(enabled))
-			cfg->bt.enabled = enabled->valueint;
-		cJSON* limit = cJSON_GetObjectItem(btjson, "Time limit");
-		if (cJSON_IsNumber(limit))
-			cfg->bt.limit = limit->valueint;
-	}
+	bt_loadcfg(json);
 
 	cJSON_Delete(json);
 	free(buf);
@@ -84,14 +77,7 @@ cfg_save(const char *name)
 {
 	cJSON *json = cJSON_CreateObject();
 
-	{
-		cJSON* btjson = cJSON_CreateObject();
-
-		cJSON_AddBoolToObject(btjson, "Enabled", cfg->bt.enabled);
-		cJSON_AddNumberToObject(btjson, "Time limit", cfg->bt.limit);
-
-		cJSON_AddItemToObject(json, "Backtrack", btjson);
-	}
+	bt_savecfg(json);
 
 	const char *dir = getcfgdir();
 

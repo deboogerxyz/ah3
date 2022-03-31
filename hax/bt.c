@@ -182,6 +182,30 @@ bt_drawgui(struct nk_context *ctx)
 }
 
 void
+bt_loadcfg(cJSON *json)
+{
+	cJSON* btjson = cJSON_GetObjectItem(json, "Backtrack");
+
+	cJSON* enabled = cJSON_GetObjectItem(btjson, "Enabled");
+	if (cJSON_IsBool(enabled))
+		cfg->bt.enabled = enabled->valueint;
+	cJSON* limit = cJSON_GetObjectItem(btjson, "Time limit");
+	if (cJSON_IsNumber(limit))
+		cfg->bt.limit = limit->valueint;
+}
+
+void
+bt_savecfg(cJSON *json)
+{
+	cJSON* btjson = cJSON_CreateObject();
+
+	cJSON_AddBoolToObject(btjson, "Enabled", cfg->bt.enabled);
+	cJSON_AddNumberToObject(btjson, "Time limit", cfg->bt.limit);
+
+	cJSON_AddItemToObject(json, "Backtrack", btjson);
+}
+
+void
 bt_init(void)
 {
 	updaterate     = cvar_find("cl_updaterate");
