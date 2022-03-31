@@ -18964,34 +18964,11 @@ nk_clear(struct nk_context *ctx)
             iter = iter->next;
             continue;
         }
-        /* remove hotness from hidden or closed windows*/
-        if (((iter->flags & NK_WINDOW_HIDDEN) ||
-            (iter->flags & NK_WINDOW_CLOSED)) &&
-            iter == ctx->active) {
-            ctx->active = iter->prev;
-            ctx->end = iter->prev;
-            if (!ctx->end)
-                ctx->begin = 0;
-            if (ctx->active)
-                ctx->active->flags &= ~(unsigned)NK_WINDOW_ROM;
-        }
         /* free unused popup windows */
         if (iter->popup.win && iter->popup.win->seq != ctx->seq) {
             nk_free_window(ctx, iter->popup.win);
             iter->popup.win = 0;
         }
-        /* remove unused window state tables */
-        {struct nk_table *n, *it = iter->tables;
-        while (it) {
-            n = it->next;
-            if (it->seq != ctx->seq) {
-                nk_remove_table(iter, it);
-                nk_zero(it, sizeof(union nk_page_data));
-                nk_free_table(ctx, it);
-                if (it == iter->tables)
-                    iter->tables = n;
-            } it = n;
-        }}
         /* window itself is not used anymore so free */
         if (iter->seq != ctx->seq || iter->flags & NK_WINDOW_CLOSED) {
             next = iter->next;
