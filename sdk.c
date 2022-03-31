@@ -245,4 +245,5 @@ sdk_timetoticks(float time)
 }
 
 NV_IMPL(simtime, "CBaseEntity", "m_flSimulationTime", 0, float)
+NV_IMPL(spottedbymask, "CBaseEntity", "m_bSpottedByMask", 0, long)
 NV_IMPL(tickbase, "CBasePlayer", "m_nTickBase", 0, int)

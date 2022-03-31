@@ -22,11 +22,20 @@ static Proxy spottedproxy;
 static cvector_vector_type(NetVar) netvars = NULL;
 
 static void
-spotted(RecvProxyData *data, void *arg2, void *arg3)
+spotted(RecvProxyData *data, void *ent, void *arg3)
 {
 	data->val.i = 1;
 
-	spottedproxy.old(data, arg2, arg3);
+	static long mask;
+	if (!mask) {
+		int maxclients = sdk_getmaxclients();
+		for (int i = 1; i <= maxclients; i++)
+			mask |= (1 << i);
+	}
+
+	*ent_spottedbymask((uintptr_t)ent) = mask;
+
+	spottedproxy.old(data, ent, arg3);
 }
 
 void
