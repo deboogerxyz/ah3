@@ -1,16 +1,9 @@
 #ifndef CFG_H_
 #define CFG_H_
 
+#include "hax/bt.h"
 #include "gui.h"
-
-typedef struct {
-	int enabled;
-	int limit;
-} BtCfg;
-
-typedef struct {
-	int radar;
-} MiscCfg;
+#include "hax/misc.h"
 
 typedef struct {
 	BtCfg bt;
