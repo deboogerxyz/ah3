@@ -9,11 +9,13 @@
 typedef struct {
 	int antiafk;
 	int bhop;
+	int fastduck;
 	int radar;
 } MiscCfg;
 
 void misc_antiafk(UserCmd *cmd);
 void misc_bhop(UserCmd *cmd);
+void misc_fastduck(UserCmd *cmd);
 void misc_drawgui(struct nk_context *ctx);
 void misc_loadcfg(cJSON *json);
 void misc_savecfg(cJSON *json);
