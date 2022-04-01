@@ -132,6 +132,7 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	misc_bhop(cmd);
 	misc_fastduck(cmd);
 	misc_slidewalk(cmd);
+	visuals_revealranks(cmd);
 	bt_run(cmd);
 
 	cmd->viewangles = vec_norm(cmd->viewangles);

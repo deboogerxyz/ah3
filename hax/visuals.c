@@ -1,6 +1,7 @@
 #include <cjson/cJSON.h>
 
 #include "../cfg.h"
+#include "../sdk/client.h"
 #include "../sdk/cvar.h"
 #include "../sdk/engine.h"
 #include "../sdk/ent.h"
@@ -48,6 +49,13 @@ visuals_remove3dsky(FrameStage stage)
 }
 
 void
+visuals_revealranks(UserCmd *cmd)
+{
+	if (cfg->visuals.revealranks && cmd->buttons & IN_SCORE)
+		client_dispatchusermsg(50, 0, 0, NULL);
+}
+
+void
 visuals_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Visuals", NK_MINIMIZED)) {
@@ -60,6 +68,7 @@ visuals_drawgui(struct nk_context *ctx)
 			nk_property_float(ctx, "FOV", 0.0f, &cfg->visuals.fov, 180.0f, 0.2f, 0.2f);
 		nk_checkbox_label(ctx, "Remove 3D sky", &cfg->visuals.remove3dsky);
 		nk_checkbox_label(ctx, "Reveal money", &cfg->visuals.revealmoney);
+		nk_checkbox_label(ctx, "Reveal ranks", &cfg->visuals.revealranks);
 
 		nk_tree_pop(ctx);
 	}
@@ -94,6 +103,9 @@ visuals_loadcfg(cJSON *json)
 	cJSON* revealmoney = cJSON_GetObjectItem(visualsjson, "Reveal money");
 	if (cJSON_IsBool(revealmoney))
 		cfg->visuals.revealmoney = revealmoney->valueint;
+	cJSON* revealranks = cJSON_GetObjectItem(visualsjson, "Reveal ranks");
+	if (cJSON_IsBool(revealranks))
+		cfg->visuals.revealranks = revealranks->valueint;
 }
 
 void
@@ -109,6 +121,7 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddNumberToObject(visualsjson, "FOV", cfg->visuals.fov);
 	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
 	cJSON_AddBoolToObject(visualsjson, "Reveal money", cfg->visuals.revealmoney);
+	cJSON_AddBoolToObject(visualsjson, "Reveal ranks", cfg->visuals.revealranks);
 
 	cJSON_AddItemToObject(json, "Visuals", visualsjson);
 }
