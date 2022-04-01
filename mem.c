@@ -97,7 +97,7 @@ mem_init(void)
 
 	*(void **)&mem->isotherenemy = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x84\xC0\x44\x89\xE2") + 1);
 	*(void **)&mem->clientmode   = *(void **)reltoabs(reltoabs(VMT(intf->client)[10] + 12) + 4);
-	*(void **)&mem->gvars        = *(void **)reltoabs(VMT(intf->client)[11] + 16);
+	*(void **)&mem->globalvars   = *(void **)reltoabs(VMT(intf->client)[11] + 16);
 	*(void **)&mem->setabsorigin = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x49\x8B\x07\x31\xF6") + 1);
 }
 

@@ -3,7 +3,12 @@
 #include "../cfg.h"
 #include "../deps/cvector.h"
 #include "../mem.h"
-#include "../sdk.h"
+#include "../sdk/convar.h"
+#include "../sdk/cvar.h"
+#include "../sdk/engine.h"
+#include "../sdk/entlist.h"
+#include "../sdk/ent.h"
+#include "../sdk/netchan.h"
 #include "../util.h"
 
 #include "bt.h"
@@ -20,7 +25,7 @@ static cvector_vector_type(Record) records[65] = {NULL};
 static float
 getlerp(void)
 {
-	uintptr_t netchan = sdk_getnetchan();
+	uintptr_t netchan = engine_getnetchan();
 	if (!netchan)
 		return 0.0f;
 
@@ -31,15 +36,15 @@ getlerp(void)
 static int
 isvalid(float simtime)
 {
-	uintptr_t netchan = sdk_getnetchan();
+	uintptr_t netchan = engine_getnetchan();
 	if (!netchan)
 		return 0;
 
-	int deadtime = (int)(sdk_getservertime(NULL) - convar_getfloat(maxunlag));
+	int deadtime = (int)(globalvars_getservertime(NULL) - convar_getfloat(maxunlag));
 	if (simtime < deadtime)
 		return 0;
 
-	float delta = CLAMP(sdk_getlatency(netchan, 0) + sdk_getlatency(netchan, 1) + getlerp(), 0.0f, convar_getfloat(maxunlag)) - (sdk_getservertime(NULL) - simtime);
+	float delta = CLAMP(netchan_getlatency(netchan, 0) + netchan_getlatency(netchan, 1) + getlerp(), 0.0f, convar_getfloat(maxunlag)) - (globalvars_getservertime(NULL) - simtime);
 	return fabs(delta) <= 0.2f;
 }
 
@@ -52,16 +57,16 @@ bt_update(FrameStage stage)
 	if (stage != FS_RENDER_START)
 		return;
 
-	if (!sdk_isingame())
+	if (!engine_isingame())
 		return;
 
-	uintptr_t localplayer = sdk_getentity(sdk_getlocalplayer());
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
 	if (!localplayer || !ent_isalive(localplayer))
 		return;
 
-	int maxclients = sdk_getmaxclients();
+	int maxclients = engine_getmaxclients();
 	for (int i = 1; i <= maxclients; i++) {
-		uintptr_t ent = sdk_getentity(i);
+		uintptr_t ent = entlist_getentity(i);
 		if (!ent)
 			continue;
 
@@ -71,18 +76,18 @@ bt_update(FrameStage stage)
 		if (!ent_isalive(ent) || ent_isdormant(ent))
 			continue;
 
-		if (!cvector_empty(records[i]) && cvector_end(records[i])->simtime == *ent_simtime(ent))
+		if (!cvector_empty(records[i]) && cvector_end(records[i])->simtime == *ent_getsimtime(ent))
 			continue;
 
 		Record record = {
 			.origin  = *ent_getabsorigin(ent),
 			.headpos = ent_getbonepos(ent, 8),
-			.simtime = *ent_simtime(ent)
+			.simtime = *ent_getsimtime(ent)
 		};
 
 		cvector_push_back(records[i], record);
 
-		while (cvector_size(records[i]) > 3 && cvector_size(records[i]) > sdk_timetoticks((float)cfg->bt.limit / 1000.0f))
+		while (cvector_size(records[i]) > 3 && cvector_size(records[i]) > TIMETOTICKS((float)cfg->bt.limit / 1000.0f))
 			cvector_erase(records[i], 0);
 
 		for (int j = 0; j < cvector_size(records[i]); j++)
@@ -104,7 +109,7 @@ bt_run(UserCmd *cmd)
 	if (!(cmd->buttons & IN_ATTACK))
 		return;
 
-	uintptr_t localplayer = sdk_getentity(sdk_getlocalplayer());
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
 	if (!localplayer || !ent_isalive(localplayer))
 		return;
 
@@ -114,9 +119,9 @@ bt_run(UserCmd *cmd)
 
 	bestfov = 255.0f;
 
-	int maxclients = sdk_getmaxclients();
+	int maxclients = engine_getmaxclients();
 	for (int i = 1; i <= maxclients; i++) {
-		uintptr_t ent = sdk_getentity(i);
+		uintptr_t ent = entlist_getentity(i);
 		if (!ent)
 			continue;
 
@@ -167,7 +172,7 @@ bt_run(UserCmd *cmd)
 	Record *record = &records[bestidx][bestrecord];
 
 	mem->setabsorigin(besttarget, &record->origin);
-	cmd->tickcount = sdk_timetoticks(record->simtime + getlerp());
+	cmd->tickcount = TIMETOTICKS(record->simtime + getlerp());
 }
 
 void

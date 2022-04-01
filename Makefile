@@ -1,32 +1,5 @@
 include config.mk
-
-SRC = ah.c \
-      hax/bt.c \
-      cfg.c \
-      gui.c \
-      hk.c \
-      intf.c \
-      mem.c \
-      hax/misc.c \
-      nv.c \
-      sdk.c \
-      util.c \
-      pch.c
-
-HDR = hax/bt.h \
-      cfg.h \
-      deps/cvector.h \
-      gui.h \
-      hk.h \
-      intf.h \
-      mem.h \
-      hax/misc.h \
-      nv.h \
-      sdk.h \
-      util.h \
-      deps/nuklear.h \
-      deps/nuklear_sdl_gl3.h \
-      pch.h
+include files.mk
 
 OBJ = ${SRC:.c=.o}
 

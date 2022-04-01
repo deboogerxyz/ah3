@@ -3,10 +3,10 @@
 
 #include <stdint.h>
 
-#define NV_DECL(name, type) type *ent_##name(uintptr_t ent)
+#define NV_DECL(name, type) type *ent_get##name(uintptr_t ent)
 #define NV_IMPL(name, class, var, offset, type)                         \
         type *                                                          \
-        ent_##name(uintptr_t ent)                                       \
+        ent_get##name(uintptr_t ent)                                    \
         {                                                               \
                 return (type *)(ent + nv_get(class "->" var) + offset); \
         }

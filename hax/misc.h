@@ -4,7 +4,7 @@
 #include <cjson/cJSON.h>
 
 #include "../gui.h"
-#include "../sdk.h"
+#include "../sdk/usercmd.h"
 
 typedef struct {
 	int radar;

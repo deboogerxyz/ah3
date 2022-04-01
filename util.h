@@ -14,6 +14,8 @@
 #define PADNAME(X) CAT(pad, X)
 #define PAD(X) char PADNAME(__LINE__)[X]
 
+#define TIMETOTICKS(X) ((int)(0.5f + (X) / mem->globalvars->intervalpertick))
+
 unsigned int hash(const char *data);
 
 #endif /* UTIL_H_ */

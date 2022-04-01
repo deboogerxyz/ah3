@@ -4,7 +4,10 @@
 
 #include "cfg.h"
 #include "deps/cvector.h"
-#include "sdk.h"
+#include "sdk/client.h"
+#include "sdk/engine.h"
+#include "sdk/ent.h"
+#include "sdk/recv.h"
 #include "util.h"
 
 #include "nv.h"
@@ -30,12 +33,12 @@ spotted(RecvProxyData *data, void *ent, void *arg3)
 
 		static long mask;
 		if (!mask) {
-			int maxclients = sdk_getmaxclients();
+			int maxclients = engine_getmaxclients();
 			for (int i = 1; i <= maxclients; i++)
 				mask |= (1 << i);
 		}
 
-		*ent_spottedbymask((uintptr_t)ent) = mask;
+		*ent_getspottedbymask((uintptr_t)ent) = mask;
 	}
 
 	spottedproxy.old(data, ent, arg3);
@@ -83,7 +86,7 @@ nv_init(void)
 {
 	cvector_grow(netvars, 1800);
 
-	for (ClientClass *class = sdk_getallclasses(); class; class = class->next)
+	for (ClientClass *class = client_getallclasses(); class; class = class->next)
 		if (class->table)
 			dump(class->name, class->table, 0);
 }

@@ -1,7 +1,7 @@
 #include "cfg.h"
 #include "hax/bt.h"
 #include "hax/misc.h"
-#include "sdk.h"
+#include "sdk/inputsys.h"
 
 #include "gui.h"
 
@@ -21,7 +21,7 @@ gui_handletoggle(struct nk_context *ctx)
 	if (nk_input_is_key_released(in, NK_KEY_TEXT_START)) {
 		open = !open;
 		if (!open)
-			sdk_resetinputstate();
+			inputsys_resetinputstate();
 		ctx->style.cursor_visible = open;
 	}
 }

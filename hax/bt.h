@@ -4,7 +4,8 @@
 #include <cjson/cJSON.h>
 
 #include "../gui.h"
-#include "../sdk.h"
+#include "../sdk/framestage.h"
+#include "../sdk/usercmd.h"
 
 typedef struct {
 	int enabled;

@@ -1,6 +1,9 @@
 #include <cjson/cJSON.h>
 
 #include "../cfg.h"
+#include "../sdk/engine.h"
+#include "../sdk/ent.h"
+#include "../sdk/entlist.h"
 
 #include "misc.h"
 
@@ -12,14 +15,14 @@ misc_bhop(UserCmd *cmd)
 	if (!cfg->misc.bhop)
 		return;
 
-	uintptr_t localplayer = sdk_getentity(sdk_getlocalplayer());
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
 	if (!localplayer)
 		return;
 
-	if (!(*ent_flags(localplayer) & 1) && !wasonground)
+	if (!(*ent_getflags(localplayer) & 1) && !wasonground)
 		cmd->buttons &= ~IN_JUMP;
 
-	wasonground = *ent_flags(localplayer) & 1;
+	wasonground = *ent_getflags(localplayer) & 1;
 }
 
 void

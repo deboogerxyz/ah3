@@ -10,7 +10,6 @@
 #include "intf.h"
 #include "mem.h"
 #include "hax/misc.h"
-#include "sdk.h"
 #include "util.h"
 
 #include "hk.h"
@@ -118,10 +117,10 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 {
 	char result = VFN(char (*)(void *, float, UserCmd *), clientmode.old, 25)(mem->clientmode, inputsampletime, cmd);
 
-	if (!cmd->cmdnumber)
+	if (!cmd->commandnumber)
 		return result;
 	
-	sdk_getservertime(cmd);
+	globalvars_getservertime(cmd);
 
 	misc_bhop(cmd);
 	bt_run(cmd);

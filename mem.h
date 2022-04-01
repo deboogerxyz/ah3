@@ -1,7 +1,7 @@
 #ifndef MEM_H_
 #define MEM_H_
 
-#include "sdk.h"
+#include "sdk/globalvars.h"
 
 typedef struct {
 	uintptr_t pollevent;
@@ -9,7 +9,7 @@ typedef struct {
 	void (*debugmsg)(const char *msg, ...);
 	int (*isotherenemy)(uintptr_t, uintptr_t);
 	uintptr_t *clientmode;
-	GlobalVars *gvars;
+	GlobalVars *globalvars;
 	void (*setabsorigin)(uintptr_t, Vector *);
 } Mem;
 

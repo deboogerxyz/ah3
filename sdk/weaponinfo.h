@@ -1,0 +1,40 @@
+#ifndef WEAPONINFO_H_
+#define WEAPONINFO_H_
+
+#include "../util.h"
+
+typedef struct {
+	PAD(32);
+	int maxclip;
+	PAD(204);
+	const char* name;
+	PAD(72);
+	int type;
+	PAD(4);
+	int price;
+	PAD(12);
+	float cycletime;
+	PAD(12);
+	char fullauto;
+	PAD(3);
+	int damage;
+	float headshotmultiplier;
+	float armorratio;
+	int bullets;
+	float penetration;
+	PAD(8);
+	float range;
+	float rangemod;
+	PAD(16);
+	char silencer;
+	PAD(23);
+	float maxspeed;
+	float maxspeedalt;
+	PAD(100);
+	float recoilmagnitude;
+	float recoilmagnitudealt;
+	PAD(16);
+	float recoverytimestand;
+} WeaponInfo;
+
+#endif /* WEAPONINFO_H_ */
