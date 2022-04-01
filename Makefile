@@ -15,7 +15,8 @@ options:
 	${CC} -o $@ -c ${CFLAGS} $<
 
 ${OBJ}: config.mk Makefile ${HDR}
-pch.o:  pch.h ${PCH}
+
+pch.o:  config.mk Makefile pch.h ${PCH}
 
 libah.so: ${OBJ} pch.o
 	${CC} -o $@ ${OBJ} pch.o ${LDFLAGS}
