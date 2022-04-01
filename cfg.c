@@ -68,6 +68,7 @@ cfg_load(const char *name)
 		return;
 
 	bt_loadcfg(json);
+	visuals_loadcfg(json);
 	misc_loadcfg(json);
 
 	cJSON_Delete(json);
@@ -80,6 +81,7 @@ cfg_save(const char *name)
 	cJSON *json = cJSON_CreateObject();
 
 	bt_savecfg(json);
+	visuals_savecfg(json);
 	misc_savecfg(json);
 
 	const char *dir = getcfgdir();

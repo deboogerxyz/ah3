@@ -4,9 +4,11 @@
 #include "hax/bt.h"
 #include "gui.h"
 #include "hax/misc.h"
+#include "hax/visuals.h"
 
 typedef struct {
 	BtCfg bt;
+	VisualsCfg visuals;
 	MiscCfg misc;
 } Cfg;
 

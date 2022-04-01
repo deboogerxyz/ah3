@@ -6,10 +6,15 @@
 #define MAX_ELEMENT_MEMORY 128 * 1024
 
 #include "hax/bt.h"
+#include "cfg.h"
 #include "gui.h"
 #include "intf.h"
 #include "mem.h"
 #include "hax/misc.h"
+#include "sdk/engine.h"
+#include "sdk/ent.h"
+#include "sdk/entlist.h"
+#include "sdk/viewsetup.h"
 #include "util.h"
 
 #include "hk.h"
@@ -139,6 +144,17 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 }
 
 static void
+overrideview(void *this, ViewSetup *setup)
+{
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
+	if (localplayer && !*ent_getisscoped(localplayer))
+		if (cfg->visuals.overridefov)
+			setup->fov = cfg->visuals.fov;
+
+	VFN(void (*)(uintptr_t *, ViewSetup *), clientmode.old, 19)(mem->clientmode, setup);
+}
+
+static void
 framestagenotify(void *this, FrameStage stage)
 {
 	static int once;
@@ -166,6 +182,7 @@ hk_init(void)
 	hookfn(&client, 37, &framestagenotify);
 
 	hookvmt((uintptr_t)mem->clientmode, &clientmode);
+	hookfn(&clientmode, 19, &overrideview);
 	hookfn(&clientmode, 25, &createmove);
 }
 

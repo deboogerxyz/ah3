@@ -18,7 +18,8 @@ SRC = ah.c \
       sdk/netchan.c \
       nv.c \
       util.c \
-      sdk/vec.c
+      sdk/vec.c \
+      hax/visuals.c
 
 HDR = hax/bt.h \
       cfg.h \
@@ -48,6 +49,8 @@ HDR = hax/bt.h \
       deps/nuklear.h \
       deps/nuklear_sdl_gl3.h \
       sdk/vec.h \
+      hax/visuals.h \
+      sdk/viewsetup.h \
       sdk/weaponid.h \
       sdk/weaponinfo.h
 

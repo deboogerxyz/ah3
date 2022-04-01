@@ -1,6 +1,7 @@
 #include "cfg.h"
 #include "hax/bt.h"
 #include "hax/misc.h"
+#include "hax/visuals.h"
 #include "sdk/inputsys.h"
 
 #include "gui.h"
@@ -43,6 +44,7 @@ gui_render(struct nk_context *ctx, SDL_Window *win)
 
 	if (nk_begin(ctx, "ah3", nk_rect(x, y, w, h), flags)) {
 		bt_drawgui(ctx);
+		visuals_drawgui(ctx);
 		misc_drawgui(ctx);
 		cfg_drawgui(ctx);
 	}

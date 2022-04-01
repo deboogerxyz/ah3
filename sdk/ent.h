@@ -21,5 +21,6 @@ NV_DECL(simtime, float);
 NV_DECL(flags, int);
 NV_DECL(spottedbymask, long);
 NV_DECL(tickbase, int);
+NV_DECL(isscoped, char);
 
 #endif /* ENT_H_ */
