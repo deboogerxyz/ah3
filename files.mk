@@ -7,6 +7,8 @@ SRC = ah.c \
       sdk/engine.c \
       sdk/ent.c \
       sdk/entlist.c \
+      hax/glow.c \
+      sdk/glowobjmgr.c \
       gui.c \
       sdk/globalvars.c \
       hk.c \
@@ -27,12 +29,15 @@ HDR = hax/bt.h \
       sdk/client.h \
       sdk/clientclass.h \
       sdk/convar.h \
+      sdk/color.h \
       sdk/cvar.h \
       deps/cvector.h \
       sdk/engine.h \
       sdk/ent.h \
       sdk/entlist.h \
       sdk/framestage.h \
+      hax/glow.h \
+      sdk/glowobjmgr.h \
       gui.h \
       sdk/globalvars.h \
       hk.h \
@@ -46,6 +51,7 @@ HDR = hax/bt.h \
       sdk/recv.h \
       sdk/usercmd.h \
       util.h \
+      sdk/utlvec.h \
       deps/nuklear.h \
       deps/nuklear_sdl_gl3.h \
       sdk/vec.h \

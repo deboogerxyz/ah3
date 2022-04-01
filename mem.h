@@ -2,6 +2,7 @@
 #define MEM_H_
 
 #include "sdk/globalvars.h"
+#include "sdk/glowobjmgr.h"
 
 typedef struct {
 	uintptr_t pollevent;
@@ -11,6 +12,7 @@ typedef struct {
 	uintptr_t *clientmode;
 	GlobalVars *globalvars;
 	void (*setabsorigin)(uintptr_t, Vector *);
+	GlowObjMgr *glowobjmgr;
 	uintptr_t demoorhltv;
 	uintptr_t money;
 } Mem;

@@ -1,5 +1,11 @@
 #include "ent.h"
 
+ClientClass *
+ent_getclientclass(uintptr_t ent)
+{
+	return VFN(ClientClass *(*)(uintptr_t), VMT(ent + sizeof(uintptr_t) * 2), 2)(ent + sizeof(uintptr_t) * 2);
+}
+
 int
 ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max, int mask, float curtime)
 {
@@ -22,6 +28,12 @@ int
 ent_isalive(uintptr_t ent)
 {
 	return VFN(char (*)(uintptr_t), VMT(ent), 208)(ent);
+}
+
+int
+ent_isweapon(uintptr_t ent)
+{
+	return VFN(char (*)(uintptr_t), VMT(ent), 218)(ent);
 }
 
 Vector

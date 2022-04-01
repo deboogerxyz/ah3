@@ -7,6 +7,7 @@
 
 #include "hax/bt.h"
 #include "cfg.h"
+#include "hax/glow.h"
 #include "gui.h"
 #include "intf.h"
 #include "mem.h"
@@ -146,6 +147,14 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 }
 
 static void
+dopostscreeneffects(void *this, void *param)
+{
+	glow_render();
+
+	VFN(void (*)(void *, void *), clientmode.old, 45)(mem->clientmode, param);
+}
+
+static void
 overrideview(void *this, ViewSetup *setup)
 {
 	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
@@ -200,6 +209,7 @@ hk_init(void)
 	hookvmt((uintptr_t)mem->clientmode, &clientmode);
 	hookfn(&clientmode, 19, &overrideview);
 	hookfn(&clientmode, 25, &createmove);
+	hookfn(&clientmode, 45, &dopostscreeneffects);
 
 	hookvmt((uintptr_t)intf->engine, &engine);
 	hookfn(&engine, 82, &isplayingdemo);

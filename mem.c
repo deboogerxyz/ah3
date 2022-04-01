@@ -99,6 +99,7 @@ mem_init(void)
 	*(void **)&mem->clientmode   = *(void **)reltoabs(reltoabs(VMT(intf->client)[10] + 12) + 4);
 	*(void **)&mem->globalvars   = *(void **)reltoabs(VMT(intf->client)[11] + 16);
 	*(void **)&mem->setabsorigin = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x49\x8B\x07\x31\xF6") + 1);
+	*(void **)&mem->glowobjmgr   = (void *)reltoabs(reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x4C\x89\xE7\x8B\x70\x20") + 1) + 12);
 	mem->demoorhltv              = find("csgo/bin/linux64/client_client.so", "\x0F\xB6\x10\x89\xD0") - 16;
 	mem->money                   = find("csgo/bin/linux64/client_client.so", "\x84\xC0\x75\x9E\xB8????\xEB\xB9");
 }
