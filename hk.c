@@ -220,6 +220,7 @@ hk_clean(void)
 {
 	unhookvmt(&client);
 	unhookvmt(&clientmode);
+	unhookvmt(&engine);
 
 	*(void ***)mem->pollevent = (void *)origpollevent;
 	*(void ***)mem->swapwindow = (void *)origswapwindow;
