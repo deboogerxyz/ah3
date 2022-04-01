@@ -59,6 +59,7 @@ visuals_drawgui(struct nk_context *ctx)
 		if (cfg->visuals.overridefov)
 			nk_property_float(ctx, "FOV", 0.0f, &cfg->visuals.fov, 180.0f, 0.2f, 0.2f);
 		nk_checkbox_label(ctx, "Remove 3D sky", &cfg->visuals.remove3dsky);
+		nk_checkbox_label(ctx, "Reveal money", &cfg->visuals.revealmoney);
 
 		nk_tree_pop(ctx);
 	}
@@ -90,7 +91,9 @@ visuals_loadcfg(cJSON *json)
 	cJSON* remove3dsky = cJSON_GetObjectItem(visualsjson, "Remove 3D sky");
 	if (cJSON_IsBool(remove3dsky))
 		cfg->visuals.remove3dsky = remove3dsky->valueint;
-
+	cJSON* revealmoney = cJSON_GetObjectItem(visualsjson, "Reveal money");
+	if (cJSON_IsBool(revealmoney))
+		cfg->visuals.revealmoney = revealmoney->valueint;
 }
 
 void
@@ -105,6 +108,7 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(visualsjson, "Override FOV", cfg->visuals.overridefov);
 	cJSON_AddNumberToObject(visualsjson, "FOV", cfg->visuals.fov);
 	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
+	cJSON_AddBoolToObject(visualsjson, "Reveal money", cfg->visuals.revealmoney);
 
 	cJSON_AddItemToObject(json, "Visuals", visualsjson);
 }

@@ -29,7 +29,7 @@ typedef struct {
 
 static int (*origpollevent)(SDL_Event *);
 static void (*origswapwindow)(SDL_Window *);
-static Vmt client, clientmode;
+static Vmt client, clientmode, engine;
 
 static size_t
 getvmtsize(uintptr_t *vmt)
@@ -175,6 +175,15 @@ framestagenotify(void *this, FrameStage stage)
 	VFN(void (*)(uintptr_t *, FrameStage), client.old, 37)(intf->client, stage);
 }
 
+static char
+isplayingdemo(void *this)
+{
+	if (cfg->visuals.revealmoney && (uintptr_t)__builtin_return_address(0) == mem->demoorhltv && *(uintptr_t *)((uintptr_t)__builtin_frame_address(0) + 24) == mem->money)
+		return 1;
+
+	return VFN(char (*)(void *), engine.old, 82)(intf->engine);
+}
+
 void
 hk_init(void)
 {
@@ -190,6 +199,9 @@ hk_init(void)
 	hookvmt((uintptr_t)mem->clientmode, &clientmode);
 	hookfn(&clientmode, 19, &overrideview);
 	hookfn(&clientmode, 25, &createmove);
+
+	hookvmt((uintptr_t)intf->engine, &engine);
+	hookfn(&engine, 82, &isplayingdemo);
 }
 
 void

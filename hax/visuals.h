@@ -14,6 +14,7 @@ typedef struct {
 	int overridefov;
 	float fov;
 	int remove3dsky;
+	int revealmoney;
 } VisualsCfg;
 
 void visuals_disablepostprocessing(FrameStage stage);
