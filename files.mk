@@ -50,5 +50,7 @@ HDR = hax/bt.h \
       deps/nuklear_sdl_gl3.h \
       sdk/vec.h \
       sdk/weaponid.h \
-      sdk/weaponinfo.h \
-      pch.h
+      sdk/weaponinfo.h
+
+PCH = deps/nuklear.h \
+      deps/nuklear_sdl_gl3.h
