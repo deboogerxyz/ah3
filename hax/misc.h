@@ -7,8 +7,9 @@
 #include "../sdk/usercmd.h"
 
 typedef struct {
-	int radar;
+	int antiafk;
 	int bhop;
+	int radar;
 } MiscCfg;
 
 void misc_bhop(UserCmd *cmd);
