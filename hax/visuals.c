@@ -20,6 +20,13 @@ visuals_forcecrosshair(FrameStage stage)
 }
 
 void
+visuals_remove3dsky(FrameStage stage)
+{
+	ConVar *var = cvar_find("r_3dsky");
+	convar_setint(var, stage == FS_RENDER_START && !cfg->visuals.remove3dsky);
+}
+
+void
 visuals_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Visuals", NK_MINIMIZED)) {
@@ -27,6 +34,7 @@ visuals_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Override FOV", &cfg->visuals.overridefov);
 		if (cfg->visuals.overridefov)
 			nk_property_float(ctx, "FOV", 0.0f, &cfg->visuals.fov, 180.0f, 0.2f, 0.2f);
+		nk_checkbox_label(ctx, "Remove 3D sky", &cfg->visuals.remove3dsky);
 
 		nk_tree_pop(ctx);
 	}
@@ -46,6 +54,10 @@ visuals_loadcfg(cJSON *json)
 	cJSON* fov = cJSON_GetObjectItem(visualsjson, "FOV");
 	if (cJSON_IsNumber(fov))
 		cfg->visuals.fov = (float)fov->valuedouble;
+	cJSON* remove3dsky = cJSON_GetObjectItem(visualsjson, "Remove 3D sky");
+	if (cJSON_IsBool(remove3dsky))
+		cfg->visuals.remove3dsky = remove3dsky->valueint;
+
 }
 
 void
@@ -56,6 +68,7 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(visualsjson, "Force crosshair", cfg->visuals.forcecrosshair);
 	cJSON_AddBoolToObject(visualsjson, "Override FOV", cfg->visuals.overridefov);
 	cJSON_AddNumberToObject(visualsjson, "FOV", cfg->visuals.fov);
+	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
 
 	cJSON_AddItemToObject(json, "Visuals", visualsjson);
 }

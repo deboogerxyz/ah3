@@ -10,9 +10,11 @@ typedef struct {
 	int forcecrosshair;
 	int overridefov;
 	float fov;
+	int remove3dsky;
 } VisualsCfg;
 
 void visuals_forcecrosshair(FrameStage stage);
+void visuals_remove3dsky(FrameStage stage);
 void visuals_drawgui(struct nk_context *ctx);
 void visuals_loadcfg(cJSON *json);
 void visuals_savecfg(cJSON *json);

@@ -166,6 +166,7 @@ framestagenotify(void *this, FrameStage stage)
 	}
 
 	visuals_forcecrosshair(stage);
+	visuals_remove3dsky(stage);
 	bt_update(stage);
 
 	VFN(void (*)(uintptr_t *, FrameStage), client.old, 37)(intf->client, stage);
