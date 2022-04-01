@@ -28,11 +28,20 @@ gui_handletoggle(struct nk_context *ctx)
 
 
 void
-gui_render(struct nk_context *ctx)
+gui_render(struct nk_context *ctx, SDL_Window *win)
 {
 	int flags = NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE;
 
-	if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
+	int sdlw, sdlh;
+	SDL_GetWindowSize(win, &sdlw, &sdlh);
+
+	const float w = 250.0f;
+	const float h = 300.0f;
+
+	float x = (float)sdlw / 2 - w / 2;
+	float y = (float)sdlh / 2 - h / 2;
+
+	if (nk_begin(ctx, "ah3", nk_rect(x, y, w, h), flags)) {
 		bt_drawgui(ctx);
 		misc_drawgui(ctx);
 		cfg_drawgui(ctx);
