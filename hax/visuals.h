@@ -7,6 +7,7 @@
 #include "../gui.h"
 
 typedef struct {
+	int disablepostprocessing;
 	int disableshadows;
 	int forcecrosshair;
 	int grenadeprediction;
@@ -15,6 +16,7 @@ typedef struct {
 	int remove3dsky;
 } VisualsCfg;
 
+void visuals_disablepostprocessing(FrameStage stage);
 void visuals_disableshadows(void);
 void visuals_forcecrosshair(FrameStage stage);
 void visuals_grenadeprediction(FrameStage stage);

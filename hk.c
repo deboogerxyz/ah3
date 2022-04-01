@@ -165,6 +165,7 @@ framestagenotify(void *this, FrameStage stage)
 		once = 1;
 	}
 
+	visuals_disablepostprocessing(stage);
 	visuals_disableshadows();
 	visuals_forcecrosshair(stage);
 	visuals_grenadeprediction(stage);

@@ -9,6 +9,13 @@
 #include "visuals.h"
 
 void
+visuals_disablepostprocessing(FrameStage stage)
+{
+	ConVar *var = cvar_find("mat_postprocess_enable");
+	convar_setint(var, stage == FS_RENDER_START && cfg->visuals.disablepostprocessing ? 0 : 1);
+}
+
+void
 visuals_disableshadows(void)
 {
 	ConVar *var = cvar_find("cl_csm_enabled");
@@ -44,6 +51,7 @@ void
 visuals_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Visuals", NK_MINIMIZED)) {
+		nk_checkbox_label(ctx, "Disable post-processing", &cfg->visuals.disablepostprocessing);
 		nk_checkbox_label(ctx, "Disable shadows", &cfg->visuals.disableshadows);
 		nk_checkbox_label(ctx, "Force crosshair", &cfg->visuals.forcecrosshair);
 		nk_checkbox_label(ctx, "Grenade prediction", &cfg->visuals.grenadeprediction);
@@ -61,6 +69,9 @@ visuals_loadcfg(cJSON *json)
 {
 	cJSON* visualsjson = cJSON_GetObjectItem(json, "Visuals");
 
+	cJSON* disablepostprocessing = cJSON_GetObjectItem(visualsjson, "Disable post-processing");
+	if (cJSON_IsBool(disablepostprocessing))
+		cfg->visuals.disablepostprocessing = disablepostprocessing->valueint;
 	cJSON* disableshadows = cJSON_GetObjectItem(visualsjson, "Disable shadows");
 	if (cJSON_IsBool(disableshadows))
 		cfg->visuals.disableshadows = disableshadows->valueint;
@@ -87,6 +98,7 @@ visuals_savecfg(cJSON *json)
 {
 	cJSON* visualsjson = cJSON_CreateObject();
 
+	cJSON_AddBoolToObject(visualsjson, "Disable post-processing", cfg->visuals.disableshadows);
 	cJSON_AddBoolToObject(visualsjson, "Disable shadows", cfg->visuals.disableshadows);
 	cJSON_AddBoolToObject(visualsjson, "Force crosshair", cfg->visuals.forcecrosshair);
 	cJSON_AddBoolToObject(visualsjson, "Grenade prediction", cfg->visuals.grenadeprediction);
