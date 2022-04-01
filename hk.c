@@ -14,6 +14,7 @@
 #include "sdk/engine.h"
 #include "sdk/ent.h"
 #include "sdk/entlist.h"
+#include "hax/visuals.h"
 #include "sdk/viewsetup.h"
 #include "util.h"
 
@@ -164,6 +165,7 @@ framestagenotify(void *this, FrameStage stage)
 		once = 1;
 	}
 
+	visuals_forcecrosshair(stage);
 	bt_update(stage);
 
 	VFN(void (*)(uintptr_t *, FrameStage), client.old, 37)(intf->client, stage);
