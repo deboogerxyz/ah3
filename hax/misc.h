@@ -12,6 +12,7 @@ typedef struct {
 	int radar;
 } MiscCfg;
 
+void misc_antiafk(UserCmd *cmd);
 void misc_bhop(UserCmd *cmd);
 void misc_drawgui(struct nk_context *ctx);
 void misc_loadcfg(cJSON *json);

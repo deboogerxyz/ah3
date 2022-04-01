@@ -8,7 +8,7 @@
 #include "misc.h"
 
 void
-antiafk(UserCmd *cmd)
+misc_antiafk(UserCmd *cmd)
 {
 	if (cfg->misc.antiafk && cmd->commandnumber % 2)
 		cmd->buttons |= 1 << 27;

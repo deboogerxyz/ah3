@@ -122,6 +122,7 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	
 	globalvars_getservertime(cmd);
 
+	misc_antiafk(cmd);
 	misc_bhop(cmd);
 	bt_run(cmd);
 
