@@ -7,13 +7,17 @@
 #include "../gui.h"
 
 typedef struct {
+	int disableshadows;
 	int forcecrosshair;
+	int grenadeprediction;
 	int overridefov;
 	float fov;
 	int remove3dsky;
 } VisualsCfg;
 
+void visuals_disableshadows(void);
 void visuals_forcecrosshair(FrameStage stage);
+void visuals_grenadeprediction(FrameStage stage);
 void visuals_remove3dsky(FrameStage stage);
 void visuals_drawgui(struct nk_context *ctx);
 void visuals_loadcfg(cJSON *json);

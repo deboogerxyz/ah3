@@ -165,7 +165,9 @@ framestagenotify(void *this, FrameStage stage)
 		once = 1;
 	}
 
+	visuals_disableshadows();
 	visuals_forcecrosshair(stage);
+	visuals_grenadeprediction(stage);
 	visuals_remove3dsky(stage);
 	bt_update(stage);
 

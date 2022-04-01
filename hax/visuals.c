@@ -9,6 +9,13 @@
 #include "visuals.h"
 
 void
+visuals_disableshadows(void)
+{
+	ConVar *var = cvar_find("cl_csm_enabled");
+	convar_setint(var, !cfg->visuals.disableshadows);
+}
+
+void
 visuals_forcecrosshair(FrameStage stage)
 {
 	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
@@ -17,6 +24,13 @@ visuals_forcecrosshair(FrameStage stage)
 
 	ConVar *var = cvar_find("weapon_debug_spread_show");
 	convar_setint(var, stage == FS_RENDER_START && cfg->visuals.forcecrosshair && !*ent_getisscoped(localplayer) ? 3 : 0);
+}
+
+void
+visuals_grenadeprediction(FrameStage stage)
+{
+	ConVar *var = cvar_find("cl_grenadepreview");
+	convar_setint(var, cfg->visuals.grenadeprediction);
 }
 
 void
@@ -30,7 +44,9 @@ void
 visuals_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Visuals", NK_MINIMIZED)) {
+		nk_checkbox_label(ctx, "Disable shadows", &cfg->visuals.disableshadows);
 		nk_checkbox_label(ctx, "Force crosshair", &cfg->visuals.forcecrosshair);
+		nk_checkbox_label(ctx, "Grenade prediction", &cfg->visuals.grenadeprediction);
 		nk_checkbox_label(ctx, "Override FOV", &cfg->visuals.overridefov);
 		if (cfg->visuals.overridefov)
 			nk_property_float(ctx, "FOV", 0.0f, &cfg->visuals.fov, 180.0f, 0.2f, 0.2f);
@@ -45,9 +61,15 @@ visuals_loadcfg(cJSON *json)
 {
 	cJSON* visualsjson = cJSON_GetObjectItem(json, "Visuals");
 
+	cJSON* disableshadows = cJSON_GetObjectItem(visualsjson, "Disable shadows");
+	if (cJSON_IsBool(disableshadows))
+		cfg->visuals.disableshadows = disableshadows->valueint;
 	cJSON* forcecrosshair = cJSON_GetObjectItem(visualsjson, "Force crosshair");
 	if (cJSON_IsBool(forcecrosshair))
 		cfg->visuals.forcecrosshair = forcecrosshair->valueint;
+	cJSON* grenadeprediction = cJSON_GetObjectItem(visualsjson, "Grenade prediction");
+	if (cJSON_IsBool(grenadeprediction))
+		cfg->visuals.grenadeprediction = grenadeprediction->valueint;
 	cJSON* overridefov = cJSON_GetObjectItem(visualsjson, "Override FOV");
 	if (cJSON_IsBool(overridefov))
 		cfg->visuals.overridefov = overridefov->valueint;
@@ -65,7 +87,9 @@ visuals_savecfg(cJSON *json)
 {
 	cJSON* visualsjson = cJSON_CreateObject();
 
+	cJSON_AddBoolToObject(visualsjson, "Disable shadows", cfg->visuals.disableshadows);
 	cJSON_AddBoolToObject(visualsjson, "Force crosshair", cfg->visuals.forcecrosshair);
+	cJSON_AddBoolToObject(visualsjson, "Grenade prediction", cfg->visuals.grenadeprediction);
 	cJSON_AddBoolToObject(visualsjson, "Override FOV", cfg->visuals.overridefov);
 	cJSON_AddNumberToObject(visualsjson, "FOV", cfg->visuals.fov);
 	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
