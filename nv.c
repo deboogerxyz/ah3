@@ -2,6 +2,7 @@
 #include <stdio.h>  /* sprintf */
 #include <stddef.h> /* size_t */
 
+#include "cfg.h"
 #include "deps/cvector.h"
 #include "sdk.h"
 #include "util.h"
@@ -24,16 +25,18 @@ static cvector_vector_type(NetVar) netvars = NULL;
 static void
 spotted(RecvProxyData *data, void *ent, void *arg3)
 {
-	data->val.i = 1;
+	if (cfg->misc.radar) {
+		data->val.i = 1;
 
-	static long mask;
-	if (!mask) {
-		int maxclients = sdk_getmaxclients();
-		for (int i = 1; i <= maxclients; i++)
-			mask |= (1 << i);
+		static long mask;
+		if (!mask) {
+			int maxclients = sdk_getmaxclients();
+			for (int i = 1; i <= maxclients; i++)
+				mask |= (1 << i);
+		}
+
+		*ent_spottedbymask((uintptr_t)ent) = mask;
 	}
-
-	*ent_spottedbymask((uintptr_t)ent) = mask;
 
 	spottedproxy.old(data, ent, arg3);
 }

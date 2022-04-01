@@ -1,5 +1,6 @@
 #include "cfg.h"
 #include "hax/bt.h"
+#include "hax/misc.h"
 #include "sdk.h"
 
 #include "gui.h"
@@ -33,6 +34,7 @@ gui_render(struct nk_context *ctx)
 
 	if (nk_begin(ctx, "ah3", nk_rect(50, 50, 230, 250), flags)) {
 		bt_drawgui(ctx);
+		misc_drawgui(ctx);
 		cfg_drawgui(ctx);
 	}
 	nk_end(ctx);

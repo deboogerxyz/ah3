@@ -7,6 +7,7 @@ SRC = ah.c \
       hk.c \
       intf.c \
       mem.c \
+      hax/misc.c \
       nv.c \
       sdk.c \
       util.c \
@@ -19,6 +20,7 @@ HDR = hax/bt.h \
       hk.h \
       intf.h \
       mem.h \
+      hax/misc.h \
       nv.h \
       sdk.h \
       util.h \

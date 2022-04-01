@@ -9,7 +9,12 @@ typedef struct {
 } BtCfg;
 
 typedef struct {
+	int radar;
+} MiscCfg;
+
+typedef struct {
 	BtCfg bt;
+	MiscCfg misc;
 } Cfg;
 
 void cfg_load(const char *name);
