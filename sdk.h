@@ -290,6 +290,7 @@ Vector ent_getbonepos(uintptr_t ent, int bone);
 int sdk_timetoticks(float time);
 
 NV_DECL(simtime, float);
+NV_DECL(flags, int);
 NV_DECL(spottedbymask, long);
 NV_DECL(tickbase, int);
 

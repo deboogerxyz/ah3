@@ -9,6 +9,7 @@
 #include "gui.h"
 #include "intf.h"
 #include "mem.h"
+#include "hax/misc.h"
 #include "sdk.h"
 #include "util.h"
 
@@ -122,6 +123,7 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	
 	sdk_getservertime(cmd);
 
+	misc_bhop(cmd);
 	bt_run(cmd);
 
 	cmd->viewangles = vec_norm(cmd->viewangles);
