@@ -6,6 +6,6 @@
 #include "../util.h"
 
 ClientClass *client_getallclasses(void);
-int sdk_dispatchusermsg(int type, int flags, int size, void *data);
+int client_dispatchusermsg(int type, int flags, int size, void *data);
 
 #endif /* CLIENT_H_ */

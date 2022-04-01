@@ -10,7 +10,7 @@ client_getallclasses(void)
 }
 
 int
-sdk_dispatchusermsg(int type, int flags, int size, void *data)
+client_dispatchusermsg(int type, int flags, int size, void *data)
 {
 	return VFN(char (*)(uintptr_t *, int, int, int, void *), VMT(intf->client), 38)(intf->client, type, flags, size, data);
 }
