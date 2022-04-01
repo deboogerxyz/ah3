@@ -36,8 +36,8 @@ void
 misc_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Misc", NK_MINIMIZED)) {
-		nk_checkbox_label(ctx, "Radar hack", &cfg->misc.radar);
 		nk_checkbox_label(ctx, "Anti AFK kick", &cfg->misc.antiafk);
+		nk_checkbox_label(ctx, "Radar hack", &cfg->misc.radar);
 		nk_checkbox_label(ctx, "Bunny hop", &cfg->misc.bhop);
 
 		nk_tree_pop(ctx);
@@ -65,7 +65,7 @@ misc_savecfg(cJSON *json)
 {
 	cJSON* miscjson = cJSON_CreateObject();
 
-	cJSON_AddBoolToObject(miscjson, "Anti AFK hack", cfg->misc.antiafk);
+	cJSON_AddBoolToObject(miscjson, "Anti AFK kick", cfg->misc.antiafk);
 	cJSON_AddBoolToObject(miscjson, "Bunny hop", cfg->misc.bhop);
 	cJSON_AddBoolToObject(miscjson, "Radar hack", cfg->misc.radar);
 
