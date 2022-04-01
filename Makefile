@@ -17,10 +17,10 @@ options:
 ${OBJ}: config.mk Makefile ${HDR}
 pch.o:  pch.h ${PCH}
 
-libah.so: ${OBJ}
+libah.so: ${OBJ} pch.o
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 clean:
-	rm -f libah.so ${OBJ} ah.tar.gz
+	rm -f libah.so ${OBJ} pch.o ah.tar.gz
 
 .PHONY: all options clean

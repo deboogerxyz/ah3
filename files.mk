@@ -18,8 +18,7 @@ SRC = ah.c \
       sdk/netchan.c \
       nv.c \
       util.c \
-      sdk/vec.c \
-      pch.c
+      sdk/vec.c
 
 HDR = hax/bt.h \
       cfg.h \
