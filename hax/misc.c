@@ -15,13 +15,6 @@ misc_antiafk(UserCmd *cmd)
 }
 
 void
-misc_fastduck(UserCmd *cmd)
-{
-	if (cfg->misc.fastduck)
-		cmd->buttons |= IN_BULLRUSH;
-}
-
-void
 misc_bhop(UserCmd *cmd)
 {
 	static int wasonground = 0;
@@ -40,6 +33,20 @@ misc_bhop(UserCmd *cmd)
 }
 
 void
+misc_fastduck(UserCmd *cmd)
+{
+	if (cfg->misc.fastduck)
+		cmd->buttons |= IN_BULLRUSH;
+}
+
+void
+misc_slidewalk(UserCmd *cmd)
+{
+	if (cfg->misc.slidewalk)
+		cmd->buttons ^= IN_FORWARD | IN_BACK | IN_MOVELEFT | IN_MOVERIGHT;
+}
+
+void
 misc_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Misc", NK_MINIMIZED)) {
@@ -47,6 +54,7 @@ misc_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Bunny hop", &cfg->misc.bhop);
 		nk_checkbox_label(ctx, "Fast duck", &cfg->misc.fastduck);
 		nk_checkbox_label(ctx, "Radar hack", &cfg->misc.radar);
+		nk_checkbox_label(ctx, "Slidewalk", &cfg->misc.slidewalk);
 
 		nk_tree_pop(ctx);
 	}
@@ -69,6 +77,9 @@ misc_loadcfg(cJSON *json)
 	cJSON* radar = cJSON_GetObjectItem(miscjson, "Radar hack");
 	if (cJSON_IsBool(radar))
 		cfg->misc.radar = radar->valueint;
+	cJSON* slidewalk = cJSON_GetObjectItem(miscjson, "Slidewalk");
+	if (cJSON_IsBool(slidewalk))
+		cfg->misc.slidewalk = slidewalk->valueint;
 }
 
 void
@@ -80,6 +91,7 @@ misc_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(miscjson, "Bunny hop", cfg->misc.bhop);
 	cJSON_AddBoolToObject(miscjson, "Fast duck", cfg->misc.fastduck);
 	cJSON_AddBoolToObject(miscjson, "Radar hack", cfg->misc.radar);
+	cJSON_AddBoolToObject(miscjson, "Slidewalk", cfg->misc.slidewalk);
 
 	cJSON_AddItemToObject(json, "Misc", miscjson);
 }
