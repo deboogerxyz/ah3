@@ -160,7 +160,7 @@ legitbot_run(UserCmd *cmd)
 	if (vec_isnull(bestang))
 		return;
 
-	if (!config.silent)
+	if (!config.silent && config.smooth > 1.0f)
 		bestang = vec_div(bestang, config.smooth);
 
 	cmd->viewangles = vec_add(cmd->viewangles, bestang);
