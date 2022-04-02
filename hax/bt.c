@@ -73,7 +73,7 @@ bt_update(FrameStage stage)
 		if (!mem->isotherenemy(ent, localplayer))
 			continue;
 
-		if (!ent_isalive(ent) || ent_isdormant(ent))
+		if (!ent_isalive(ent) || ent_isdormant(ent) || *ent_getimmunity(ent))
 			continue;
 
 		if (!cvector_empty(records[i]) && cvector_end(records[i])->simtime == *ent_getsimtime(ent))
@@ -128,7 +128,7 @@ bt_run(UserCmd *cmd)
 		if (!mem->isotherenemy(ent, localplayer))
 			continue;
 
-		if (!ent_isalive(ent) || ent_isdormant(ent))
+		if (!ent_isalive(ent) || ent_isdormant(ent) || *ent_getimmunity(ent))
 			continue;
 
 		Vector bonepos = ent_getbonepos(ent, 8);

@@ -30,7 +30,7 @@ glow_render(void)
 			if (ent == localplayer)
 				break;
 
-			if (!ent_isalive(ent) || ent_isdormant(ent))
+			if (!ent_isalive(ent) || ent_isdormant(ent) || *ent_getimmunity(ent))
 				break;
 
 			if (mem->isotherenemy(ent, localplayer)) {
