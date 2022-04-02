@@ -10,6 +10,7 @@
 #include "hax/glow.h"
 #include "gui.h"
 #include "intf.h"
+#include "hax/legitbot.h"
 #include "mem.h"
 #include "hax/misc.h"
 #include "sdk/engine.h"
@@ -134,6 +135,7 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	misc_fastduck(cmd);
 	misc_slidewalk(cmd);
 	visuals_revealranks(cmd);
+	legitbot_run(cmd);
 	bt_run(cmd);
 
 	cmd->viewangles = vec_norm(cmd->viewangles);

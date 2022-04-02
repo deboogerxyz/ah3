@@ -4,10 +4,12 @@
 #include "hax/bt.h"
 #include "hax/glow.h"
 #include "gui.h"
+#include "hax/legitbot.h"
 #include "hax/misc.h"
 #include "hax/visuals.h"
 
 typedef struct {
+	LegitbotCfg legitbot[6];
 	BtCfg bt;
 	GlowCfg glow[6];
 	VisualsCfg visuals;

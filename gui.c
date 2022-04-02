@@ -1,6 +1,7 @@
 #include "cfg.h"
 #include "hax/bt.h"
 #include "hax/glow.h"
+#include "hax/legitbot.h"
 #include "hax/misc.h"
 #include "hax/visuals.h"
 #include "sdk/inputsys.h"
@@ -56,6 +57,7 @@ gui_render(struct nk_context *ctx, SDL_Window *win)
 	float y = (float)sdlh / 2 - h / 2;
 
 	if (nk_begin(ctx, "ah3", nk_rect(x, y, w, h), flags)) {
+		legitbot_drawgui(ctx);
 		bt_drawgui(ctx);
 		glow_drawgui(ctx);
 		visuals_drawgui(ctx);

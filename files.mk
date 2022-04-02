@@ -1,4 +1,5 @@
 SRC = ah.c \
+      hax/legitbot.c \
       hax/bt.c \
       cfg.c \
       sdk/client.c \
@@ -24,7 +25,8 @@ SRC = ah.c \
       sdk/vec.c \
       hax/visuals.c
 
-HDR = hax/bt.h \
+HDR = hax/legitbot.h \
+      hax/bt.h \
       cfg.h \
       sdk/classid.h \
       sdk/client.h \

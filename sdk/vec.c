@@ -27,6 +27,29 @@ vec_sub(Vector a, Vector b)
 }
 
 Vector
+vec_mul(Vector v, float f)
+{
+	Vector a;
+
+	a.x = v.x * f;
+	a.y = v.y * f;
+	a.z = v.z * f;
+	return a;
+}
+
+
+Vector
+vec_div(Vector v, float f)
+{
+	Vector a;
+
+	a.x = v.x / f;
+	a.y = v.y / f;
+	a.z = v.z / f;
+	return a;
+}
+
+Vector
 vec_toang(Vector v)
 {
 	Vector a = {
@@ -61,3 +84,8 @@ vec_calcang(Vector start, Vector end, Vector ang)
 	return vec_norm(b);
 }
 
+int
+vec_isnull(Vector v)
+{
+	return v.x == 0 && v.y == 0 && v.z == 0;
+}

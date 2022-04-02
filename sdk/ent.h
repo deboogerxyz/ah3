@@ -33,5 +33,9 @@ NV_DECL(spottedbymask, long);
 NV_DECL(tickbase, int);
 NV_DECL(isscoped, char);
 NV_DECL(immunity, char);
+NV_DECL(shotsfired, int);
+NV_DECL(waitfornoattack, char);
+NV_DECL(nextattack, float);
+NV_DECL(itemindex, short);
 
 #endif /* ENT_H_ */
