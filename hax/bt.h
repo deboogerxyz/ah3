@@ -20,6 +20,7 @@ typedef struct {
 	int limit;
 } BtCfg;
 
+int bt_isvalid(float simtime);
 void bt_update(FrameStage stage);
 void bt_run(UserCmd *cmd);
 void bt_drawgui(struct nk_context *ctx);

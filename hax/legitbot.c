@@ -128,12 +128,18 @@ legitbot_run(UserCmd *cmd)
 			}
 		}
 
+		if (!cfg->bt.enabled)
+			continue;
+
 		Record *records = bt_records[i];
-		if (!records || !cvector_empty(records))
+		if (!records || cvector_empty(records))
 			continue;
 
 		for (int j = 0; j < cvector_size(records); j++) {
-			Record *record = &records[i];
+			Record *record = &records[j];
+
+			if (!bt_isvalid(record->simtime))
+				continue;
 
 			for (int k = 0; k < LEN(config.bones); k++) {
 				if (!config.bones[k])

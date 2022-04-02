@@ -26,8 +26,8 @@ getlerp(void)
 	return MAX(convar_getfloat(interp), (ratio / (maxupdaterate ? convar_getfloat(maxupdaterate) : convar_getfloat(updaterate))));
 }
 
-static int
-isvalid(float simtime)
+int
+bt_isvalid(float simtime)
 {
 	uintptr_t netchan = engine_getnetchan();
 	if (!netchan)
@@ -84,7 +84,7 @@ bt_update(FrameStage stage)
 			cvector_erase(bt_records[i], 0);
 
 		for (int j = 0; j < cvector_size(bt_records[i]); j++)
-			if (!isvalid(bt_records[i][j].simtime))
+			if (!bt_isvalid(bt_records[i][j].simtime))
 				cvector_erase(bt_records[i], j);
 	}
 }
@@ -147,7 +147,7 @@ bt_run(UserCmd *cmd)
 	for (int i = 0; i < cvector_size(bt_records[bestidx]); i++) {
 		Record *record = &bt_records[bestidx][i];
 
-		if (!isvalid(record->simtime))
+		if (!bt_isvalid(record->simtime))
 			continue;
 
 		Vector headpos = mat_origin(record->matrix[8]);
