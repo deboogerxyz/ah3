@@ -10,7 +10,6 @@ typedef struct {
 	int antiafk;
 	int bhop;
 	int fastduck;
-	int radar;
 	int slidewalk;
 } MiscCfg;
 

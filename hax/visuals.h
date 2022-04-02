@@ -16,6 +16,7 @@ typedef struct {
 	float fov;
 	int remove3dsky;
 	int revealmoney;
+	int revealradar;
 	int revealranks;
 } VisualsCfg;
 

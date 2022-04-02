@@ -57,7 +57,6 @@ misc_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Anti AFK kick", &cfg->misc.antiafk);
 		nk_checkbox_label(ctx, "Bunny hop", &cfg->misc.bhop);
 		nk_checkbox_label(ctx, "Fast duck", &cfg->misc.fastduck);
-		nk_checkbox_label(ctx, "Radar hack", &cfg->misc.radar);
 		nk_checkbox_label(ctx, "Slidewalk", &cfg->misc.slidewalk);
 
 		nk_tree_pop(ctx);
@@ -78,9 +77,6 @@ misc_loadcfg(cJSON *json)
 	cJSON* fastduck = cJSON_GetObjectItem(miscjson, "Fast duck");
 	if (cJSON_IsBool(fastduck))
 		cfg->misc.fastduck = fastduck->valueint;
-	cJSON* radar = cJSON_GetObjectItem(miscjson, "Radar hack");
-	if (cJSON_IsBool(radar))
-		cfg->misc.radar = radar->valueint;
 	cJSON* slidewalk = cJSON_GetObjectItem(miscjson, "Slidewalk");
 	if (cJSON_IsBool(slidewalk))
 		cfg->misc.slidewalk = slidewalk->valueint;
@@ -94,7 +90,6 @@ misc_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(miscjson, "Anti AFK kick", cfg->misc.antiafk);
 	cJSON_AddBoolToObject(miscjson, "Bunny hop", cfg->misc.bhop);
 	cJSON_AddBoolToObject(miscjson, "Fast duck", cfg->misc.fastduck);
-	cJSON_AddBoolToObject(miscjson, "Radar hack", cfg->misc.radar);
 	cJSON_AddBoolToObject(miscjson, "Slidewalk", cfg->misc.slidewalk);
 
 	cJSON_AddItemToObject(json, "Misc", miscjson);

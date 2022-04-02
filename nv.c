@@ -28,7 +28,7 @@ static cvector_vector_type(NetVar) netvars = NULL;
 static void
 spotted(RecvProxyData *data, void *ent, void *arg3)
 {
-	if (cfg->misc.radar) {
+	if (cfg->visuals.revealradar) {
 		data->val.i = 1;
 
 		static long mask;

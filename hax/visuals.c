@@ -68,6 +68,7 @@ visuals_drawgui(struct nk_context *ctx)
 			nk_property_float(ctx, "FOV", 0.0f, &cfg->visuals.fov, 180.0f, 0.2f, 0.2f);
 		nk_checkbox_label(ctx, "Remove 3D sky", &cfg->visuals.remove3dsky);
 		nk_checkbox_label(ctx, "Reveal money", &cfg->visuals.revealmoney);
+		nk_checkbox_label(ctx, "Reveal radar", &cfg->visuals.revealradar);
 		nk_checkbox_label(ctx, "Reveal ranks", &cfg->visuals.revealranks);
 
 		nk_tree_pop(ctx);
@@ -103,6 +104,9 @@ visuals_loadcfg(cJSON *json)
 	cJSON* revealmoney = cJSON_GetObjectItem(visualsjson, "Reveal money");
 	if (cJSON_IsBool(revealmoney))
 		cfg->visuals.revealmoney = revealmoney->valueint;
+	cJSON* revealradar = cJSON_GetObjectItem(visualsjson, "Reveal radar");
+	if (cJSON_IsBool(revealradar))
+		cfg->visuals.revealradar = revealradar->valueint;
 	cJSON* revealranks = cJSON_GetObjectItem(visualsjson, "Reveal ranks");
 	if (cJSON_IsBool(revealranks))
 		cfg->visuals.revealranks = revealranks->valueint;
@@ -121,6 +125,7 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddNumberToObject(visualsjson, "FOV", cfg->visuals.fov);
 	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
 	cJSON_AddBoolToObject(visualsjson, "Reveal money", cfg->visuals.revealmoney);
+	cJSON_AddBoolToObject(visualsjson, "Reveal radar", cfg->visuals.revealradar);
 	cJSON_AddBoolToObject(visualsjson, "Reveal ranks", cfg->visuals.revealranks);
 
 	cJSON_AddItemToObject(json, "Visuals", visualsjson);
