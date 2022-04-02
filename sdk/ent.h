@@ -8,6 +8,11 @@
 #include "../nv.h"
 #include "weaponinfo.h"
 
+typedef enum {
+	MT_NOCLIP = 8,
+	MT_LADDER = 9
+} MoveType;
+
 ClientClass *ent_getclientclass(uintptr_t ent);
 int ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max, int mask, float curtime);
 int ent_isdormant(uintptr_t ent);
@@ -20,6 +25,7 @@ uintptr_t ent_getactiveweapon(uintptr_t ent);
 WeaponInfo *ent_getweaponinfo(uintptr_t ent);
 Vector ent_getbonepos(uintptr_t ent, int bone);
 
+NV_DECL(movetype, MoveType);
 NV_DECL(simtime, float);
 NV_DECL(health, int);
 NV_DECL(flags, int);

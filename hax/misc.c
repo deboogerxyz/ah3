@@ -26,7 +26,7 @@ misc_bhop(UserCmd *cmd)
 	if (!localplayer)
 		return;
 
-	if (!(*ent_getflags(localplayer) & 1) && !wasonground)
+	if (!(*ent_getflags(localplayer) & 1) && *ent_getmovetype(localplayer) != MT_LADDER && !wasonground)
 		cmd->buttons &= ~IN_JUMP;
 
 	wasonground = *ent_getflags(localplayer) & 1;
@@ -42,7 +42,11 @@ misc_fastduck(UserCmd *cmd)
 void
 misc_slidewalk(UserCmd *cmd)
 {
-	if (cfg->misc.slidewalk)
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
+	if (!localplayer)
+		return;
+
+	if (cfg->misc.slidewalk && *ent_getmovetype(localplayer) != MT_LADDER)
 		cmd->buttons ^= IN_FORWARD | IN_BACK | IN_MOVELEFT | IN_MOVERIGHT;
 }
 
