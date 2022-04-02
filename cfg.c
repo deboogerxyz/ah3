@@ -6,6 +6,7 @@
 #include <unistd.h>   /* getuid */
 
 #include "hax/bt.h"
+#include "hax/glow.h"
 #include "hax/misc.h"
 
 #include "cfg.h"
@@ -68,6 +69,7 @@ cfg_load(const char *name)
 		return;
 
 	bt_loadcfg(json);
+	glow_loadcfg(json);
 	visuals_loadcfg(json);
 	misc_loadcfg(json);
 
@@ -81,6 +83,7 @@ cfg_save(const char *name)
 	cJSON *json = cJSON_CreateObject();
 
 	bt_savecfg(json);
+	glow_savecfg(json);
 	visuals_savecfg(json);
 	misc_savecfg(json);
 

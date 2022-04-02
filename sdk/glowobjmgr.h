@@ -8,8 +8,7 @@
 typedef struct {
 	int nextfreeslot;
 	uintptr_t ent;
-	Color color;
-	float alpha;
+	ColorA color;
 	PAD(5);
 	float alphamax;
 	PAD(4);

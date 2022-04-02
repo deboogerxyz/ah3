@@ -1,5 +1,6 @@
 #include "cfg.h"
 #include "hax/bt.h"
+#include "hax/glow.h"
 #include "hax/misc.h"
 #include "hax/visuals.h"
 #include "sdk/inputsys.h"
@@ -27,6 +28,18 @@ gui_handletoggle(struct nk_context *ctx)
 	}
 }
 
+void
+gui_colorpicker(struct nk_context *ctx, struct nk_colorf *color)
+{
+	nk_layout_row_dynamic(ctx, 120, 1);
+	*color = nk_color_picker(ctx, *color, NK_RGBA);
+
+	nk_layout_row_dynamic(ctx, 25, 1);
+	color->r = nk_propertyf(ctx, "#Red:", 0, color->r, 1.0f, 0.01f, 0.005f);
+	color->g = nk_propertyf(ctx, "#Green:", 0, color->g, 1.0f, 0.01f, 0.005f);
+	color->b = nk_propertyf(ctx, "#Blue:", 0, color->b, 1.0f, 0.01f, 0.005f);
+	color->a = nk_propertyf(ctx, "#Alpha:", 0, color->a, 1.0f, 0.01f, 0.005f);
+}
 
 void
 gui_render(struct nk_context *ctx, SDL_Window *win)
@@ -44,6 +57,7 @@ gui_render(struct nk_context *ctx, SDL_Window *win)
 
 	if (nk_begin(ctx, "ah3", nk_rect(x, y, w, h), flags)) {
 		bt_drawgui(ctx);
+		glow_drawgui(ctx);
 		visuals_drawgui(ctx);
 		misc_drawgui(ctx);
 		cfg_drawgui(ctx);

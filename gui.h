@@ -13,6 +13,7 @@
 
 int gui_isopen(void);
 void gui_handletoggle(struct nk_context *ctx);
+void gui_colorpicker(struct nk_context *ctx, struct nk_colorf *color);
 void gui_render(struct nk_context *ctx, SDL_Window *win);
 
 #endif /* GUI_H_ */

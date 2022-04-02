@@ -21,6 +21,7 @@ WeaponInfo *ent_getweaponinfo(uintptr_t ent);
 Vector ent_getbonepos(uintptr_t ent, int bone);
 
 NV_DECL(simtime, float);
+NV_DECL(health, int);
 NV_DECL(flags, int);
 NV_DECL(spottedbymask, long);
 NV_DECL(tickbase, int);

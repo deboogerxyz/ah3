@@ -2,6 +2,7 @@ SRC = ah.c \
       hax/bt.c \
       cfg.c \
       sdk/client.c \
+      sdk/color.c \
       sdk/convar.c \
       sdk/cvar.c \
       sdk/engine.c \
