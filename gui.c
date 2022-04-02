@@ -50,8 +50,8 @@ gui_render(struct nk_context *ctx, SDL_Window *win)
 	int sdlw, sdlh;
 	SDL_GetWindowSize(win, &sdlw, &sdlh);
 
-	const float w = 250.0f;
-	const float h = 300.0f;
+	const float w = 300.0f;
+	const float h = 450.0f;
 
 	float x = (float)sdlw / 2 - w / 2;
 	float y = (float)sdlh / 2 - h / 2;
