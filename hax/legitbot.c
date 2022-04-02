@@ -123,8 +123,8 @@ legitbot_run(UserCmd *cmd)
 			float  fov     = hypot(ang.x, ang.y);
 
 			if (fov < bestfov) {
-				bestfov    = fov;
-				bestang    = ang;
+				bestfov = fov;
+				bestang = ang;
 			}
 		}
 
@@ -135,24 +135,38 @@ legitbot_run(UserCmd *cmd)
 		if (!records || cvector_empty(records))
 			continue;
 
+		int bestrecord = 0;
+		float recordfov = 255.f;
+
 		for (int j = 0; j < cvector_size(records); j++) {
 			Record *record = &records[j];
 
 			if (!bt_isvalid(record->simtime))
 				continue;
 
-			for (int k = 0; k < LEN(config.bones); k++) {
-				if (!config.bones[k])
-					continue;
+			Vector headpos = mat_origin(record->matrix[8]);
+			Vector ang = vec_calcang(eyepos, headpos, viewangles);
+			float  fov = hypot(ang.x, ang.y);
 
-				Vector headpos = mat_origin(record->matrix[8 - k]);
-				Vector ang = vec_calcang(eyepos, headpos, viewangles);
-				float  fov = hypot(ang.x, ang.y);
+			if (fov < recordfov) {
+				recordfov  = fov;
+				bestrecord = j;
+			}
+		}
 
-				if (fov < bestfov) {
-					bestfov    = fov;
-					bestang    = ang;
-				}
+		for (int k = 0; k < LEN(config.bones); k++) {
+			if (!config.bones[k])
+				continue;
+
+			Record *record = &records[bestrecord];
+
+			Vector headpos = mat_origin(record->matrix[8 - k]);
+			Vector ang = vec_calcang(eyepos, headpos, viewangles);
+			float  fov = hypot(ang.x, ang.y);
+
+			if (fov < bestfov) {
+				bestfov = fov;
+				bestang = ang;
 			}
 		}
 	}
