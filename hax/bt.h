@@ -3,9 +3,17 @@
 
 #include <cjson/cJSON.h>
 
+#include "../deps/cvector.h"
 #include "../gui.h"
 #include "../sdk/framestage.h"
+#include "../sdk/mat3x4.h"
 #include "../sdk/usercmd.h"
+
+typedef struct {
+	Vector origin;
+	Matrix3x4 matrix[256];
+	float simtime;
+} Record;
 
 typedef struct {
 	int enabled;
@@ -19,5 +27,7 @@ void bt_loadcfg(cJSON *json);
 void bt_savecfg(cJSON *json);
 void bt_init(void);
 void bt_clean(void);
+
+extern cvector_vector_type(Record) bt_records[65];
 
 #endif /* BT_H */

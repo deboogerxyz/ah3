@@ -1,7 +1,6 @@
 #include <math.h>
 
 #include "../cfg.h"
-#include "../deps/cvector.h"
 #include "../mem.h"
 #include "../sdk/convar.h"
 #include "../sdk/cvar.h"
@@ -13,14 +12,8 @@
 
 #include "bt.h"
 
-typedef struct {
-	Vector origin;
-	Vector headpos;
-	float simtime;
-} Record;
-
 static ConVar *updaterate, *maxupdaterate, *interp, *interpratio, *mininterpratio, *maxinterpratio, *maxunlag;
-static cvector_vector_type(Record) records[65] = {NULL};
+cvector_vector_type(Record) bt_records[65] = {NULL};
 
 static float
 getlerp(void)
@@ -76,23 +69,23 @@ bt_update(FrameStage stage)
 		if (!ent_isalive(ent) || ent_isdormant(ent) || *ent_getimmunity(ent))
 			continue;
 
-		if (!cvector_empty(records[i]) && cvector_end(records[i])->simtime == *ent_getsimtime(ent))
+		if (!cvector_empty(bt_records[i]) && cvector_end(bt_records[i])->simtime == *ent_getsimtime(ent))
 			continue;
 
 		Record record = {
 			.origin  = *ent_getabsorigin(ent),
-			.headpos = ent_getbonepos(ent, 8),
 			.simtime = *ent_getsimtime(ent)
 		};
+		ent_setupbones(ent, record.matrix, 256, 256, 0.0f);
 
-		cvector_push_back(records[i], record);
+		cvector_push_back(bt_records[i], record);
 
-		while (cvector_size(records[i]) > 3 && cvector_size(records[i]) > TIMETOTICKS((float)cfg->bt.limit / 1000.0f))
-			cvector_erase(records[i], 0);
+		while (cvector_size(bt_records[i]) > 3 && cvector_size(bt_records[i]) > TIMETOTICKS((float)cfg->bt.limit / 1000.0f))
+			cvector_erase(bt_records[i], 0);
 
-		for (int j = 0; j < cvector_size(records[i]); j++)
-			if (!isvalid(records[i][j].simtime))
-				cvector_erase(records[i], j);
+		for (int j = 0; j < cvector_size(bt_records[i]); j++)
+			if (!isvalid(bt_records[i][j].simtime))
+				cvector_erase(bt_records[i], j);
 	}
 }
 
@@ -131,8 +124,8 @@ bt_run(UserCmd *cmd)
 		if (!ent_isalive(ent) || ent_isdormant(ent) || *ent_getimmunity(ent))
 			continue;
 
-		Vector bonepos = ent_getbonepos(ent, 8);
-		Vector ang     = vec_calcang(eyepos, bonepos, viewangles);
+		Vector headpos = ent_getbonepos(ent, 8);
+		Vector ang     = vec_calcang(eyepos, headpos, viewangles);
 		float  fov     = hypot(ang.x, ang.y);
 
 		if (fov < bestfov) {
@@ -145,19 +138,20 @@ bt_run(UserCmd *cmd)
 	if (!besttarget)
 		return;
 
-	if (cvector_empty(records[bestidx]))
+	if (cvector_empty(bt_records[bestidx]))
 		return;
 
 	bestfov = 255.0f;
 	int bestrecord = 0;
 
-	for (int i = 0; i < cvector_size(records[bestidx]); i++) {
-		Record *record = &records[bestidx][i];
+	for (int i = 0; i < cvector_size(bt_records[bestidx]); i++) {
+		Record *record = &bt_records[bestidx][i];
 
 		if (!isvalid(record->simtime))
 			continue;
 
-		Vector ang = vec_calcang(eyepos, record->headpos, viewangles);
+		Vector headpos = mat_origin(record->matrix[8]);
+		Vector ang = vec_calcang(eyepos, headpos, viewangles);
 		float  fov = hypot(ang.x, ang.y);
 
 		if (fov < bestfov) {
@@ -169,7 +163,7 @@ bt_run(UserCmd *cmd)
 	if (!bestrecord)
 		return;
 
-	Record *record = &records[bestidx][bestrecord];
+	Record *record = &bt_records[bestidx][bestrecord];
 
 	mem->setabsorigin(besttarget, &record->origin);
 	cmd->tickcount = TIMETOTICKS(record->simtime + getlerp());
@@ -228,5 +222,5 @@ bt_clean(void)
 	int i;
 
 	for (i = 0; i < 65; i++)
-		cvector_free(records[i]);
+		cvector_free(bt_records[i]);
 }

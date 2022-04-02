@@ -1,8 +1,10 @@
+#include "../hax/bt.h"
 #include "../cfg.h"
 #include "../sdk/engine.h"
 #include "../sdk/ent.h"
 #include "../sdk/entlist.h"
 #include "../sdk/globalvars.h"
+#include "../sdk/mat3x4.h"
 #include "../mem.h"
 #include "../sdk/weaponid.h"
 #include "../sdk/weaponinfo.h"
@@ -123,6 +125,28 @@ legitbot_run(UserCmd *cmd)
 			if (fov < bestfov) {
 				bestfov    = fov;
 				bestang    = ang;
+			}
+		}
+
+		Record *records = bt_records[i];
+		if (!records || !cvector_empty(records))
+			continue;
+
+		for (int j = 0; j < cvector_size(records); j++) {
+			Record *record = &records[i];
+
+			for (int k = 0; k < LEN(config.bones); k++) {
+				if (!config.bones[k])
+					continue;
+
+				Vector headpos = mat_origin(record->matrix[8 - k]);
+				Vector ang = vec_calcang(eyepos, headpos, viewangles);
+				float  fov = hypot(ang.x, ang.y);
+
+				if (fov < bestfov) {
+					bestfov    = fov;
+					bestang    = ang;
+				}
 			}
 		}
 	}
