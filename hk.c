@@ -165,9 +165,27 @@ static void
 overrideview(void *this, ViewSetup *setup)
 {
 	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
-	if (localplayer && !*ent_getisscoped(localplayer))
+	if (localplayer && !*ent_getisscoped(localplayer)) {
 		if (cfg->visuals.overridefov)
 			setup->fov = cfg->visuals.fov;
+
+		if (cfg->visuals.viewmodel.enabled) {
+			Vector x90 = {90, 0, 0};
+
+			Vector forward = vec_fromang(setup->angles);
+			Vector up      = vec_fromang(vec_sub(setup->angles, x90));
+			Vector side    = vec_crossprod(forward, up);
+			Vector offset  = vec_add(vec_add(vec_mul(side, cfg->visuals.viewmodel.x), vec_mul(forward, cfg->visuals.viewmodel.y)), vec_mul(up, cfg->visuals.viewmodel.z));
+
+			uintptr_t viewmodel = entlist_getentityfromhandle(ent_getviewmodel(localplayer));
+
+			if (viewmodel) {
+				Vector angle = vec_add(*ent_getrenderorigin(viewmodel), offset);
+				mem->setabsorigin(viewmodel, &angle);
+			}
+		}
+	}
+
 
 	VFN(void (*)(uintptr_t *, ViewSetup *), clientmode.old, 19)(mem->clientmode, setup);
 }

@@ -6,6 +6,13 @@ ent_getclientclass(uintptr_t ent)
 	return VFN(ClientClass *(*)(uintptr_t), VMT(ent + sizeof(uintptr_t) * 2), 2)(ent + sizeof(uintptr_t) * 2);
 }
 
+
+Vector *
+ent_getrenderorigin(uintptr_t ent)
+{
+	return VFN(Vector *(*)(uintptr_t), VMT(ent + sizeof(uintptr_t)), 1)(ent + sizeof(uintptr_t));
+}
+
 int
 ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max, int mask, float curtime)
 {
@@ -72,6 +79,7 @@ ent_getbonepos(uintptr_t ent, int bone)
 
 NV_IMPL(movetype, "CBaseEntity", "m_nRenderMode", 1, MoveType)
 NV_IMPL(simtime, "CBaseEntity", "m_flSimulationTime", 0, float)
+NV_IMPL(viewmodel, "CBasePlayer", "m_hViewModel[0]", 0, int)
 NV_IMPL(health, "CBasePlayer", "m_iHealth", 0, int)
 NV_IMPL(flags, "CBasePlayer", "m_fFlags", 0, int)
 NV_IMPL(spottedbymask, "CBaseEntity", "m_bSpottedByMask", 0, long)

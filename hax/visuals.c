@@ -70,6 +70,14 @@ visuals_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Reveal money", &cfg->visuals.revealmoney);
 		nk_checkbox_label(ctx, "Reveal radar", &cfg->visuals.revealradar);
 		nk_checkbox_label(ctx, "Reveal ranks", &cfg->visuals.revealranks);
+		if (nk_tree_push(ctx, NK_TREE_NODE, "Viewmodel changer", NK_MINIMIZED)) {
+			nk_checkbox_label(ctx, "Enabled", &cfg->visuals.viewmodel.enabled);
+			nk_property_float(ctx, "#X:", -50.0f, &cfg->visuals.viewmodel.x, 50.0f, 0.01f, 0.01f);
+			nk_property_float(ctx, "#Y:", -50.0f, &cfg->visuals.viewmodel.y, 50.0f, 0.01f, 0.01f);
+			nk_property_float(ctx, "#Z:", -50.0f, &cfg->visuals.viewmodel.z, 50.0f, 0.01f, 0.01f);
+
+			nk_tree_pop(ctx);
+		}
 
 		nk_tree_pop(ctx);
 	}
@@ -110,6 +118,21 @@ visuals_loadcfg(cJSON *json)
 	cJSON* revealranks = cJSON_GetObjectItem(visualsjson, "Reveal ranks");
 	if (cJSON_IsBool(revealranks))
 		cfg->visuals.revealranks = revealranks->valueint;
+
+	cJSON *viewmodeljson = cJSON_GetObjectItem(visualsjson, "Viewmodel changer");
+
+	cJSON* viewmodelenabled = cJSON_GetObjectItem(viewmodeljson, "Enabled");
+	if (cJSON_IsBool(viewmodelenabled))
+		cfg->visuals.viewmodel.enabled = viewmodelenabled->valueint;
+	cJSON* viewmodelx = cJSON_GetObjectItem(viewmodeljson, "X");
+	if (cJSON_IsNumber(viewmodelx))
+		cfg->visuals.viewmodel.x = (float)viewmodelx->valuedouble;
+	cJSON* viewmodely = cJSON_GetObjectItem(viewmodeljson, "Y");
+	if (cJSON_IsNumber(viewmodely))
+		cfg->visuals.viewmodel.y = (float)viewmodely->valuedouble;
+	cJSON* viewmodelz = cJSON_GetObjectItem(viewmodeljson, "Z");
+	if (cJSON_IsNumber(viewmodelz))
+		cfg->visuals.viewmodel.z = (float)viewmodelz->valuedouble;
 }
 
 void
@@ -127,6 +150,15 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(visualsjson, "Reveal money", cfg->visuals.revealmoney);
 	cJSON_AddBoolToObject(visualsjson, "Reveal radar", cfg->visuals.revealradar);
 	cJSON_AddBoolToObject(visualsjson, "Reveal ranks", cfg->visuals.revealranks);
+
+	cJSON *viewmodeljson = cJSON_CreateObject();
+
+	cJSON_AddBoolToObject(viewmodeljson, "Enabled", cfg->visuals.viewmodel.enabled);
+	cJSON_AddNumberToObject(viewmodeljson, "X", cfg->visuals.viewmodel.x);
+	cJSON_AddNumberToObject(viewmodeljson, "Y", cfg->visuals.viewmodel.y);
+	cJSON_AddNumberToObject(viewmodeljson, "Z", cfg->visuals.viewmodel.z);
+
+	cJSON_AddItemToObject(visualsjson, "Viewmodel changer", viewmodeljson);
 
 	cJSON_AddItemToObject(json, "Visuals", visualsjson);
 }

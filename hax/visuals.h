@@ -8,6 +8,11 @@
 #include "../gui.h"
 
 typedef struct {
+	int enabled;
+	float x, y, z;
+} ViewmodelCfg;
+
+typedef struct {
 	int disablepostprocessing;
 	int disableshadows;
 	int forcecrosshair;
@@ -18,6 +23,7 @@ typedef struct {
 	int revealmoney;
 	int revealradar;
 	int revealranks;
+	ViewmodelCfg viewmodel;
 } VisualsCfg;
 
 void visuals_disablepostprocessing(FrameStage stage);

@@ -2,12 +2,16 @@
 #define VIEWSETUP_H_
 
 #include "../util.h"
+#include "vec.h"
 
 typedef struct {
 	PAD(172);
 	void *csm;
 	float fov;
-	PAD(32);
+	float fovviewmodel;
+	Vector origin;
+	Vector angles;
+	float nearz;
 	float farz;
 } ViewSetup;
 

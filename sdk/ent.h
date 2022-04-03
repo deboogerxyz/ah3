@@ -14,6 +14,7 @@ typedef enum {
 } MoveType;
 
 ClientClass *ent_getclientclass(uintptr_t ent);
+Vector *ent_getrenderorigin(uintptr_t ent);
 int ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max, int mask, float curtime);
 int ent_isdormant(uintptr_t ent);
 Vector *ent_getabsorigin(uintptr_t ent);
@@ -27,6 +28,7 @@ Vector ent_getbonepos(uintptr_t ent, int bone);
 
 NV_DECL(movetype, MoveType);
 NV_DECL(simtime, float);
+NV_DECL(viewmodel, int);
 NV_DECL(health, int);
 NV_DECL(flags, int);
 NV_DECL(spottedbymask, long);

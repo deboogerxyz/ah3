@@ -1,4 +1,4 @@
-#include <math.h>
+#include "../util.h"
 
 #include "vec.h"
 
@@ -53,9 +53,21 @@ Vector
 vec_toang(Vector v)
 {
 	Vector a = {
-		.x = atan2(-v.z, hypot(v.x, v.y)) * (180.0f / M_PI),
-		.y = atan2(v.y, v.x) * (180.0f / M_PI),
+		.x = RADTODEG(atan2(-v.z, hypot(v.x, v.y))),
+		.y = RADTODEG(atan2(v.y, v.x)),
 		.z = 0.0f
+	};
+
+	return a;
+}
+
+Vector
+vec_fromang(Vector v)
+{
+	Vector a = {
+		.x = cos(DEGTORAD(v.x)) * cos(DEGTORAD(v.y)),
+		.y = cos(DEGTORAD(v.x)) * sin(DEGTORAD(v.y)),
+		.z = -sin(DEGTORAD(v.x))
 	};
 
 	return a;
@@ -88,4 +100,16 @@ int
 vec_isnull(Vector v)
 {
 	return v.x == 0 && v.y == 0 && v.z == 0;
+}
+
+Vector
+vec_crossprod(Vector a, Vector b)
+{
+	Vector c = {
+		.x = a.y * b.z - a.z * b.y,
+		.y = a.z * b.x - a.x * b.z,
+		.z = a.x * b.y - a.y * b.x
+	};
+
+	return c;
 }
