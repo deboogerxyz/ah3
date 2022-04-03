@@ -204,6 +204,7 @@ framestagenotify(void *this, FrameStage stage)
 	visuals_disableshadows();
 	visuals_forcecrosshair(stage);
 	visuals_grenadeprediction(stage);
+	visuals_oppositehandknife(stage);
 	visuals_remove3dsky(stage);
 	bt_update(stage);
 

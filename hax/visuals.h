@@ -17,6 +17,7 @@ typedef struct {
 	int disableshadows;
 	int forcecrosshair;
 	int grenadeprediction;
+	int oppositehandknife;
 	int overridefov;
 	float fov;
 	int remove3dsky;
@@ -30,6 +31,7 @@ void visuals_disablepostprocessing(FrameStage stage);
 void visuals_disableshadows(void);
 void visuals_forcecrosshair(FrameStage stage);
 void visuals_grenadeprediction(FrameStage stage);
+void visuals_oppositehandknife(FrameStage stage);
 void visuals_remove3dsky(FrameStage stage);
 void visuals_revealranks(UserCmd *cmd);
 void visuals_drawgui(struct nk_context *ctx);

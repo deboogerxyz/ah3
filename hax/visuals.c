@@ -42,6 +42,37 @@ visuals_grenadeprediction(FrameStage stage)
 }
 
 void
+visuals_oppositehandknife(FrameStage stage)
+{
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
+	if (!localplayer)
+		return;
+
+	if (stage != FS_RENDER_START && stage != FS_RENDER_END)
+		return;
+
+	ConVar *var = cvar_find("cl_righthand");
+
+	static int original;
+
+	if (stage == FS_RENDER_START) {
+		original = convar_getint(var);
+
+		if (cfg->visuals.oppositehandknife) {
+			uintptr_t weapon = ent_getactiveweapon(localplayer);
+			if (!weapon)
+				return;
+
+			ClassId class = ent_getclientclass(weapon)->classid;
+			if (class == CLASSID_KNIFE || class == CLASSID_KNIFEGG)
+				convar_setint(var, !original);
+		}
+	} else {
+		convar_setint(var, original);
+	}
+}
+
+void
 visuals_remove3dsky(FrameStage stage)
 {
 	ConVar *var = cvar_find("r_3dsky");
@@ -63,6 +94,7 @@ visuals_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Disable shadows", &cfg->visuals.disableshadows);
 		nk_checkbox_label(ctx, "Force crosshair", &cfg->visuals.forcecrosshair);
 		nk_checkbox_label(ctx, "Grenade prediction", &cfg->visuals.grenadeprediction);
+		nk_checkbox_label(ctx, "Opposite hand knife", &cfg->visuals.oppositehandknife);
 		nk_checkbox_label(ctx, "Override FOV", &cfg->visuals.overridefov);
 		if (cfg->visuals.overridefov)
 			nk_property_float(ctx, "FOV", 0.0f, &cfg->visuals.fov, 180.0f, 0.2f, 0.2f);
@@ -100,6 +132,9 @@ visuals_loadcfg(cJSON *json)
 	cJSON* grenadeprediction = cJSON_GetObjectItem(visualsjson, "Grenade prediction");
 	if (cJSON_IsBool(grenadeprediction))
 		cfg->visuals.grenadeprediction = grenadeprediction->valueint;
+	cJSON* oppositehandknife = cJSON_GetObjectItem(visualsjson, "Opposite hand knife");
+	if (cJSON_IsBool(oppositehandknife))
+		cfg->visuals.oppositehandknife = oppositehandknife->valueint;
 	cJSON* overridefov = cJSON_GetObjectItem(visualsjson, "Override FOV");
 	if (cJSON_IsBool(overridefov))
 		cfg->visuals.overridefov = overridefov->valueint;
@@ -144,6 +179,7 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(visualsjson, "Disable shadows", cfg->visuals.disableshadows);
 	cJSON_AddBoolToObject(visualsjson, "Force crosshair", cfg->visuals.forcecrosshair);
 	cJSON_AddBoolToObject(visualsjson, "Grenade prediction", cfg->visuals.grenadeprediction);
+	cJSON_AddBoolToObject(visualsjson, "Opposite hand knife", cfg->visuals.oppositehandknife);
 	cJSON_AddBoolToObject(visualsjson, "Override FOV", cfg->visuals.overridefov);
 	cJSON_AddNumberToObject(visualsjson, "FOV", cfg->visuals.fov);
 	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
