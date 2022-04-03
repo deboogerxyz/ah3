@@ -92,10 +92,6 @@ bt_update(FrameStage stage)
 void
 bt_run(UserCmd *cmd)
 {
-	float bestfov;
-	uintptr_t besttarget = 0;
-	int bestidx = 0;
-
 	if (!cfg->bt.enabled)
 		return;
 
@@ -110,7 +106,10 @@ bt_run(UserCmd *cmd)
 	Vector aimpunch   = ent_getaimpunch(localplayer);
 	Vector viewangles = vec_add(cmd->viewangles, aimpunch);
 
-	bestfov = 255.0f;
+	uintptr_t besttarget = 0;
+	int bestrecord = 0;
+	int bestidx = 0;
+	float bestfov = 255.0f;
 
 	int maxclients = engine_getmaxclients();
 	for (int i = 1; i <= maxclients; i++) {
@@ -124,43 +123,29 @@ bt_run(UserCmd *cmd)
 		if (!ent_isalive(ent) || ent_isdormant(ent) || *ent_getimmunity(ent))
 			continue;
 
-		Vector headpos = ent_getbonepos(ent, 8);
-		Vector ang     = vec_calcang(eyepos, headpos, viewangles);
-		float  fov     = hypot(ang.x, ang.y);
+		if (cvector_empty(bt_records[i]))
+			return;
 
-		if (fov < bestfov) {
-			bestfov    = fov;
-			besttarget = ent;
-			bestidx    = i;
+		for (int j = 0; j < cvector_size(bt_records[i]); j++) {
+			Record *record = &bt_records[i][j];
+
+			if (!bt_isvalid(record->simtime))
+				continue;
+
+			Vector headpos = mat_origin(record->matrix[8]);
+			Vector ang = vec_calcang(eyepos, headpos, viewangles);
+			float  fov = hypot(ang.x, ang.y);
+
+			if (fov < bestfov) {
+				bestfov    = fov;
+				besttarget = ent;
+				bestidx    = i;
+				bestrecord = j;
+			}
 		}
 	}
 
 	if (!besttarget)
-		return;
-
-	if (cvector_empty(bt_records[bestidx]))
-		return;
-
-	bestfov = 255.0f;
-	int bestrecord = 0;
-
-	for (int i = 0; i < cvector_size(bt_records[bestidx]); i++) {
-		Record *record = &bt_records[bestidx][i];
-
-		if (!bt_isvalid(record->simtime))
-			continue;
-
-		Vector headpos = mat_origin(record->matrix[8]);
-		Vector ang = vec_calcang(eyepos, headpos, viewangles);
-		float  fov = hypot(ang.x, ang.y);
-
-		if (fov < bestfov) {
-			bestfov    = fov;
-			bestrecord = i;
-		}
-	}
-
-	if (!bestrecord)
 		return;
 
 	Record *record = &bt_records[bestidx][bestrecord];
