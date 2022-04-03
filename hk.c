@@ -127,6 +127,8 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 
 	if (!cmd->commandnumber)
 		return result;
+
+	const Vector currentangles = cmd->viewangles;
 	
 	globalvars_getservertime(cmd);
 
@@ -139,11 +141,14 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	bt_run(cmd);
 
 	cmd->viewangles = vec_norm(cmd->viewangles);
+	misc_fixmovement(cmd, currentangles.y);
+
 	cmd->viewangles.x = CLAMP(cmd->viewangles.x, -89.f, 89.f);
 	cmd->viewangles.y = CLAMP(cmd->viewangles.y, -180.f, 180.f);
 	cmd->viewangles.z = 0.f;
+
 	cmd->forwardmove = CLAMP(cmd->forwardmove, -450.f, 450.f);
-	cmd->sidemove = CLAMP(cmd->sidemove, -450.f, 450.f);
+	cmd->sidemove    = CLAMP(cmd->sidemove, -450.f, 450.f);
 
 	return 0;
 }

@@ -40,6 +40,22 @@ misc_fastduck(UserCmd *cmd)
 }
 
 void
+misc_fixmovement(UserCmd *cmd, float yaw)
+{
+	float oldyaw = yaw + (yaw < 0.0f ? 360.0f : 0.0f);
+	float newyaw = cmd->viewangles.y + (cmd->viewangles.y < 0.0f ? 360.0f : 0.0f);
+	float delta  = newyaw < oldyaw ? fabsf(newyaw - oldyaw) : 360.0f - fabsf(newyaw - oldyaw);
+
+	delta = 360.0f - delta;
+
+	const float forward = cmd->forwardmove;
+	const float side    = cmd->sidemove;
+
+	cmd->forwardmove = cos(DEGTORAD(delta)) * forward + cos(DEGTORAD(delta + 90.0f)) * side;
+	cmd->sidemove    = sin(DEGTORAD(delta)) * forward + sin(DEGTORAD(delta + 90.0f)) * side;
+}
+
+void
 misc_slidewalk(UserCmd *cmd)
 {
 	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());

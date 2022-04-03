@@ -16,6 +16,7 @@ typedef struct {
 void misc_antiafk(UserCmd *cmd);
 void misc_bhop(UserCmd *cmd);
 void misc_fastduck(UserCmd *cmd);
+void misc_fixmovement(UserCmd *cmd, float yaw);
 void misc_slidewalk(UserCmd *cmd);
 void misc_drawgui(struct nk_context *ctx);
 void misc_loadcfg(cJSON *json);
