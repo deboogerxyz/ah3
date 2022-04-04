@@ -13,6 +13,7 @@ typedef struct {
 } ViewmodelCfg;
 
 typedef struct {
+	int disablefog;
 	int disablepostprocessing;
 	int disableshadows;
 	int forcecrosshair;

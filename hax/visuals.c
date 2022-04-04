@@ -90,6 +90,7 @@ void
 visuals_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Visuals", NK_MINIMIZED)) {
+		nk_checkbox_label(ctx, "Disable fog", &cfg->visuals.disablefog);
 		nk_checkbox_label(ctx, "Disable post-processing", &cfg->visuals.disablepostprocessing);
 		nk_checkbox_label(ctx, "Disable shadows", &cfg->visuals.disableshadows);
 		nk_checkbox_label(ctx, "Force crosshair", &cfg->visuals.forcecrosshair);
@@ -120,6 +121,9 @@ visuals_loadcfg(cJSON *json)
 {
 	cJSON* visualsjson = cJSON_GetObjectItem(json, "Visuals");
 
+	cJSON* disablefog = cJSON_GetObjectItem(visualsjson, "Disable fog");
+	if (cJSON_IsBool(disablefog))
+		cfg->visuals.disablefog = disablefog->valueint;
 	cJSON* disablepostprocessing = cJSON_GetObjectItem(visualsjson, "Disable post-processing");
 	if (cJSON_IsBool(disablepostprocessing))
 		cfg->visuals.disablepostprocessing = disablepostprocessing->valueint;
@@ -175,6 +179,7 @@ visuals_savecfg(cJSON *json)
 {
 	cJSON* visualsjson = cJSON_CreateObject();
 
+	cJSON_AddBoolToObject(visualsjson, "Disable fog", cfg->visuals.disablefog);
 	cJSON_AddBoolToObject(visualsjson, "Disable post-processing", cfg->visuals.disableshadows);
 	cJSON_AddBoolToObject(visualsjson, "Disable shadows", cfg->visuals.disableshadows);
 	cJSON_AddBoolToObject(visualsjson, "Force crosshair", cfg->visuals.forcecrosshair);

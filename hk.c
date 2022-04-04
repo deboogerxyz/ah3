@@ -161,6 +161,12 @@ dopostscreeneffects(void *this, void *param)
 	VFN(void (*)(void *, void *), clientmode.old, 45)(mem->clientmode, param);
 }
 
+static char
+shoulddrawfog(void *this)
+{
+	return !cfg->visuals.disablefog;
+}
+
 static void
 overrideview(void *this, ViewSetup *setup)
 {
@@ -233,6 +239,7 @@ hk_init(void)
 	hookfn(&client, 37, &framestagenotify);
 
 	hookvmt((uintptr_t)mem->clientmode, &clientmode);
+	hookfn(&clientmode, 18, &shoulddrawfog);
 	hookfn(&clientmode, 19, &overrideview);
 	hookfn(&clientmode, 25, &createmove);
 	hookfn(&clientmode, 45, &dopostscreeneffects);
