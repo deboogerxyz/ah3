@@ -184,10 +184,15 @@ overrideview(void *this, ViewSetup *setup)
 			Vector offset  = vec_add(vec_add(vec_mul(side, cfg->visuals.viewmodel.x), vec_mul(forward, cfg->visuals.viewmodel.y)), vec_mul(up, cfg->visuals.viewmodel.z));
 
 			uintptr_t viewmodel = entlist_getentityfromhandle(ent_getviewmodel(localplayer));
+			uintptr_t weapon    = ent_getactiveweapon(localplayer);
 
-			if (viewmodel) {
-				Vector angle = vec_add(*ent_getrenderorigin(viewmodel), offset);
-				mem->setabsorigin(viewmodel, &angle);
+			if (viewmodel && weapon) {
+				ClassId class = ent_getclientclass(weapon)->classid;
+
+				if (class != CLASSID_TABLET) {
+					Vector angle = vec_add(*ent_getrenderorigin(viewmodel), offset);
+					mem->setabsorigin(viewmodel, &angle);
+				}
 			}
 		}
 	}
