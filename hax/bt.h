@@ -10,7 +10,6 @@
 #include "../sdk/usercmd.h"
 
 typedef struct {
-	Vector origin;
 	Matrix3x4 matrix[256];
 	float simtime;
 } Record;
@@ -22,6 +21,7 @@ typedef struct {
 
 int bt_isvalid(float simtime);
 void bt_update(FrameStage stage);
+Record *bt_getclosestrecord(UserCmd *cmd);
 void bt_run(UserCmd *cmd);
 void bt_drawgui(struct nk_context *ctx);
 void bt_loadcfg(cJSON *json);

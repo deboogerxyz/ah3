@@ -73,7 +73,6 @@ bt_update(FrameStage stage)
 			continue;
 
 		Record record = {
-			.origin  = *ent_getabsorigin(ent),
 			.simtime = *ent_getsimtime(ent)
 		};
 		ent_setupbones(ent, record.matrix, 256, 256, 0.0f);
@@ -89,18 +88,12 @@ bt_update(FrameStage stage)
 	}
 }
 
-void
-bt_run(UserCmd *cmd)
+Record *
+bt_getclosestrecord(UserCmd *cmd)
 {
-	if (!cfg->bt.enabled)
-		return;
-
-	if (!(cmd->buttons & IN_ATTACK))
-		return;
-
 	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
 	if (!localplayer || !ent_isalive(localplayer))
-		return;
+		return NULL;
 
 	Vector eyepos     = ent_geteyepos(localplayer);
 	Vector aimpunch   = ent_getaimpunch(localplayer);
@@ -124,7 +117,7 @@ bt_run(UserCmd *cmd)
 			continue;
 
 		if (cvector_empty(bt_records[i]))
-			return;
+			continue;
 
 		for (int j = 0; j < cvector_size(bt_records[i]); j++) {
 			Record *record = &bt_records[i][j];
@@ -146,12 +139,24 @@ bt_run(UserCmd *cmd)
 	}
 
 	if (!besttarget)
+		return NULL;
+
+	return &bt_records[bestidx][bestrecord];
+}
+
+void
+bt_run(UserCmd *cmd)
+{
+	if (!cfg->bt.enabled)
 		return;
 
-	Record *record = &bt_records[bestidx][bestrecord];
+	if (!(cmd->buttons & IN_ATTACK))
+		return;
 
-	mem->setabsorigin(besttarget, &record->origin);
-	cmd->tickcount = TIMETOTICKS(record->simtime + getlerp());
+	Record *record = bt_getclosestrecord(cmd);
+
+	if (record)
+		cmd->tickcount = TIMETOTICKS(record->simtime + getlerp());
 }
 
 void
