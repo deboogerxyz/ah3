@@ -1,3 +1,5 @@
+#include "trace.h"
+
 #include "ent.h"
 
 ClientClass *
@@ -75,6 +77,33 @@ ent_getbonepos(uintptr_t ent, int bone)
 	ent_setupbones(ent, m, 256, 256, 0.0f);
 
 	return mat_origin(m[bone]);
+}
+
+int
+ent_cansee(uintptr_t ent, uintptr_t other, Vector pos)
+{
+	Vector eyepos = ent_geteyepos(ent);
+
+	Ray ray;
+
+	ray.start = eyepos;
+	ray.delta = vec_sub(pos, eyepos);
+	ray.startoffset.x = ray.startoffset.y = ray.startoffset.z = 0.0f;
+	ray.extents.x = ray.extents.y = ray.extents.z = 0.0f;
+	ray.worldaxistransform = 0;
+	ray.isray = 1;
+	ray.isswept = !vec_isnull(ray.delta);
+
+	TraceFilter filter;
+
+	trace_initfilter(&filter);
+	filter.skip = ent;
+
+	Trace trace;
+
+	trace_traceray(&ray, 0x46004009, &filter, &trace);
+
+	return trace.ent == other;
 }
 
 NV_IMPL(movetype, "CBaseEntity", "m_nRenderMode", 1, MoveType)

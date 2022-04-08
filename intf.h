@@ -7,6 +7,7 @@ typedef struct {
 	uintptr_t *client;
 	uintptr_t *cvar;
 	uintptr_t *engine;
+	uintptr_t *trace;
 	uintptr_t *entlist;
 	uintptr_t *inputsys;
 } Intf;

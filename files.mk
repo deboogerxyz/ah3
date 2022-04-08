@@ -21,6 +21,7 @@ SRC = ah.c \
       hax/misc.c \
       sdk/netchan.c \
       nv.c \
+      sdk/trace.c \
       util.c \
       sdk/vec.c \
       hax/visuals.c
@@ -55,6 +56,7 @@ HDR = hax/legitbot.h \
       sdk/usercmd.h \
       util.h \
       sdk/utlvec.h \
+      sdk/trace.h \
       deps/nuklear.h \
       deps/nuklear_sdl_gl3.h \
       sdk/vec.h \

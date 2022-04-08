@@ -114,6 +114,9 @@ legitbot_run(UserCmd *cmd)
 		if (!ent_isalive(ent) || ent_isdormant(ent) || *ent_getimmunity(ent))
 			continue;
 
+		if (config.visiblecheck && !ent_cansee(localplayer, ent, ent_getbonepos(ent, 8)))
+			continue;
+
 		for (int j = 0; j < LEN(config.bones); j++) {
 			if (!config.bones[j])
 				continue;
@@ -193,6 +196,7 @@ legitbot_drawgui(struct nk_context *ctx)
 			if (nk_tree_push_id(ctx, NK_TREE_NODE, categories[i], NK_MINIMIZED, i)) {
 				nk_checkbox_label(ctx, "Enabled", &cfg->legitbot[i].enabled);
 				nk_checkbox_label(ctx, "Silent", &cfg->legitbot[i].silent);
+				nk_checkbox_label(ctx, "Visible check", &cfg->legitbot[i].visiblecheck);
 				nk_property_float(ctx, "#FOV:", 0.0f, &cfg->legitbot[i].fov, 255.0f, 0.025f, 0.025f);
 				if (!cfg->legitbot[i].silent)
 					nk_property_float(ctx, "#Smooth:", 1.0f, &cfg->legitbot[i].smooth, 100.0f, 0.1f, 0.1f);
@@ -222,6 +226,9 @@ legitbot_loadcfg(cJSON *json)
 		cJSON* silent = cJSON_GetObjectItem(legitbotjson, "Silent");
 		if (cJSON_IsBool(silent))
 			cfg->legitbot[i].silent = silent->valueint;
+		cJSON* visiblecheck = cJSON_GetObjectItem(legitbotjson, "Visible check");
+		if (cJSON_IsBool(visiblecheck))
+			cfg->legitbot[i].visiblecheck = visiblecheck->valueint;
 		cJSON* fov = cJSON_GetObjectItem(legitbotjson, "FOV");
 		if (cJSON_IsNumber(fov))
 			cfg->legitbot[i].fov = (float)fov->valuedouble;
@@ -253,6 +260,7 @@ legitbot_savecfg(cJSON *json)
 
 		cJSON_AddBoolToObject(legitbot, "Enabled", cfg->legitbot[i].enabled);
 		cJSON_AddBoolToObject(legitbot, "Silent", cfg->legitbot[i].silent);
+		cJSON_AddBoolToObject(legitbot, "Visible check", cfg->legitbot[i].visiblecheck);
 		cJSON_AddNumberToObject(legitbot, "FOV", cfg->legitbot[i].fov);
 		cJSON_AddNumberToObject(legitbot, "Smooth", cfg->legitbot[i].smooth);
 
