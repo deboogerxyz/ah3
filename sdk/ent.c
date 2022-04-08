@@ -103,7 +103,7 @@ ent_cansee(uintptr_t ent, uintptr_t other, Vector pos)
 
 	trace_traceray(&ray, 0x46004009, &filter, &trace);
 
-	return trace.ent == other;
+	return trace.ent == other || trace.fraction > 0.97f;
 }
 
 NV_IMPL(movetype, "CBaseEntity", "m_nRenderMode", 1, MoveType)
