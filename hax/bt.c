@@ -73,6 +73,7 @@ bt_update(FrameStage stage)
 			continue;
 
 		Record record = {
+			.ent     = ent,
 			.simtime = *ent_getsimtime(ent)
 		};
 		ent_setupbones(ent, record.matrix, 256, 256, 0.0f);

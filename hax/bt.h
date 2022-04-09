@@ -10,6 +10,7 @@
 #include "../sdk/usercmd.h"
 
 typedef struct {
+	uintptr_t ent;
 	Matrix3x4 matrix[256];
 	float simtime;
 } Record;

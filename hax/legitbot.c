@@ -114,11 +114,11 @@ legitbot_run(UserCmd *cmd)
 		if (!ent_isalive(ent) || ent_isdormant(ent) || *ent_getimmunity(ent))
 			continue;
 
-		if (config.visiblecheck && !ent_cansee(localplayer, ent, ent_getbonepos(ent, 8)))
-			continue;
-
 		for (int j = 0; j < LEN(config.bones); j++) {
 			if (!config.bones[j])
+				continue;
+
+			if (config.visiblecheck && !ent_cansee(localplayer, ent, ent_getbonepos(ent, 8 - j)))
 				continue;
 
 			Vector bonepos = ent_getbonepos(ent, 8 - j);
@@ -140,6 +140,9 @@ legitbot_run(UserCmd *cmd)
 	if (record) {
 		for (int k = 0; k < LEN(config.bones); k++) {
 			if (!config.bones[k])
+				continue;
+
+			if (config.visiblecheck && !ent_cansee(localplayer, record->ent, mat_origin(record->matrix[8 - k])))
 				continue;
 
 			Vector headpos = mat_origin(record->matrix[8 - k]);
