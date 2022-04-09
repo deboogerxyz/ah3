@@ -88,6 +88,9 @@ legitbot_run(UserCmd *cmd)
 	if (!config.enabled)
 		return;
 
+	if (config.scopecheck && !*ent_getisscoped(localplayer) && ent_getweapontype(weapon) == WEAPONTYPE_SNIPER)
+		return;
+
 	WeaponInfo *weaponinfo = ent_getweaponinfo(weapon);
 	if (!weaponinfo)
 		return;
@@ -179,6 +182,8 @@ legitbot_drawgui(struct nk_context *ctx)
 				nk_checkbox_label(ctx, "Enabled", &cfg->legitbot[i].enabled);
 				nk_checkbox_label(ctx, "Silent", &cfg->legitbot[i].silent);
 				nk_checkbox_label(ctx, "Visible check", &cfg->legitbot[i].visiblecheck);
+				if (i > 0 && i < 4)
+					nk_checkbox_label(ctx, "Scope check", &cfg->legitbot[i].scopecheck);
 				nk_property_float(ctx, "#FOV:", 0.0f, &cfg->legitbot[i].fov, 255.0f, 0.025f, 0.025f);
 				if (!cfg->legitbot[i].silent)
 					nk_property_float(ctx, "#Smooth:", 1.0f, &cfg->legitbot[i].smooth, 100.0f, 0.1f, 0.1f);
@@ -211,6 +216,11 @@ legitbot_loadcfg(cJSON *json)
 		cJSON* visiblecheck = cJSON_GetObjectItem(legitbotjson, "Visible check");
 		if (cJSON_IsBool(visiblecheck))
 			cfg->legitbot[i].visiblecheck = visiblecheck->valueint;
+		if (i > 0 && i < 4) {
+			cJSON* scopecheck = cJSON_GetObjectItem(legitbotjson, "Scope check");
+			if (cJSON_IsBool(scopecheck))
+				cfg->legitbot[i].scopecheck = scopecheck->valueint;
+		}
 		cJSON* fov = cJSON_GetObjectItem(legitbotjson, "FOV");
 		if (cJSON_IsNumber(fov))
 			cfg->legitbot[i].fov = (float)fov->valuedouble;
@@ -243,6 +253,8 @@ legitbot_savecfg(cJSON *json)
 		cJSON_AddBoolToObject(legitbot, "Enabled", cfg->legitbot[i].enabled);
 		cJSON_AddBoolToObject(legitbot, "Silent", cfg->legitbot[i].silent);
 		cJSON_AddBoolToObject(legitbot, "Visible check", cfg->legitbot[i].visiblecheck);
+		if (i > 0 && i < 4)
+			cJSON_AddBoolToObject(legitbot, "Scope check", cfg->legitbot[i].scopecheck);
 		cJSON_AddNumberToObject(legitbot, "FOV", cfg->legitbot[i].fov);
 		cJSON_AddNumberToObject(legitbot, "Smooth", cfg->legitbot[i].smooth);
 

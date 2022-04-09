@@ -63,6 +63,12 @@ ent_getactiveweapon(uintptr_t ent)
 	return VFN(uintptr_t (*)(uintptr_t), VMT(ent), 331)(ent);
 }
 
+WeaponType
+ent_getweapontype(uintptr_t ent)
+{
+	return VFN(WeaponType (*)(uintptr_t), VMT(ent), 523)(ent);
+}
+
 WeaponInfo *
 ent_getweaponinfo(uintptr_t ent)
 {
