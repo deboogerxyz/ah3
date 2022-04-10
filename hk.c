@@ -129,11 +129,12 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 		return result;
 
 	const Vector currentangles = cmd->viewangles;
-	
+
 	globalvars_getservertime(cmd);
 
 	misc_antiafk(cmd);
 	misc_bhop(cmd);
+	misc_clantagchanger();
 	misc_fastduck(cmd);
 	misc_slidewalk(cmd);
 	visuals_revealranks(cmd);

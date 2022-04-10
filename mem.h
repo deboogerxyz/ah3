@@ -10,6 +10,7 @@ typedef struct {
 	void (*debugmsg)(const char *msg, ...);
 	int (*isotherenemy)(uintptr_t, uintptr_t);
 	uintptr_t *clientmode;
+	void (*setclantag)(const char *, const char *);
 	GlobalVars *globalvars;
 	void (*setabsorigin)(uintptr_t, Vector *);
 	GlowObjMgr *glowobjmgr;

@@ -9,12 +9,14 @@
 typedef struct {
 	int antiafk;
 	int bhop;
+	int clantagchanger;
 	int fastduck;
 	int slidewalk;
 } MiscCfg;
 
 void misc_antiafk(UserCmd *cmd);
 void misc_bhop(UserCmd *cmd);
+void misc_clantagchanger(void);
 void misc_fastduck(UserCmd *cmd);
 void misc_fixmovement(UserCmd *cmd, float yaw);
 void misc_slidewalk(UserCmd *cmd);

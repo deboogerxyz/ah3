@@ -4,6 +4,8 @@
 #include "../sdk/engine.h"
 #include "../sdk/ent.h"
 #include "../sdk/entlist.h"
+#include "../mem.h"
+#include "../sdk/netchan.h"
 
 #include "misc.h"
 
@@ -30,6 +32,39 @@ misc_bhop(UserCmd *cmd)
 		cmd->buttons &= ~IN_JUMP;
 
 	wasonground = *ent_getflags(localplayer) & 1;
+}
+
+void
+misc_clantagchanger(void)
+{
+	static char *lasttag = "";
+	const char *tag = "";
+
+	if (cfg->misc.clantagchanger)
+		tag = "alienhook.xyz ";
+
+	uintptr_t netchan = engine_getnetchan();
+	if (!netchan)
+		return;
+
+	float time = mem->globalvars->currenttime - netchan_getlatency(netchan, 0);
+
+	cvector_vector_type(char) curtag = NULL;
+
+	for (int i = 0; i < strlen(tag); i++) {
+		int letter = i + (int)(time * 2);
+		cvector_push_back(curtag, tag[letter % strlen(tag)]);
+	}
+
+	cvector_push_back(curtag, '\0');
+
+	if (strcmp(curtag, lasttag) != 0) {
+		mem->setclantag(curtag, curtag);
+
+		lasttag = curtag;
+	}
+
+	cvector_free(curtag);
 }
 
 void
@@ -72,6 +107,7 @@ misc_drawgui(struct nk_context *ctx)
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Misc", NK_MINIMIZED)) {
 		nk_checkbox_label(ctx, "Anti AFK kick", &cfg->misc.antiafk);
 		nk_checkbox_label(ctx, "Bunny hop", &cfg->misc.bhop);
+		nk_checkbox_label(ctx, "Clantag changer", &cfg->misc.clantagchanger);
 		nk_checkbox_label(ctx, "Fast duck", &cfg->misc.fastduck);
 		nk_checkbox_label(ctx, "Slidewalk", &cfg->misc.slidewalk);
 
@@ -90,6 +126,9 @@ misc_loadcfg(cJSON *json)
 	cJSON* bhop = cJSON_GetObjectItem(miscjson, "Bunny hop");
 	if (cJSON_IsBool(bhop))
 		cfg->misc.bhop = bhop->valueint;
+	cJSON* clantagchanger = cJSON_GetObjectItem(miscjson, "Clantag changer");
+	if (cJSON_IsBool(clantagchanger))
+		cfg->misc.clantagchanger = clantagchanger->valueint;
 	cJSON* fastduck = cJSON_GetObjectItem(miscjson, "Fast duck");
 	if (cJSON_IsBool(fastduck))
 		cfg->misc.fastduck = fastduck->valueint;
@@ -105,6 +144,7 @@ misc_savecfg(cJSON *json)
 
 	cJSON_AddBoolToObject(miscjson, "Anti AFK kick", cfg->misc.antiafk);
 	cJSON_AddBoolToObject(miscjson, "Bunny hop", cfg->misc.bhop);
+	cJSON_AddBoolToObject(miscjson, "Clantag changer", cfg->misc.clantagchanger);
 	cJSON_AddBoolToObject(miscjson, "Fast duck", cfg->misc.fastduck);
 	cJSON_AddBoolToObject(miscjson, "Slidewalk", cfg->misc.slidewalk);
 

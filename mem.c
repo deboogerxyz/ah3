@@ -97,6 +97,7 @@ mem_init(void)
 
 	*(void **)&mem->isotherenemy = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x84\xC0\x44\x89\xE2") + 1);
 	*(void **)&mem->clientmode   = *(void **)reltoabs(reltoabs(VMT(intf->client)[10] + 12) + 4);
+	*(void **)&mem->setclantag   = (void *)reltoabs(find("engine_client.so", "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
 	*(void **)&mem->globalvars   = *(void **)reltoabs(VMT(intf->client)[11] + 16);
 	*(void **)&mem->setabsorigin = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x49\x8B\x07\x31\xF6") + 1);
 	*(void **)&mem->glowobjmgr   = (void *)reltoabs(reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x4C\x89\xE7\x8B\x70\x20") + 1) + 12);
