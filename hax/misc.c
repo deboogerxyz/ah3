@@ -63,8 +63,6 @@ misc_clantagchanger(void)
 
 		lasttag = curtag;
 	}
-
-	cvector_free(curtag);
 }
 
 void
