@@ -1,3 +1,4 @@
+#include <dlfcn.h> /* dlopen */
 #include <pthread.h>
 
 #include "hax/bt.h"
@@ -12,6 +13,11 @@ static pthread_t thrd;
 static void *
 thrd_main(void *vargp)
 {
+	struct timespec ts = {0, 100000000}; /* 100ms */
+
+	while (!dlopen("bin/linux64/serverbrowser_client.so", RTLD_NOLOAD | RTLD_NOW))
+		nanosleep(&ts, &ts); /* Wait for the game to fully load */
+
 	intf_init();
 	mem_init();
 	hk_init();
