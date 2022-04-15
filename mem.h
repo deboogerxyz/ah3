@@ -11,6 +11,7 @@ typedef struct {
 	int (*isotherenemy)(uintptr_t, uintptr_t);
 	uintptr_t *clientmode;
 	void (*setclantag)(const char *, const char *);
+	char (*linegoesthrusmoke)(Vector, Vector, short);
 	GlobalVars *globalvars;
 	void (*setabsorigin)(uintptr_t, Vector *);
 	GlowObjMgr *glowobjmgr;

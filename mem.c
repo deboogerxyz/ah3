@@ -95,14 +95,15 @@ mem_init(void)
 	mem->swapwindow = reltoabs((uintptr_t)dlsym(sdl, "SDL_GL_SwapWindow") + 2);
 	dlclose(sdl);
 
-	*(void **)&mem->isotherenemy = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x84\xC0\x44\x89\xE2") + 1);
-	*(void **)&mem->clientmode   = *(void **)reltoabs(reltoabs(VMT(intf->client)[10] + 12) + 4);
-	*(void **)&mem->setclantag   = (void *)reltoabs(find("engine_client.so", "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
-	*(void **)&mem->globalvars   = *(void **)reltoabs(VMT(intf->client)[11] + 16);
-	*(void **)&mem->setabsorigin = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x49\x8B\x07\x31\xF6") + 1);
-	*(void **)&mem->glowobjmgr   = (void *)reltoabs(reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x4C\x89\xE7\x8B\x70\x20") + 1) + 12);
-	mem->demoorhltv              = find("csgo/bin/linux64/client_client.so", "\x0F\xB6\x10\x89\xD0") - 16;
-	mem->money                   = find("csgo/bin/linux64/client_client.so", "\x84\xC0\x75\x9E\xB8????\xEB\xB9");
+	*(void **)&mem->isotherenemy      = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x84\xC0\x44\x89\xE2") + 1);
+	*(void **)&mem->clientmode        = *(void **)reltoabs(reltoabs(VMT(intf->client)[10] + 12) + 4);
+	*(void **)&mem->setclantag        = (void *)reltoabs(find("engine_client.so", "\xE8????\xE9????\x66\x0F\x1F\x44??\x48\x8B\x7D\xB0") + 1);
+	*(void **)&mem->linegoesthrusmoke = (void *)find("csgo/bin/linux64/client_client.so", "\x55\x48\x89\xE5\x41\x56\x41\x55\x41\x54\x53\x48\x83\xEC\x30\x66\x0F\xD6\x45\xD0");
+	*(void **)&mem->globalvars        = *(void **)reltoabs(VMT(intf->client)[11] + 16);
+	*(void **)&mem->setabsorigin      = (void *)reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x49\x8B\x07\x31\xF6") + 1);
+	*(void **)&mem->glowobjmgr        = (void *)reltoabs(reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x4C\x89\xE7\x8B\x70\x20") + 1) + 12);
+	mem->demoorhltv                   = find("csgo/bin/linux64/client_client.so", "\x0F\xB6\x10\x89\xD0") - 16;
+	mem->money                        = find("csgo/bin/linux64/client_client.so", "\x84\xC0\x75\x9E\xB8????\xEB\xB9");
 }
 
 void

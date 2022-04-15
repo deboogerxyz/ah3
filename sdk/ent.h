@@ -34,6 +34,7 @@ NV_DECL(viewmodel, int);
 NV_DECL(health, int);
 NV_DECL(flags, int);
 NV_DECL(spottedbymask, long);
+NV_DECL(flashdur, float);
 NV_DECL(tickbase, int);
 NV_DECL(isscoped, char);
 NV_DECL(immunity, char);

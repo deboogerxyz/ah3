@@ -1,3 +1,4 @@
+#include "../mem.h"
 #include "trace.h"
 
 #include "ent.h"
@@ -88,7 +89,13 @@ ent_getbonepos(uintptr_t ent, int bone)
 int
 ent_cansee(uintptr_t ent, uintptr_t other, Vector pos)
 {
+	if (*ent_getflashdur(ent) > 75.0f)
+		return 0;
+
 	Vector eyepos = ent_geteyepos(ent);
+
+	if (mem->linegoesthrusmoke(eyepos, pos, 1))
+		return 0;
 
 	Ray ray;
 
@@ -118,6 +125,7 @@ NV_IMPL(viewmodel, "CBasePlayer", "m_hViewModel[0]", 0, int)
 NV_IMPL(health, "CBasePlayer", "m_iHealth", 0, int)
 NV_IMPL(flags, "CBasePlayer", "m_fFlags", 0, int)
 NV_IMPL(spottedbymask, "CBaseEntity", "m_bSpottedByMask", 0, long)
+NV_IMPL(flashdur, "CCSPlayer", "m_flFlashMaxAlpha", -8, float)
 NV_IMPL(tickbase, "CBasePlayer", "m_nTickBase", 0, int)
 NV_IMPL(isscoped, "CCSPlayer", "m_bIsScoped", 0, char)
 NV_IMPL(immunity, "CCSPlayer", "m_bGunGameImmunity", 0, char)
