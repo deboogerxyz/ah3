@@ -80,7 +80,7 @@ bt_update(FrameStage stage)
 
 		cvector_push_back(bt_records[i], record);
 
-		while (cvector_size(bt_records[i]) > 3 && cvector_size(bt_records[i]) > TIMETOTICKS((float)cfg->bt.limit / 1000.0f))
+		while (cvector_size(bt_records[i]) > TIMETOTICKS((float)cfg->bt.limit / 1000.0f))
 			cvector_erase(bt_records[i], 0);
 
 		for (int j = 0; j < cvector_size(bt_records[i]); j++)
