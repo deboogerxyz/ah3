@@ -113,3 +113,15 @@ vec_crossprod(Vector a, Vector b)
 
 	return c;
 }
+
+float
+vec_len(Vector v)
+{
+	return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+float
+vec_dist(Vector a, Vector b)
+{
+	return vec_len(vec_sub(a, b));
+}

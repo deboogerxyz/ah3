@@ -15,5 +15,7 @@ Vector vec_norm(Vector v);
 Vector vec_calcang(Vector start, Vector end, Vector ang);
 int vec_isnull(Vector v);
 Vector vec_crossprod(Vector a, Vector b);
+float vec_len(Vector v);
+float vec_dist(Vector a, Vector b);
 
 #endif /* VEC_H_ */
