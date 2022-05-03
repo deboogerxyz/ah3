@@ -1,5 +1,6 @@
 #include "cfg.h"
 #include "hax/bt.h"
+#include "hax/chams.h"
 #include "hax/glow.h"
 #include "hax/legitbot.h"
 #include "hax/misc.h"
@@ -60,6 +61,7 @@ gui_render(struct nk_context *ctx, SDL_Window *win)
 		legitbot_drawgui(ctx);
 		bt_drawgui(ctx);
 		glow_drawgui(ctx);
+		chams_drawgui(ctx);
 		visuals_drawgui(ctx);
 		misc_drawgui(ctx);
 		cfg_drawgui(ctx);

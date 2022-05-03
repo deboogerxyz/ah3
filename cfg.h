@@ -2,6 +2,7 @@
 #define CFG_H_
 
 #include "hax/bt.h"
+#include "hax/chams.h"
 #include "hax/glow.h"
 #include "gui.h"
 #include "hax/legitbot.h"
@@ -12,6 +13,7 @@ typedef struct {
 	LegitbotCfg legitbot[6];
 	BtCfg bt;
 	GlowCfg glow[6];
+	ChamsCfg chams[2];
 	VisualsCfg visuals;
 	MiscCfg misc;
 } Cfg;

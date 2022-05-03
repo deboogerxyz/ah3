@@ -2,6 +2,7 @@ SRC = ah.c \
       hax/legitbot.c \
       hax/bt.c \
       cfg.c \
+      hax/chams.c \
       sdk/client.c \
       sdk/color.c \
       sdk/convar.c \
@@ -17,10 +18,13 @@ SRC = ah.c \
       sdk/inputsys.c \
       intf.c \
       sdk/mat3x4.c \
+      sdk/material.c \
+      sdk/matsystem.c \
       mem.c \
       hax/misc.c \
       sdk/netchan.c \
       nv.c \
+      sdk/studiorender.c \
       sdk/trace.c \
       util.c \
       sdk/vec.c \
@@ -29,6 +33,7 @@ SRC = ah.c \
 HDR = hax/legitbot.h \
       hax/bt.h \
       cfg.h \
+      hax/chams.h \
       sdk/classid.h \
       sdk/client.h \
       sdk/clientclass.h \
@@ -48,15 +53,19 @@ HDR = hax/legitbot.h \
       sdk/inputsys.h \
       intf.h \
       sdk/mat3x4.h \
+      sdk/material.h \
+      sdk/matsystem.h \
       mem.h \
       hax/misc.h \
+      sdk/modelrender.h \
       sdk/netchan.h \
       nv.h \
       sdk/recv.h \
       sdk/usercmd.h \
       util.h \
-      sdk/utlvec.h \
+      sdk/studiorender.h \
       sdk/trace.h \
+      sdk/utlvec.h \
       deps/nuklear.h \
       deps/nuklear_sdl_gl3.h \
       sdk/vec.h \

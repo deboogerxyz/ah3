@@ -1,13 +1,9 @@
 #include <cjson/cJSON.h>
 #include <stdio.h>    /* sprintf */
 #include <stdlib.h>   /* getenv, ... */
-#include <sys/stat.h> /* mkdir */ 
+#include <sys/stat.h> /* mkdir */
 #include <pwd.h>      /* getpwuid */
 #include <unistd.h>   /* getuid */
-
-#include "hax/bt.h"
-#include "hax/glow.h"
-#include "hax/misc.h"
 
 #include "cfg.h"
 
@@ -71,6 +67,7 @@ cfg_load(const char *name)
 	legitbot_loadcfg(json);
 	bt_loadcfg(json);
 	glow_loadcfg(json);
+	chams_loadcfg(json);
 	visuals_loadcfg(json);
 	misc_loadcfg(json);
 
@@ -86,6 +83,7 @@ cfg_save(const char *name)
 	legitbot_savecfg(json);
 	bt_savecfg(json);
 	glow_savecfg(json);
+	chams_savecfg(json);
 	visuals_savecfg(json);
 	misc_savecfg(json);
 

@@ -1,3 +1,4 @@
+#include "sdk/mat3x4.h"
 #include <GL/glew.h>
 #include <stdlib.h> /* malloc, ... */
 #include <string.h> /* memcpy */
@@ -7,15 +8,19 @@
 
 #include "hax/bt.h"
 #include "cfg.h"
+#include "hax/chams.h"
 #include "hax/glow.h"
 #include "gui.h"
 #include "intf.h"
 #include "hax/legitbot.h"
 #include "mem.h"
+#include "sdk/material.h"
+#include "sdk/matsystem.h"
 #include "hax/misc.h"
 #include "sdk/engine.h"
 #include "sdk/ent.h"
 #include "sdk/entlist.h"
+#include "sdk/studiorender.h"
 #include "hax/visuals.h"
 #include "sdk/viewsetup.h"
 #include "util.h"
@@ -31,7 +36,7 @@ typedef struct {
 
 static int (*origpollevent)(SDL_Event *);
 static void (*origswapwindow)(SDL_Window *);
-static Vmt client, clientmode, engine;
+static Vmt client, clientmode, engine, modelrender;
 
 static size_t
 getvmtsize(uintptr_t *vmt)
@@ -206,7 +211,6 @@ static void
 framestagenotify(void *this, FrameStage stage)
 {
 	static int once;
-
 	if (!once) {
 		bt_init();
 		once = 1;
@@ -232,6 +236,21 @@ isplayingdemo(void *this)
 	return VFN(char (*)(void *), engine.old, 82)(intf->engine);
 }
 
+static void
+drawmodelexecute(void *this, void *ctx, void *state, ModelRenderInfo *info, Matrix3x4 *custombonetoworld)
+{
+	if (!chams_render(ctx, state, info, custombonetoworld))
+		hk_orig_drawmodelexecute(ctx, state, info, custombonetoworld);
+
+	studiorender_forcedmatoverride(0, OVERRIDETYPE_NORMAL, -1);
+}
+
+void
+hk_orig_drawmodelexecute(void *ctx, void *state, ModelRenderInfo *info, Matrix3x4 *custombonetoworld)
+{
+	VFN(void (*)(void *, void *, void *, ModelRenderInfo *, Matrix3x4 *), modelrender.old, 21)(intf->modelrender, ctx, state, info, custombonetoworld);
+}
+
 void
 hk_init(void)
 {
@@ -252,6 +271,9 @@ hk_init(void)
 
 	hookvmt((uintptr_t)intf->engine, &engine);
 	hookfn(&engine, 82, &isplayingdemo);
+
+	hookvmt((uintptr_t)intf->modelrender, &modelrender);
+	hookfn(&modelrender, 21, &drawmodelexecute);
 }
 
 void
@@ -260,6 +282,7 @@ hk_clean(void)
 	unhookvmt(&client);
 	unhookvmt(&clientmode);
 	unhookvmt(&engine);
+	unhookvmt(&modelrender);
 
 	*(void ***)mem->pollevent = (void *)origpollevent;
 	*(void ***)mem->swapwindow = (void *)origswapwindow;

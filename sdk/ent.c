@@ -41,6 +41,12 @@ ent_isalive(uintptr_t ent)
 }
 
 int
+ent_isplayer(uintptr_t ent)
+{
+	return VFN(char (*)(uintptr_t), VMT(ent), 210)(ent);
+}
+
+int
 ent_isweapon(uintptr_t ent)
 {
 	return VFN(char (*)(uintptr_t), VMT(ent), 218)(ent);

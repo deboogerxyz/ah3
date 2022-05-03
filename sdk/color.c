@@ -3,6 +3,18 @@
 #include "color.h"
 
 Color
+color_fromcolora(ColorA c)
+{
+	Color a = {
+		.r = c.r,
+		.g = c.g,
+		.b = c.b
+	};
+
+	return a;
+}
+
+Color
 color_health(int health)
 {
 	health = MIN(health, 100);

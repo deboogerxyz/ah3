@@ -184,7 +184,6 @@ glow_savecfg(cJSON *json)
 		for (int j = 0; j < 4; j++)
 			cJSON_AddItemToArray(colorjson, cJSON_CreateNumber(*(&cfg->glow[i].color.r + j)));
 
-
 		cJSON_AddItemToArray(glowjson, glow);
 	}
 }

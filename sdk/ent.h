@@ -19,6 +19,7 @@ int ent_setupbones(uintptr_t ent, Matrix3x4 *out, int max, int mask, float curti
 int ent_isdormant(uintptr_t ent);
 Vector *ent_getabsorigin(uintptr_t ent);
 int ent_isalive(uintptr_t ent);
+int ent_isplayer(uintptr_t ent);
 int ent_isweapon(uintptr_t ent);
 Vector ent_geteyepos(uintptr_t ent);
 Vector ent_getaimpunch(uintptr_t ent);

@@ -25,12 +25,15 @@ intf_init(void)
 {
 	intf = calloc(1, sizeof(Intf));
 
-	intf->client   = find("csgo/bin/linux64/client_client.so", "VClient018");
-	intf->cvar     = find("libvstdlib_client.so", "VEngineCvar007");
-	intf->engine   = find("engine_client.so", "VEngineClient014");
-	intf->trace    = find("engine_client.so", "EngineTraceClient004");
-	intf->entlist  = find("csgo/bin/linux64/client_client.so", "VClientEntityList003");
-	intf->inputsys = find("inputsystem_client.so", "InputSystemVersion001");
+	intf->client       = find("csgo/bin/linux64/client_client.so", "VClient018");
+	intf->cvar         = find("libvstdlib_client.so", "VEngineCvar007");
+	intf->engine       = find("engine_client.so", "VEngineClient014");
+	intf->trace        = find("engine_client.so", "EngineTraceClient004");
+	intf->entlist      = find("csgo/bin/linux64/client_client.so", "VClientEntityList003");
+	intf->inputsys     = find("inputsystem_client.so", "InputSystemVersion001");
+	intf->matsystem    = find("materialsystem_client.so", "VMaterialSystem080");
+	intf->modelrender  = find("engine_client.so", "VEngineModel016");
+	intf->studiorender = find("studiorender_client.so", "VStudioRender026");
 }
 
 void

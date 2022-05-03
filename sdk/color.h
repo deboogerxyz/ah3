@@ -9,6 +9,7 @@ typedef struct {
 	float r, g, b, a;
 } ColorA;
 
+Color color_fromcolora(ColorA c);
 Color color_health(int health);
 ColorA colora_health(int health);
 
