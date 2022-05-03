@@ -1,5 +1,6 @@
 #include "sdk/mat3x4.h"
 #include <GL/glew.h>
+#include <stdint.h>
 #include <stdlib.h> /* malloc, ... */
 #include <string.h> /* memcpy */
 
@@ -36,7 +37,7 @@ typedef struct {
 
 static int (*origpollevent)(SDL_Event *);
 static void (*origswapwindow)(SDL_Window *);
-static Vmt client, clientmode, engine, modelrender;
+static Vmt bspquery, client, clientmode, engine, modelrender;
 
 static size_t
 getvmtsize(uintptr_t *vmt)
@@ -245,6 +246,48 @@ drawmodelexecute(void *this, void *ctx, void *state, ModelRenderInfo *info, Matr
 	studiorender_forcedmatoverride(0, OVERRIDETYPE_NORMAL, -1);
 }
 
+typedef struct {
+	uintptr_t renderable;
+	PAD(18);
+	uint16_t flags;
+	uint16_t flags2;
+} RenderableInfo;
+
+static int
+listleavesinbox(void *this, Vector *mins, Vector *maxs, unsigned short *list, int listmax)
+{
+	if ((uintptr_t)__builtin_return_address(0) != mem->insertintotree)
+		goto skip;
+
+	RenderableInfo *info = *(RenderableInfo **)((uintptr_t)__builtin_frame_address(0) + 0x10 + 0x948);
+	if (!info || !info->renderable)
+		goto skip;
+
+	uintptr_t ent = VFN(uintptr_t (*)(uintptr_t), VMT(info->renderable - sizeof(uintptr_t)), 8)(info->renderable - sizeof(uintptr_t));
+	if (!ent || !ent_isplayer(ent))
+		goto skip;
+
+	const float maxcoord = 16384.0f;
+	const float mincoord = -maxcoord;
+
+	Vector min = {
+		.x = mincoord,
+		.y = mincoord,
+		.z = mincoord
+	};
+
+	Vector max = {
+		.x = maxcoord,
+		.y = maxcoord,
+		.z = maxcoord
+	};
+
+	return VFN(int (*)(void *, Vector *, Vector *, unsigned short *list, int), bspquery.old, 6)(bspquery.old, &min, &max, list, listmax);
+
+skip:
+	return VFN(int (*)(void *, Vector *, Vector *, unsigned short *list, int), bspquery.old, 6)(bspquery.old, mins, maxs, list, listmax);
+}
+
 void
 hk_orig_drawmodelexecute(void *ctx, void *state, ModelRenderInfo *info, Matrix3x4 *custombonetoworld)
 {
@@ -259,6 +302,9 @@ hk_init(void)
 
 	*(void **)&origswapwindow = *(void **)mem->swapwindow;
 	*(void ***)mem->swapwindow = (void *)swapwindow;
+
+	hookvmt(engine_getbsptreequery(), &bspquery);
+	hookfn(&bspquery, 6, &listleavesinbox);
 
 	hookvmt((uintptr_t)intf->client, &client);
 	hookfn(&client, 37, &framestagenotify);
@@ -279,11 +325,12 @@ hk_init(void)
 void
 hk_clean(void)
 {
-	unhookvmt(&client);
-	unhookvmt(&clientmode);
-	unhookvmt(&engine);
 	unhookvmt(&modelrender);
+	unhookvmt(&engine);
+	unhookvmt(&clientmode);
+	unhookvmt(&client);
+	unhookvmt(&bspquery);
 
-	*(void ***)mem->pollevent = (void *)origpollevent;
 	*(void ***)mem->swapwindow = (void *)origswapwindow;
+	*(void ***)mem->pollevent = (void *)origpollevent;
 }

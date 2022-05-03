@@ -34,6 +34,12 @@ engine_isconnected(void)
 }
 
 uintptr_t
+engine_getbsptreequery(void)
+{
+	return VFN(uintptr_t (*)(uintptr_t *), VMT(intf->engine), 43)(intf->engine);
+}
+
+uintptr_t
 engine_getnetchan(void)
 {
 	return VFN(uintptr_t (*)(uintptr_t *), VMT(intf->engine), 78)(intf->engine);

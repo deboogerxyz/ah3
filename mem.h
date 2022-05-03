@@ -14,6 +14,7 @@ typedef struct {
 	char (*linegoesthrusmoke)(Vector, Vector, short);
 	GlobalVars *globalvars;
 	void (*setabsorigin)(uintptr_t, Vector *);
+	uintptr_t insertintotree;
 	GlowObjMgr *glowobjmgr;
 	uintptr_t demoorhltv;
 	uintptr_t money;

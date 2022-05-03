@@ -10,6 +10,7 @@ void engine_setviewangles(Vector *ang);
 int engine_getmaxclients(void);
 int engine_isingame(void);
 int engine_isconnected(void);
+uintptr_t engine_getbsptreequery(void);
 uintptr_t engine_getnetchan(void);
 int engine_istakingscreenshot(void);
 
