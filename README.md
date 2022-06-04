@@ -2,7 +2,7 @@
 
 alienhook (version 3) for Counter-Strike: Global Offensive
 
-Written in ANSI C (C89).
+Written in C99.
 
 ## Features
 
