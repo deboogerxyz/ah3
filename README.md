@@ -62,7 +62,7 @@ git clone --depth 1 https://git.debooger.xyz/debooger/ah3.git
 
 ```
 cd ah3
-make
+make -j4
 ```
 
 ## Loading
@@ -83,5 +83,5 @@ sudo ./ah-unload.sh
 
 ```
 git pull
-make
+make -j4
 ```
