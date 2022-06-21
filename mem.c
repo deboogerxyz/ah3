@@ -90,6 +90,12 @@ mem_init(void)
 	*(void **)&mem->debugmsg = dlsym(tier0, "Msg");
 	dlclose(tier0);
 
+	Lib *vk = getlibinfo("bin/linux64/shaderapivk_client.so");
+	if (vk)
+		mem->debugmsg("We are using Vulkan!\n");
+	else
+		mem->debugmsg("We are NOT using Vulkan!\n");
+
 	void *sdl = dlopen("libSDL2-2.0.so.0", RTLD_LAZY | RTLD_NOLOAD);
 	mem->pollevent = reltoabs((uintptr_t)dlsym(sdl, "SDL_PollEvent") + 2);
 	mem->swapwindow = reltoabs((uintptr_t)dlsym(sdl, "SDL_GL_SwapWindow") + 2);
