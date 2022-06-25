@@ -104,9 +104,6 @@ misc_slidewalk(UserCmd *cmd)
 void
 misc_faststop(UserCmd *cmd)
 {
-	float speed, dir;
-	Vector negdir;
-
 	if (!cfg->misc.faststop)
 		return;
 
@@ -126,12 +123,12 @@ misc_faststop(UserCmd *cmd)
 	if (!ent_isalive(localplayer))
 		return;
 
-	speed = vec_len2d(*ent_getvelocity(localplayer));
+	float speed = vec_len2d(*ent_getvelocity(localplayer));
 	if (speed < 15)
 		return;
 
-	dir = cmd->viewangles.y - vec_toang2d(*ent_getvelocity(localplayer));
-	negdir = vec_fromang2d(dir);
+	float dir = cmd->viewangles.y - vec_toang2d(*ent_getvelocity(localplayer));
+	Vector negdir = vec_fromang2d(dir);
 
 	ConVar *forwardspeed = cvar_find("cl_forwardspeed");
 	ConVar *sidespeed = cvar_find("cl_sidespeed");
@@ -139,6 +136,72 @@ misc_faststop(UserCmd *cmd)
 	cmd->forwardmove = negdir.x * -convar_getfloat(forwardspeed);
 	cmd->sidemove = negdir.y * -convar_getfloat(sidespeed);
 }
+
+static float
+angledeltarad(float a, float b)
+{
+	float delta;
+
+	delta = isfinite(a - b) ? remainder(a - b, 360) : 0;
+
+	if (a > b) {
+		if (delta >= M_PI)
+			delta -= M_PI * 2;
+	} else {
+		if (delta <= -M_PI)
+			delta += M_PI * 2;
+	}
+
+	return delta;
+}
+
+void
+misc_autostrafer(UserCmd *cmd)
+{
+	if (!cfg->misc.autostrafer)
+		return;
+
+	if (!(cmd->buttons & IN_JUMP))
+		return;
+
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
+	if (!localplayer)
+		return;
+
+	if (!ent_isalive(localplayer))
+		return;
+
+	float speed = vec_len2d(*ent_getvelocity(localplayer));
+
+	if (speed < 15)
+		return;
+
+	ConVar *wishspeed = cvar_find("sv_air_max_wishspeed");
+	ConVar *airaccel = cvar_find("sv_airaccelerate");
+	ConVar *maxspeed = cvar_find("sv_maxspeed");
+
+	float bestdelta;
+
+	float term = convar_getfloat(wishspeed) / convar_getfloat(airaccel) / convar_getfloat(maxspeed) * 100.0f / speed;
+	if (term < 1 && term > -1)
+		bestdelta = acosf(term);
+	else
+		return;
+
+	float yaw = DEGTORAD(cmd->viewangles.y);
+	float veldir = atan2f(ent_getvelocity(localplayer)->y, ent_getvelocity(localplayer)->x) - yaw;
+	float wishang = atan2f(-cmd->sidemove, cmd->forwardmove);
+	float delta = angledeltarad(veldir, wishang);
+
+	float movedir = delta < 0 ? veldir + bestdelta : veldir - bestdelta;
+
+	ConVar *forwardspeed = cvar_find("cl_forwardspeed");
+	ConVar *sidespeed = cvar_find("cl_sidespeed");
+
+	cmd->forwardmove = cosf(movedir) * convar_getfloat(forwardspeed);
+	cmd->sidemove = -sinf(movedir) * convar_getfloat(sidespeed);
+}
+
 
 void
 misc_drawgui(struct nk_context *ctx)
@@ -150,6 +213,7 @@ misc_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Fast duck", &cfg->misc.fastduck);
 		nk_checkbox_label(ctx, "Slidewalk", &cfg->misc.slidewalk);
 		nk_checkbox_label(ctx, "Fast stop", &cfg->misc.faststop);
+		nk_checkbox_label(ctx, "Autostrafer", &cfg->misc.autostrafer);
 
 		nk_tree_pop(ctx);
 	}
@@ -178,6 +242,9 @@ misc_loadcfg(cJSON *json)
 	cJSON* faststop = cJSON_GetObjectItem(miscjson, "Fast stop");
 	if (cJSON_IsBool(faststop))
 		cfg->misc.faststop = faststop->valueint;
+	cJSON* autostrafer = cJSON_GetObjectItem(miscjson, "Autostrafer");
+	if (cJSON_IsBool(autostrafer))
+		cfg->misc.autostrafer = autostrafer->valueint;
 }
 
 void
@@ -191,6 +258,7 @@ misc_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(miscjson, "Fast duck", cfg->misc.fastduck);
 	cJSON_AddBoolToObject(miscjson, "Slidewalk", cfg->misc.slidewalk);
 	cJSON_AddBoolToObject(miscjson, "Fast stop", cfg->misc.faststop);
+	cJSON_AddBoolToObject(miscjson, "Autostrafer", cfg->misc.autostrafer);
 
 	cJSON_AddItemToObject(json, "Misc", miscjson);
 }

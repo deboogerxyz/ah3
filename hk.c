@@ -138,12 +138,13 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 
 	globalvars_getservertime(cmd);
 
+	misc_faststop(cmd);
+	misc_autostrafer(cmd);
 	misc_antiafk(cmd);
 	misc_bhop(cmd);
 	misc_clantagchanger();
 	misc_fastduck(cmd);
 	misc_slidewalk(cmd);
-	misc_faststop(cmd);
 	visuals_revealranks(cmd);
 	legitbot_run(cmd);
 	bt_run(cmd);
