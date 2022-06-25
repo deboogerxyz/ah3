@@ -37,6 +37,7 @@ NV_DECL(flags, int);
 NV_DECL(spottedbymask, long);
 NV_DECL(flashdur, float);
 NV_DECL(tickbase, int);
+NV_DECL(velocity, Vector);
 NV_DECL(isscoped, char);
 NV_DECL(immunity, char);
 NV_DECL(shotsfired, int);

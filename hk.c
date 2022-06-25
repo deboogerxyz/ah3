@@ -143,6 +143,7 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	misc_clantagchanger();
 	misc_fastduck(cmd);
 	misc_slidewalk(cmd);
+	misc_faststop(cmd);
 	visuals_revealranks(cmd);
 	legitbot_run(cmd);
 	bt_run(cmd);

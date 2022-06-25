@@ -1,6 +1,8 @@
 #include <cjson/cJSON.h>
 
 #include "../cfg.h"
+#include "../sdk/cvar.h"
+#include "../sdk/convar.h"
 #include "../sdk/engine.h"
 #include "../sdk/ent.h"
 #include "../sdk/entlist.h"
@@ -100,6 +102,45 @@ misc_slidewalk(UserCmd *cmd)
 }
 
 void
+misc_faststop(UserCmd *cmd)
+{
+	float speed, dir;
+	Vector negdir;
+
+	if (!cfg->misc.faststop)
+		return;
+
+	if (cmd->buttons & (IN_MOVELEFT | IN_MOVERIGHT | IN_FORWARD | IN_BACK))
+		return;
+
+	if (cmd->buttons & IN_JUMP)
+		return;
+
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
+	if (!localplayer)
+		return;
+
+	if (!(*ent_getflags(localplayer) & 1))
+		return;
+
+	if (!ent_isalive(localplayer))
+		return;
+
+	speed = vec_len2d(*ent_getvelocity(localplayer));
+	if (speed < 15)
+		return;
+
+	dir = cmd->viewangles.y - vec_toang2d(*ent_getvelocity(localplayer));
+	negdir = vec_fromang2d(dir);
+
+	ConVar *forwardspeed = cvar_find("cl_forwardspeed");
+	ConVar *sidespeed = cvar_find("cl_sidespeed");
+
+	cmd->forwardmove = negdir.x * -convar_getfloat(forwardspeed);
+	cmd->sidemove = negdir.y * -convar_getfloat(sidespeed);
+}
+
+void
 misc_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Misc", NK_MINIMIZED)) {
@@ -108,6 +149,7 @@ misc_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Clantag changer", &cfg->misc.clantagchanger);
 		nk_checkbox_label(ctx, "Fast duck", &cfg->misc.fastduck);
 		nk_checkbox_label(ctx, "Slidewalk", &cfg->misc.slidewalk);
+		nk_checkbox_label(ctx, "Fast stop", &cfg->misc.faststop);
 
 		nk_tree_pop(ctx);
 	}
@@ -133,6 +175,9 @@ misc_loadcfg(cJSON *json)
 	cJSON* slidewalk = cJSON_GetObjectItem(miscjson, "Slidewalk");
 	if (cJSON_IsBool(slidewalk))
 		cfg->misc.slidewalk = slidewalk->valueint;
+	cJSON* faststop = cJSON_GetObjectItem(miscjson, "Fast stop");
+	if (cJSON_IsBool(faststop))
+		cfg->misc.faststop = faststop->valueint;
 }
 
 void
@@ -145,6 +190,7 @@ misc_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(miscjson, "Clantag changer", cfg->misc.clantagchanger);
 	cJSON_AddBoolToObject(miscjson, "Fast duck", cfg->misc.fastduck);
 	cJSON_AddBoolToObject(miscjson, "Slidewalk", cfg->misc.slidewalk);
+	cJSON_AddBoolToObject(miscjson, "Fast stop", cfg->misc.faststop);
 
 	cJSON_AddItemToObject(json, "Misc", miscjson);
 }

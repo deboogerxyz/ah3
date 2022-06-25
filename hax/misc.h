@@ -12,6 +12,7 @@ typedef struct {
 	int clantagchanger;
 	int fastduck;
 	int slidewalk;
+	int faststop;
 } MiscCfg;
 
 void misc_antiafk(UserCmd *cmd);
@@ -20,6 +21,7 @@ void misc_clantagchanger(void);
 void misc_fastduck(UserCmd *cmd);
 void misc_fixmovement(UserCmd *cmd, float yaw);
 void misc_slidewalk(UserCmd *cmd);
+void misc_faststop(UserCmd *cmd);
 void misc_drawgui(struct nk_context *ctx);
 void misc_loadcfg(cJSON *json);
 void misc_savecfg(cJSON *json);

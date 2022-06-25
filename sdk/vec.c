@@ -61,6 +61,12 @@ vec_toang(Vector v)
 	return a;
 }
 
+float
+vec_toang2d(Vector v)
+{
+	return RADTODEG(atan2f(v.y, v.x));
+}
+
 Vector
 vec_fromang(Vector v)
 {
@@ -68,6 +74,18 @@ vec_fromang(Vector v)
 		.x = cos(DEGTORAD(v.x)) * cos(DEGTORAD(v.y)),
 		.y = cos(DEGTORAD(v.x)) * sin(DEGTORAD(v.y)),
 		.z = -sin(DEGTORAD(v.x))
+	};
+
+	return a;
+}
+
+Vector
+vec_fromang2d(float ang)
+{
+	Vector a = {
+		.x = cosf(DEGTORAD(ang)),
+		.y = sinf(DEGTORAD(ang)),
+		.z = 0
 	};
 
 	return a;
@@ -118,6 +136,12 @@ float
 vec_len(Vector v)
 {
 	return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+float
+vec_len2d(Vector v)
+{
+	return sqrtf(v.x * v.x + v.y * v.y);
 }
 
 float
