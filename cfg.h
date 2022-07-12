@@ -7,9 +7,11 @@
 #include "gui.h"
 #include "hax/legitbot.h"
 #include "hax/misc.h"
+#include "hax/ragebot.h"
 #include "hax/visuals.h"
 
 typedef struct {
+	RagebotCfg ragebot[6];
 	LegitbotCfg legitbot[6];
 	BtCfg bt;
 	GlowCfg glow[6];

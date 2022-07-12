@@ -58,6 +58,7 @@ gui_render(struct nk_context *ctx, SDL_Window *win)
 	float y = (float)sdlh / 2 - h / 2;
 
 	if (nk_begin(ctx, "ah3", nk_rect(x, y, w, h), flags)) {
+		ragebot_drawgui(ctx);
 		legitbot_drawgui(ctx);
 		bt_drawgui(ctx);
 		glow_drawgui(ctx);

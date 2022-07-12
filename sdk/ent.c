@@ -82,6 +82,18 @@ ent_getweaponinfo(uintptr_t ent)
 	return VFN(WeaponInfo *(*)(uintptr_t), VMT(ent), 529)(ent);
 }
 
+float
+ent_getspread(uintptr_t ent)
+{
+	return VFN(float (*)(uintptr_t), VMT(ent), 521)(ent);
+}
+
+float
+ent_getinaccuracy(uintptr_t ent)
+{
+	return VFN(float (*)(uintptr_t), VMT(ent), 551)(ent);
+}
+
 Vector
 ent_getbonepos(uintptr_t ent, int bone)
 {

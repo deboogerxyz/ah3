@@ -14,6 +14,7 @@
 #include "gui.h"
 #include "intf.h"
 #include "hax/legitbot.h"
+#include "hax/ragebot.h"
 #include "mem.h"
 #include "sdk/material.h"
 #include "sdk/matsystem.h"
@@ -146,6 +147,7 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	misc_fastduck(cmd);
 	misc_slidewalk(cmd);
 	visuals_revealranks(cmd);
+	ragebot_run(cmd);
 	legitbot_run(cmd);
 	bt_run(cmd);
 

@@ -24,6 +24,7 @@ SRC = ah.c \
       hax/misc.c \
       sdk/netchan.c \
       nv.c \
+      hax/ragebot.c \
       sdk/studiorender.c \
       sdk/trace.c \
       util.c \
@@ -60,6 +61,7 @@ HDR = hax/legitbot.h \
       sdk/modelrender.h \
       sdk/netchan.h \
       nv.h \
+      hax/ragebot.h \
       sdk/recv.h \
       sdk/usercmd.h \
       util.h \

@@ -64,6 +64,7 @@ cfg_load(const char *name)
 	if (!json)
 		return;
 
+	ragebot_loadcfg(json);
 	legitbot_loadcfg(json);
 	bt_loadcfg(json);
 	glow_loadcfg(json);
@@ -80,6 +81,7 @@ cfg_save(const char *name)
 {
 	cJSON *json = cJSON_CreateObject();
 
+	ragebot_savecfg(json);
 	legitbot_savecfg(json);
 	bt_savecfg(json);
 	glow_savecfg(json);

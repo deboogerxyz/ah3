@@ -26,6 +26,8 @@ Vector ent_getaimpunch(uintptr_t ent);
 uintptr_t ent_getactiveweapon(uintptr_t ent);
 WeaponType ent_getweapontype(uintptr_t ent);
 WeaponInfo *ent_getweaponinfo(uintptr_t ent);
+float ent_getspread(uintptr_t ent);
+float ent_getinaccuracy(uintptr_t ent);
 Vector ent_getbonepos(uintptr_t ent, int bone);
 int ent_cansee(uintptr_t ent, uintptr_t other, Vector pos);
 
