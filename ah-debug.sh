@@ -5,7 +5,7 @@ lib="$(pwd)/libah.so"
 
 if [ $(id -u) -ne 0 ];
 then
-	echo "ah-load requires root privileges"
+	echo "ah-debug requires root privileges"
 	exit 1
 fi
 
