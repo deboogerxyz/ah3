@@ -21,6 +21,8 @@ typedef struct {
 	int oppositehandknife;
 	int overridefov;
 	float fov;
+	int overridefarz;
+	float farz;
 	int remove3dsky;
 	int removeaimpunch;
 	int removeviewpunch;

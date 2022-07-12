@@ -128,6 +128,9 @@ visuals_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Override FOV", &cfg->visuals.overridefov);
 		if (cfg->visuals.overridefov)
 			nk_property_float(ctx, "FOV", 0.0f, &cfg->visuals.fov, 180.0f, 0.2f, 0.2f);
+		nk_checkbox_label(ctx, "Override far Z", &cfg->visuals.overridefarz);
+		if (cfg->visuals.overridefarz)
+			nk_property_float(ctx, "Far Z", 0.0f, &cfg->visuals.farz, 100000.0f, 10.0f, 10.0f);
 		nk_checkbox_label(ctx, "Remove 3D sky", &cfg->visuals.remove3dsky);
 		nk_checkbox_label(ctx, "Remove aim punch", &cfg->visuals.removeaimpunch);
 		nk_checkbox_label(ctx, "Remove view punch", &cfg->visuals.removeviewpunch);
@@ -176,6 +179,12 @@ visuals_loadcfg(cJSON *json)
 	cJSON* fov = cJSON_GetObjectItem(visualsjson, "FOV");
 	if (cJSON_IsNumber(fov))
 		cfg->visuals.fov = (float)fov->valuedouble;
+	cJSON* overridefarz = cJSON_GetObjectItem(visualsjson, "Override far Z");
+	if (cJSON_IsBool(overridefarz))
+		cfg->visuals.overridefarz = overridefarz->valueint;
+	cJSON* farz = cJSON_GetObjectItem(visualsjson, "Far Z");
+	if (cJSON_IsNumber(farz))
+		cfg->visuals.farz = (float)farz->valuedouble;
 	cJSON* remove3dsky = cJSON_GetObjectItem(visualsjson, "Remove 3D sky");
 	if (cJSON_IsBool(remove3dsky))
 		cfg->visuals.remove3dsky = remove3dsky->valueint;
@@ -224,6 +233,8 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(visualsjson, "Opposite hand knife", cfg->visuals.oppositehandknife);
 	cJSON_AddBoolToObject(visualsjson, "Override FOV", cfg->visuals.overridefov);
 	cJSON_AddNumberToObject(visualsjson, "FOV", cfg->visuals.fov);
+	cJSON_AddBoolToObject(visualsjson, "Override far Z", cfg->visuals.overridefarz);
+	cJSON_AddNumberToObject(visualsjson, "Far Z", cfg->visuals.farz);
 	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
 	cJSON_AddBoolToObject(visualsjson, "Remove aim punch", cfg->visuals.removeaimpunch);
 	cJSON_AddBoolToObject(visualsjson, "Remove view punch", cfg->visuals.removeviewpunch);

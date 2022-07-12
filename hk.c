@@ -208,6 +208,8 @@ overrideview(void *this, ViewSetup *setup)
 		}
 	}
 
+	if (cfg->visuals.overridefarz)
+		setup->farz = cfg->visuals.farz;
 
 	VFN(void (*)(uintptr_t *, ViewSetup *), clientmode.old, 19)(mem->clientmode, setup);
 }
