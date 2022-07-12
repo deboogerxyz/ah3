@@ -152,3 +152,5 @@ NV_IMPL(shotsfired, "CCSPlayer", "m_iShotsFired", 0, int)
 NV_IMPL(waitfornoattack, "CCSPlayer", "m_bWaitForNoAttack", 0, char)
 NV_IMPL(nextattack, "CBaseCombatCharacter", "m_flNextAttack", 0, float)
 NV_IMPL(itemindex, "CBaseAttributableItem", "m_iItemDefinitionIndex", 0, short)
+NV_IMPL(aimpunchangle, "CBasePlayer", "m_aimPunchAngle", 0, Vector);
+NV_IMPL(viewpunchangle, "CBasePlayer", "m_viewPunchAngle", 0, Vector);

@@ -46,5 +46,7 @@ NV_DECL(shotsfired, int);
 NV_DECL(waitfornoattack, char);
 NV_DECL(nextattack, float);
 NV_DECL(itemindex, short);
+NV_DECL(aimpunchangle, Vector);
+NV_DECL(viewpunchangle, Vector);
 
 #endif /* ENT_H_ */

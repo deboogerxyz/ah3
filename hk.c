@@ -227,6 +227,7 @@ framestagenotify(void *this, FrameStage stage)
 	visuals_grenadeprediction(stage);
 	visuals_oppositehandknife(stage);
 	visuals_remove3dsky(stage);
+	visuals_removevisualrecoil(stage);
 	bt_update(stage);
 
 	VFN(void (*)(uintptr_t *, FrameStage), client.old, 37)(intf->client, stage);

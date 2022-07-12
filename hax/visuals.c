@@ -87,6 +87,35 @@ visuals_revealranks(UserCmd *cmd)
 }
 
 void
+visuals_removevisualrecoil(FrameStage stage)
+{
+	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
+	if (!localplayer)
+		return;
+
+	if (!ent_isalive(localplayer))
+		return;
+
+	Vector veczero = {0};
+
+	static Vector aimpunch, viewpunch;
+
+	if (stage == FS_RENDER_START) {
+		aimpunch = *ent_getaimpunchangle(localplayer);
+		viewpunch = *ent_getviewpunchangle(localplayer);
+
+		if (cfg->visuals.removeaimpunch)
+			*ent_getaimpunchangle(localplayer) = veczero;
+
+		if (cfg->visuals.removeviewpunch)
+			*ent_getviewpunchangle(localplayer) = veczero;
+	} else if (stage == FS_RENDER_END) {
+		*ent_getaimpunchangle(localplayer) = aimpunch;
+		*ent_getviewpunchangle(localplayer) = viewpunch;
+	}
+}
+
+void
 visuals_drawgui(struct nk_context *ctx)
 {
 	if (nk_tree_push(ctx, NK_TREE_TAB, "Visuals", NK_MINIMIZED)) {
@@ -100,6 +129,8 @@ visuals_drawgui(struct nk_context *ctx)
 		if (cfg->visuals.overridefov)
 			nk_property_float(ctx, "FOV", 0.0f, &cfg->visuals.fov, 180.0f, 0.2f, 0.2f);
 		nk_checkbox_label(ctx, "Remove 3D sky", &cfg->visuals.remove3dsky);
+		nk_checkbox_label(ctx, "Remove aim punch", &cfg->visuals.removeaimpunch);
+		nk_checkbox_label(ctx, "Remove view punch", &cfg->visuals.removeviewpunch);
 		nk_checkbox_label(ctx, "Reveal money", &cfg->visuals.revealmoney);
 		nk_checkbox_label(ctx, "Reveal radar", &cfg->visuals.revealradar);
 		nk_checkbox_label(ctx, "Reveal ranks", &cfg->visuals.revealranks);
@@ -148,6 +179,12 @@ visuals_loadcfg(cJSON *json)
 	cJSON* remove3dsky = cJSON_GetObjectItem(visualsjson, "Remove 3D sky");
 	if (cJSON_IsBool(remove3dsky))
 		cfg->visuals.remove3dsky = remove3dsky->valueint;
+	cJSON* removeaimpunch = cJSON_GetObjectItem(visualsjson, "Remove aim punch");
+	if (cJSON_IsBool(removeaimpunch))
+		cfg->visuals.removeaimpunch = removeaimpunch->valueint;
+	cJSON* removeviewpunch = cJSON_GetObjectItem(visualsjson, "Remove view punch");
+	if (cJSON_IsBool(removeviewpunch))
+		cfg->visuals.removeviewpunch = removeviewpunch->valueint;
 	cJSON* revealmoney = cJSON_GetObjectItem(visualsjson, "Reveal money");
 	if (cJSON_IsBool(revealmoney))
 		cfg->visuals.revealmoney = revealmoney->valueint;
@@ -188,6 +225,8 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(visualsjson, "Override FOV", cfg->visuals.overridefov);
 	cJSON_AddNumberToObject(visualsjson, "FOV", cfg->visuals.fov);
 	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
+	cJSON_AddBoolToObject(visualsjson, "Remove aim punch", cfg->visuals.removeaimpunch);
+	cJSON_AddBoolToObject(visualsjson, "Remove view punch", cfg->visuals.removeviewpunch);
 	cJSON_AddBoolToObject(visualsjson, "Reveal money", cfg->visuals.revealmoney);
 	cJSON_AddBoolToObject(visualsjson, "Reveal radar", cfg->visuals.revealradar);
 	cJSON_AddBoolToObject(visualsjson, "Reveal ranks", cfg->visuals.revealranks);

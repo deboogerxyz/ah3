@@ -22,6 +22,8 @@ typedef struct {
 	int overridefov;
 	float fov;
 	int remove3dsky;
+	int removeaimpunch;
+	int removeviewpunch;
 	int revealmoney;
 	int revealradar;
 	int revealranks;
@@ -35,6 +37,7 @@ void visuals_grenadeprediction(FrameStage stage);
 void visuals_oppositehandknife(FrameStage stage);
 void visuals_remove3dsky(FrameStage stage);
 void visuals_revealranks(UserCmd *cmd);
+void visuals_removevisualrecoil(FrameStage stage);
 void visuals_drawgui(struct nk_context *ctx);
 void visuals_loadcfg(cJSON *json);
 void visuals_savecfg(cJSON *json);
