@@ -12,6 +12,7 @@ typedef struct {
 	int visiblecheck;
 	int scopecheck;
 	int autoshoot;
+	int autostop;
 	float fov;
 	float hitchance;
 	int bones[6];

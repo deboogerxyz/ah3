@@ -1,5 +1,6 @@
 #include "../hax/bt.h"
 #include "../cfg.h"
+#include "../sdk/cvar.h"
 #include "../sdk/engine.h"
 #include "../sdk/ent.h"
 #include "../sdk/entlist.h"
@@ -10,6 +11,7 @@
 #include "../sdk/weaponinfo.h"
 
 #include "ragebot.h"
+#include <math.h>
 
 static int 
 getweaponconfig(WeaponId id)
@@ -57,6 +59,44 @@ getweaponconfig(WeaponId id)
 		return 5;
 	default:
 		return -1;
+	}
+}
+
+static void
+autostop(uintptr_t localplayer, WeaponInfo *weaponinfo, UserCmd *cmd)
+{
+	if (!(*ent_getflags(localplayer) & 1))
+		return;
+
+	if (cmd->buttons & IN_JUMP)
+		return;
+
+	if (!ent_isalive(localplayer))
+		return;
+
+	float maxspeed = (ent_getisscoped(localplayer) ? weaponinfo->maxspeedalt : weaponinfo->maxspeed) / 3.0f;
+
+	float speed = vec_len2d(*ent_getvelocity(localplayer));
+
+	if (speed > maxspeed + 15) {
+		float dir = cmd->viewangles.y - vec_toang2d(*ent_getvelocity(localplayer));	
+
+		Vector negdir = vec_fromang2d(dir);
+
+		ConVar *forwardspeed = cvar_find("cl_forwardspeed");
+		ConVar *sidespeed = cvar_find("cl_sidespeed");
+
+		cmd->forwardmove = negdir.x * -convar_getfloat(forwardspeed);
+		cmd->sidemove = negdir.y * -convar_getfloat(sidespeed);
+	} else if (cmd->forwardmove && cmd->sidemove) {
+		float maxspeedroot = maxspeed * M_SQRT1_2;
+
+		cmd->forwardmove = cmd->forwardmove < 0 ? -maxspeedroot : maxspeedroot;
+		cmd->sidemove = cmd->sidemove < 0 ? -maxspeedroot : maxspeedroot;
+	} else if (cmd->forwardmove) {
+		cmd->forwardmove = cmd->forwardmove < 0 ? -maxspeed : maxspeed;
+	} else if (cmd->sidemove) {
+		cmd->sidemove = cmd->sidemove < 0 ? -maxspeed : maxspeed;
 	}
 }
 
@@ -130,17 +170,22 @@ ragebot_run(UserCmd *cmd)
 				continue;
 
 			Vector bonepos = ent_getbonepos(ent, 8 - j);
+			Vector ang     = vec_calcang(eyepos, bonepos, viewangles);
+			float  fov     = hypot(ang.x, ang.y);
+
+			if (fov >= bestfov)
+				continue;
 
 			if (config.visiblecheck && !ent_cansee(localplayer, ent, bonepos))
 				continue;
+
+			if (config.autostop)
+				autostop(localplayer, weaponinfo, cmd);
 
 			float dist = vec_dist(eyepos, bonepos);
 
 			if (gethitchance(weapon, 5, dist) < config.hitchance)
 				continue;
-
-			Vector ang = vec_calcang(eyepos, bonepos, viewangles);
-			float  fov = hypot(ang.x, ang.y);
 
 			if (fov < bestfov) {
 				bestfov = fov;
@@ -159,12 +204,23 @@ ragebot_run(UserCmd *cmd)
 			if (!config.bones[k])
 				continue;
 
-			if (config.visiblecheck && !ent_cansee(localplayer, record->ent, mat_origin(record->matrix[8 - k])))
+			Vector bonepos = mat_origin(record->matrix[8 - k]);
+			Vector ang     = vec_calcang(eyepos, bonepos, viewangles);
+			float  fov     = hypot(ang.x, ang.y);
+
+			if (fov >= bestfov)
 				continue;
 
-			Vector headpos = mat_origin(record->matrix[8 - k]);
-			Vector ang = vec_calcang(eyepos, headpos, viewangles);
-			float  fov = hypot(ang.x, ang.y);
+			if (config.visiblecheck && !ent_cansee(localplayer, record->ent, bonepos))
+				continue;
+
+			if (config.autostop)
+				autostop(localplayer, weaponinfo, cmd);
+
+			float dist = vec_dist(eyepos, bonepos);
+
+			if (gethitchance(weapon, 5, dist) < config.hitchance)
+				continue;
 
 			if (fov < bestfov) {
 				bestfov = fov;
@@ -199,6 +255,7 @@ ragebot_drawgui(struct nk_context *ctx)
 				if (i > 0 && i < 4)
 					nk_checkbox_label(ctx, "Scope check", &cfg->ragebot[i].scopecheck);
 				nk_checkbox_label(ctx, "Auto shoot", &cfg->ragebot[i].autoshoot);
+				nk_checkbox_label(ctx, "Auto stop", &cfg->ragebot[i].autostop);
 				nk_property_float(ctx, "#FOV:", 0.0f, &cfg->ragebot[i].fov, 255.0f, 0.025f, 0.025f);
 				nk_property_float(ctx, "#Hit chance:", 0.0f, &cfg->ragebot[i].hitchance, 1.0f, 0.005f, 0.005f);
 
@@ -238,6 +295,9 @@ ragebot_loadcfg(cJSON *json)
 		cJSON* autoshoot = cJSON_GetObjectItem(ragebotjson, "Auto shoot");
 		if (cJSON_IsBool(autoshoot))
 			cfg->ragebot[i].autoshoot = autoshoot->valueint;
+		cJSON* autostop = cJSON_GetObjectItem(ragebotjson, "Auto stop");
+		if (cJSON_IsBool(autostop))
+			cfg->ragebot[i].autostop = autostop->valueint;
 		cJSON* fov = cJSON_GetObjectItem(ragebotjson, "FOV");
 		if (cJSON_IsNumber(fov))
 			cfg->ragebot[i].fov = (float)fov->valuedouble;
@@ -273,6 +333,7 @@ ragebot_savecfg(cJSON *json)
 		if (i > 0 && i < 4)
 			cJSON_AddBoolToObject(ragebot, "Scope check", cfg->ragebot[i].scopecheck);
 		cJSON_AddBoolToObject(ragebot, "Auto shoot", cfg->ragebot[i].autoshoot);
+		cJSON_AddBoolToObject(ragebot, "Auto stop", cfg->ragebot[i].autostop);
 		cJSON_AddNumberToObject(ragebot, "FOV", cfg->ragebot[i].fov);
 		cJSON_AddNumberToObject(ragebot, "Hit chance", cfg->ragebot[i].hitchance);
 
