@@ -38,7 +38,7 @@ typedef struct {
 
 static int (*origpollevent)(SDL_Event *);
 static void (*origswapwindow)(SDL_Window *);
-static Vmt bspquery, client, clientmode, engine, modelrender;
+static Vmt bspquery, client, clientmode, engine, modelrender, surface;
 
 static size_t
 getvmtsize(uintptr_t *vmt)
@@ -295,6 +295,15 @@ skip:
 	return VFN(int (*)(void *, Vector *, Vector *, unsigned short *list, int), bspquery.old, 6)(bspquery.old, mins, maxs, list, listmax);
 }
 
+static void
+setdrawcolor(void *this, int r, int g, int b, int a)
+{
+	if (cfg->visuals.removescopeoverlay && ((uintptr_t)__builtin_return_address(0) == mem->scopedust || (uintptr_t)__builtin_return_address(0) == mem->scopearc))
+		a = 0;
+
+	VFN(void (*)(void *, int, int, int, int), surface.old, 14)(intf->surface, r, g, b, a);
+}
+
 void
 hk_orig_drawmodelexecute(void *ctx, void *state, ModelRenderInfo *info, Matrix3x4 *custombonetoworld)
 {
@@ -327,11 +336,15 @@ hk_init(void)
 
 	hookvmt((uintptr_t)intf->modelrender, &modelrender);
 	hookfn(&modelrender, 21, &drawmodelexecute);
+
+	hookvmt((uintptr_t)intf->surface, &surface);
+	hookfn(&surface, 14, &setdrawcolor);
 }
 
 void
 hk_clean(void)
 {
+	unhookvmt(&surface);
 	unhookvmt(&modelrender);
 	unhookvmt(&engine);
 	unhookvmt(&clientmode);

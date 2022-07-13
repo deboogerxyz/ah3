@@ -134,6 +134,7 @@ visuals_drawgui(struct nk_context *ctx)
 		nk_checkbox_label(ctx, "Remove 3D sky", &cfg->visuals.remove3dsky);
 		nk_checkbox_label(ctx, "Remove aim punch", &cfg->visuals.removeaimpunch);
 		nk_checkbox_label(ctx, "Remove view punch", &cfg->visuals.removeviewpunch);
+		nk_checkbox_label(ctx, "Remove scope overlay", &cfg->visuals.removescopeoverlay);
 		nk_checkbox_label(ctx, "Reveal money", &cfg->visuals.revealmoney);
 		nk_checkbox_label(ctx, "Reveal radar", &cfg->visuals.revealradar);
 		nk_checkbox_label(ctx, "Reveal ranks", &cfg->visuals.revealranks);
@@ -194,6 +195,9 @@ visuals_loadcfg(cJSON *json)
 	cJSON* removeviewpunch = cJSON_GetObjectItem(visualsjson, "Remove view punch");
 	if (cJSON_IsBool(removeviewpunch))
 		cfg->visuals.removeviewpunch = removeviewpunch->valueint;
+	cJSON* removescopeoverlay = cJSON_GetObjectItem(visualsjson, "Remove scope overlay");
+	if (cJSON_IsBool(removescopeoverlay))
+		cfg->visuals.removescopeoverlay = removescopeoverlay->valueint;
 	cJSON* revealmoney = cJSON_GetObjectItem(visualsjson, "Reveal money");
 	if (cJSON_IsBool(revealmoney))
 		cfg->visuals.revealmoney = revealmoney->valueint;
@@ -238,6 +242,7 @@ visuals_savecfg(cJSON *json)
 	cJSON_AddBoolToObject(visualsjson, "Remove 3D sky", cfg->visuals.remove3dsky);
 	cJSON_AddBoolToObject(visualsjson, "Remove aim punch", cfg->visuals.removeaimpunch);
 	cJSON_AddBoolToObject(visualsjson, "Remove view punch", cfg->visuals.removeviewpunch);
+	cJSON_AddBoolToObject(visualsjson, "Remove scope overlay", cfg->visuals.removescopeoverlay);
 	cJSON_AddBoolToObject(visualsjson, "Reveal money", cfg->visuals.revealmoney);
 	cJSON_AddBoolToObject(visualsjson, "Reveal radar", cfg->visuals.revealradar);
 	cJSON_AddBoolToObject(visualsjson, "Reveal ranks", cfg->visuals.revealranks);

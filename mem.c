@@ -111,6 +111,8 @@ mem_init(void)
 	*(void **)&mem->glowobjmgr        = (void *)reltoabs(reltoabs(find("csgo/bin/linux64/client_client.so", "\xE8????\x4C\x89\xE7\x8B\x70\x20") + 1) + 12);
 	mem->demoorhltv                   = find("csgo/bin/linux64/client_client.so", "\x0F\xB6\x10\x89\xD0") - 16;
 	mem->money                        = find("csgo/bin/linux64/client_client.so", "\x84\xC0\x75\x9E\xB8????\xEB\xB9");
+	mem->scopedust                    = find("csgo/bin/linux64/client_client.so", "\x8B\x85????\x43\x8D\x14\x2E");
+	mem->scopearc                     = find("csgo/bin/linux64/client_client.so", "\x49\x8B\x3C\x24\x8B\xB3????\x48\x8B\x07\xFF\x90????\x49\x8B\x3C\x24\x4C\x89\xEA");
 }
 
 void

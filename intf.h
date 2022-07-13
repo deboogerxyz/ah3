@@ -12,6 +12,7 @@ typedef struct {
 	uintptr_t *inputsys;
 	uintptr_t *matsystem;
 	uintptr_t *modelrender;
+	uintptr_t *surface;
 	uintptr_t *studiorender;
 } Intf;
 

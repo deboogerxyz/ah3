@@ -26,6 +26,7 @@ typedef struct {
 	int remove3dsky;
 	int removeaimpunch;
 	int removeviewpunch;
+	int removescopeoverlay;
 	int revealmoney;
 	int revealradar;
 	int revealranks;

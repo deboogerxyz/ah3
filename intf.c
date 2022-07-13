@@ -33,6 +33,7 @@ intf_init(void)
 	intf->inputsys     = find("inputsystem_client.so", "InputSystemVersion001");
 	intf->matsystem    = find("materialsystem_client.so", "VMaterialSystem080");
 	intf->modelrender  = find("engine_client.so", "VEngineModel016");
+	intf->surface      = find("vguimatsurface_client.so", "VGUI_Surface031");
 	intf->studiorender = find("studiorender_client.so", "VStudioRender026");
 }
 

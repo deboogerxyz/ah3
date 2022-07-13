@@ -18,6 +18,8 @@ typedef struct {
 	GlowObjMgr *glowobjmgr;
 	uintptr_t demoorhltv;
 	uintptr_t money;
+	uintptr_t scopedust;
+	uintptr_t scopearc;
 } Mem;
 
 void mem_init(void);
