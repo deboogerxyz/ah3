@@ -1,4 +1,5 @@
 SRC = ah.c \
+      ubsan.c \
       hax/legitbot.c \
       hax/bt.c \
       cfg.c \
@@ -31,7 +32,8 @@ SRC = ah.c \
       sdk/vec.c \
       hax/visuals.c
 
-HDR = hax/legitbot.h \
+HDR = ubsan.h \
+      hax/legitbot.h \
       hax/bt.h \
       cfg.h \
       hax/chams.h \
