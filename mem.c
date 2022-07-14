@@ -113,6 +113,12 @@ mem_init(void)
 	mem->money                        = find("csgo/bin/linux64/client_client.so", "\x84\xC0\x75\x9E\xB8????\xEB\xB9");
 	mem->scopedust                    = find("csgo/bin/linux64/client_client.so", "\x8B\x85????\x43\x8D\x14\x2E");
 	mem->scopearc                     = find("csgo/bin/linux64/client_client.so", "\x49\x8B\x3C\x24\x8B\xB3????\x48\x8B\x07\xFF\x90????\x49\x8B\x3C\x24\x4C\x89\xEA");
+	mem->movedata                     = **(void ***)reltoabs(find("csgo/bin/linux64/client_client.so", "\x4C\x8B\x2D????\x0F\xB6\x93") + 3);
+	mem->movehelper                   = **(void ***)reltoabs(find("csgo/bin/linux64/client_client.so", "\x48\x8B\x05????\x44\x89\x85????\x48\x8B\x38") + 3);
+	*(void **)&mem->predictrandomseed = *(int **)reltoabs(find("csgo/bin/linux64/client_client.so", "\x41\x8D\x56\xFF\x31\xC9") - 14);
+
+	mem->debugmsg("movehelper: %p\n", mem->movehelper);
+	mem->debugmsg("movedata: %p\n", mem->movedata);
 }
 
 void

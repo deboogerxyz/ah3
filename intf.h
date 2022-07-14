@@ -9,9 +9,11 @@ typedef struct {
 	uintptr_t *engine;
 	uintptr_t *trace;
 	uintptr_t *entlist;
+	uintptr_t *gamemovement;
 	uintptr_t *inputsys;
 	uintptr_t *matsystem;
 	uintptr_t *modelrender;
+	uintptr_t *prediction;
 	uintptr_t *surface;
 	uintptr_t *studiorender;
 } Intf;

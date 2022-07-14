@@ -30,9 +30,11 @@ intf_init(void)
 	intf->engine       = find("engine_client.so", "VEngineClient014");
 	intf->trace        = find("engine_client.so", "EngineTraceClient004");
 	intf->entlist      = find("csgo/bin/linux64/client_client.so", "VClientEntityList003");
+	intf->gamemovement = find("csgo/bin/linux64/client_client.so", "GameMovement001");
 	intf->inputsys     = find("inputsystem_client.so", "InputSystemVersion001");
 	intf->matsystem    = find("materialsystem_client.so", "VMaterialSystem080");
 	intf->modelrender  = find("engine_client.so", "VEngineModel016");
+	intf->prediction   = find("csgo/bin/linux64/client_client.so", "VClientPrediction001");
 	intf->surface      = find("vguimatsurface_client.so", "VGUI_Surface031");
 	intf->studiorender = find("studiorender_client.so", "VStudioRender026");
 }

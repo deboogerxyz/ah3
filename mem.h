@@ -20,6 +20,9 @@ typedef struct {
 	uintptr_t money;
 	uintptr_t scopedust;
 	uintptr_t scopearc;
+	void *movedata;
+	void *movehelper;
+	int *predictrandomseed;
 } Mem;
 
 void mem_init(void);

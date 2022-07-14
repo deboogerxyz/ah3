@@ -10,6 +10,7 @@
 #include "hax/bt.h"
 #include "cfg.h"
 #include "hax/chams.h"
+#include "hax/engineprediction.h"
 #include "hax/glow.h"
 #include "gui.h"
 #include "intf.h"
@@ -145,11 +146,14 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	misc_bhop(cmd);
 	misc_clantagchanger();
 	misc_fastduck(cmd);
-	misc_slidewalk(cmd);
 	visuals_revealranks(cmd);
+
+	engineprediction_run(cmd);
+
 	ragebot_run(cmd);
 	legitbot_run(cmd);
 	bt_run(cmd);
+	misc_slidewalk(cmd);
 
 	cmd->viewangles = vec_norm(cmd->viewangles);
 	misc_fixmovement(cmd, currentangles.y);

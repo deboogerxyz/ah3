@@ -1,5 +1,4 @@
 SRC = ah.c \
-      ubsan.c \
       hax/legitbot.c \
       hax/bt.c \
       cfg.c \
@@ -9,8 +8,10 @@ SRC = ah.c \
       sdk/convar.c \
       sdk/cvar.c \
       sdk/engine.c \
+      hax/engineprediction.c \
       sdk/ent.c \
       sdk/entlist.c \
+      sdk/gamemovement.c \
       hax/glow.c \
       sdk/glowobjmgr.c \
       gui.c \
@@ -23,17 +24,19 @@ SRC = ah.c \
       sdk/matsystem.c \
       mem.c \
       hax/misc.c \
+      sdk/movehelper.c \
       sdk/netchan.c \
       nv.c \
+      sdk/prediction.c \
       hax/ragebot.c \
       sdk/studiorender.c \
       sdk/trace.c \
+      ubsan.c \
       util.c \
       sdk/vec.c \
       hax/visuals.c
 
-HDR = ubsan.h \
-      hax/legitbot.h \
+HDR = hax/legitbot.h \
       hax/bt.h \
       cfg.h \
       hax/chams.h \
@@ -45,9 +48,11 @@ HDR = ubsan.h \
       sdk/cvar.h \
       deps/cvector.h \
       sdk/engine.h \
+      hax/engineprediction.h \
       sdk/ent.h \
       sdk/entlist.h \
       sdk/framestage.h \
+      sdk/gamemovement.h \
       hax/glow.h \
       sdk/glowobjmgr.h \
       gui.h \
@@ -61,14 +66,17 @@ HDR = ubsan.h \
       mem.h \
       hax/misc.h \
       sdk/modelrender.h \
+      sdk/movehelper.h \
       sdk/netchan.h \
       nv.h \
+      sdk/prediction.h \
       hax/ragebot.h \
       sdk/recv.h \
       sdk/usercmd.h \
       util.h \
       sdk/studiorender.h \
       sdk/trace.h \
+      ubsan.h \
       sdk/utlvec.h \
       deps/nuklear.h \
       deps/nuklear_sdl_gl3.h \
