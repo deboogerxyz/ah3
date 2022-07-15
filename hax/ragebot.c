@@ -2,6 +2,7 @@
 #include "../cfg.h"
 #include "../sdk/cvar.h"
 #include "../sdk/engine.h"
+#include "engineprediction.h"
 #include "../sdk/ent.h"
 #include "../sdk/entlist.h"
 #include "../sdk/globalvars.h"
@@ -76,10 +77,10 @@ autostop(uintptr_t localplayer, WeaponInfo *weaponinfo, UserCmd *cmd)
 
 	float maxspeed = (ent_getisscoped(localplayer) ? weaponinfo->maxspeedalt : weaponinfo->maxspeed) / 3.0f;
 
-	float speed = vec_len2d(*ent_getvelocity(localplayer));
+	float speed = vec_len2d(engineprediction_velocity);
 
 	if (speed > maxspeed + 15) {
-		float dir = cmd->viewangles.y - vec_toang2d(*ent_getvelocity(localplayer));	
+		float dir = cmd->viewangles.y - vec_toang2d(engineprediction_velocity);	
 
 		Vector negdir = vec_fromang2d(dir);
 
