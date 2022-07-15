@@ -43,4 +43,10 @@ engineprediction_run(UserCmd *cmd)
 
 	mem->globalvars->currenttime = oldcurtime;
 	mem->globalvars->frametime   = oldframetime;
+
+	uintptr_t weapon = ent_getactiveweapon(localplayer);
+	if (!weapon)
+		return;
+
+	ent_updateaccuracypenalty(weapon);
 }

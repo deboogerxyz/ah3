@@ -28,6 +28,7 @@ WeaponType ent_getweapontype(uintptr_t ent);
 WeaponInfo *ent_getweaponinfo(uintptr_t ent);
 float ent_getspread(uintptr_t ent);
 float ent_getinaccuracy(uintptr_t ent);
+void ent_updateaccuracypenalty(uintptr_t ent);
 Vector ent_getbonepos(uintptr_t ent, int bone);
 int ent_cansee(uintptr_t ent, uintptr_t other, Vector pos);
 

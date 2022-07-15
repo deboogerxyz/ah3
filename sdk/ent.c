@@ -94,6 +94,12 @@ ent_getinaccuracy(uintptr_t ent)
 	return VFN(float (*)(uintptr_t), VMT(ent), 551)(ent);
 }
 
+void
+ent_updateaccuracypenalty(uintptr_t ent)
+{
+	VFN(void (*)(uintptr_t), VMT(ent), 552)(ent);
+}
+
 Vector
 ent_getbonepos(uintptr_t ent, int bone)
 {
