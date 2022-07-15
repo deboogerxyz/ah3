@@ -5,4 +5,7 @@
 
 void engineprediction_run(UserCmd *cmd);
 
+extern int engineprediction_flags;
+extern Vector engineprediction_velocity;
+
 #endif /* ENGINEPREDICTION_H_ */

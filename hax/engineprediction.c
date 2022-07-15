@@ -10,12 +10,18 @@
 
 #include "engineprediction.h"
 
+int engineprediction_flags = 0;
+Vector engineprediction_velocity = {0};
+
 void
 engineprediction_run(UserCmd *cmd)
 {
 	uintptr_t localplayer = entlist_getentity(engine_getlocalplayer());
 	if (!localplayer)
 		return;
+
+	engineprediction_flags = *ent_getflags(localplayer);
+	engineprediction_velocity = *ent_getvelocity(localplayer);
 
 	*mem->predictrandomseed = 0;
 
