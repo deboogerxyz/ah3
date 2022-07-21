@@ -148,9 +148,9 @@ createmove(void *this, float inputsampletime, UserCmd *cmd)
 	misc_fastduck(cmd);
 	visuals_revealranks(cmd);
 
-	engineprediction_run(cmd);
+//	engineprediction_run(cmd);
 
-	ragebot_run(cmd);
+//	ragebot_run(cmd);
 	legitbot_run(cmd);
 	bt_run(cmd);
 	misc_slidewalk(cmd);
