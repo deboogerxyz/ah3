@@ -90,12 +90,6 @@ mem_init(void)
 	*(void **)&mem->debugmsg = dlsym(tier0, "Msg");
 	dlclose(tier0);
 
-	Lib *vk = getlibinfo("bin/linux64/shaderapivk_client.so");
-	if (vk)
-		mem->debugmsg("We are using Vulkan!\n");
-	else
-		mem->debugmsg("We are NOT using Vulkan!\n");
-
 	void *sdl = dlopen("libSDL2-2.0.so.0", RTLD_LAZY | RTLD_NOLOAD);
 	mem->pollevent = reltoabs((uintptr_t)dlsym(sdl, "SDL_PollEvent") + 2);
 	mem->swapwindow = reltoabs((uintptr_t)dlsym(sdl, "SDL_GL_SwapWindow") + 2);
@@ -116,9 +110,6 @@ mem_init(void)
 	mem->movedata                     = **(void ***)reltoabs(find("csgo/bin/linux64/client_client.so", "\x4C\x8B\x2D????\x0F\xB6\x93") + 3);
 	mem->movehelper                   = **(void ***)reltoabs(find("csgo/bin/linux64/client_client.so", "\x48\x8B\x05????\x44\x89\x85????\x48\x8B\x38") + 3);
 	*(void **)&mem->predictrandomseed = *(int **)reltoabs(find("csgo/bin/linux64/client_client.so", "\x41\x8D\x56\xFF\x31\xC9") - 14);
-
-	mem->debugmsg("movehelper: %p\n", mem->movehelper);
-	mem->debugmsg("movedata: %p\n", mem->movedata);
 }
 
 void
