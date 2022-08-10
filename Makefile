@@ -16,6 +16,6 @@ libah3.so: ${OBJ}
 ${OBJ}: config.mk Makefile ${HDR}
 
 clean:
-	rm -f libah3.so ${OBJ}
+	rm -f libah3.so ${OBJ} ${DEP}
 
 .PHONY: clean
