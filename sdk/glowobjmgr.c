@@ -40,7 +40,7 @@ glowobjmgr_unregister(uintptr_t ent, int i)
 {
 	GlowObjDef *glowobj = (GlowObjDef *)mem->glowobjmgr->objs.memory + i;
 
-	glowobj->nextfreeslot = glowobj->nextfreeslot;
+	glowobj->nextfreeslot = mem->glowobjmgr->firstfreeslot;
 	glowobj->ent = ent;
 	glowobj->occluded = 0;
 	glowobj->unoccluded = 0;
