@@ -73,7 +73,7 @@ legitbot_run(UserCmd *cmd)
 	if (*ent_getwaitfornoattack(localplayer))
 		return;
 
-	if (*ent_getnextattack(localplayer) > globalvars_getservertime(cmd))
+	if (*ent_getnextattack(localplayer) > globalvars_getservertime(NULL))
 		return;
 
 	uintptr_t weapon = ent_getactiveweapon(localplayer);

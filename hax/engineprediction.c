@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "../sdk/engine.h"
 #include "../sdk/ent.h"
 #include "../sdk/entlist.h"
@@ -28,7 +30,7 @@ engineprediction_run(UserCmd *cmd)
 	float oldcurtime   = mem->globalvars->currenttime;
 	float oldframetime = mem->globalvars->frametime;
 
-	mem->globalvars->currenttime = globalvars_getservertime(cmd);
+	mem->globalvars->currenttime = globalvars_getservertime(NULL);
 	mem->globalvars->frametime   = mem->globalvars->intervalpertick;
 
 	gamemovement_starttrackpredicterrors(localplayer);

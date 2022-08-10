@@ -119,7 +119,7 @@ ragebot_run(UserCmd *cmd)
 	if (*ent_getwaitfornoattack(localplayer))
 		return;
 
-	if (*ent_getnextattack(localplayer) > globalvars_getservertime(cmd))
+	if (*ent_getnextattack(localplayer) > globalvars_getservertime(NULL))
 		return;
 
 	uintptr_t weapon = ent_getactiveweapon(localplayer);
@@ -238,7 +238,7 @@ ragebot_run(UserCmd *cmd)
 	if (!config.silent)
 		engine_setviewangles(&cmd->viewangles);
 
-	if (config.autoshoot && *ent_getnextattack(localplayer) <= globalvars_getservertime(cmd))
+	if (config.autoshoot && *ent_getnextattack(localplayer) <= globalvars_getservertime(NULL))
 		cmd->buttons |= IN_ATTACK;
 }
 
