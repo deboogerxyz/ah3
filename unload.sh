@@ -1,26 +1,25 @@
 #!/bin/sh
 
-pid=$(pgrep "csgo_linux64")
-lib="$(pwd)/libah.so"
+pid=$(pgrep -n "csgo_linux64")
+lib="$(pwd)/libah3.so"
 
-if [ $(id -u) -ne 0 ];
+if [ $(id -u) -ne 0 ]
 then
-	echo "ah-unload requires root privileges"
+	echo "$0 requires root privileges"
 	exit 1
 fi
 
 if [ -z "$pid" ]
 then
-	echo "Couldn't find the target process"
+	echo "couldn't find the target process"
 	exit 1
 fi
 
-if ! grep -q "$lib" "/proc/$pid/maps";
+if ! grep -q "$lib" "/proc/$pid/maps"
 then
-	echo "Library is not loaded"
+	echo "library is not loaded"
 	exit 1
 fi
-
 
 gdb -n -q -batch \
     -ex "attach $pid" \

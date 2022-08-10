@@ -1,27 +1,21 @@
 include config.mk
-include files.mk
 
+SRC = $(shell find -name "*.c")
 OBJ = ${SRC:.c=.o}
+DEP = ${SRC:.c=.d}
 
-all: options libah.so
+libah3.so: ${OBJ}
+	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
-options:
-	@echo ah build options:
-	@echo "CFLAGS   = ${CFLAGS}"
-	@echo "CC       = ${CC}"
-	@echo "LDFLAGS  = ${LDFLAGS}"
+-include ${DEP}
 
 .c.o:
+	$(CC) -MM -MT $@ -MF $(patsubst %.o, %.d, $@) ${CFLAGS} $<
 	${CC} -o $@ -c ${CFLAGS} $<
 
 ${OBJ}: config.mk Makefile ${HDR}
 
-pch.o:  config.mk Makefile pch.h ${PCH}
-
-libah.so: ${OBJ} pch.o
-	${CC} -o $@ ${OBJ} pch.o ${LDFLAGS}
-
 clean:
-	rm -f libah.so ${OBJ} pch.o ah.tar.gz
+	rm -f libah3.so ${OBJ}
 
-.PHONY: all options clean
+.PHONY: clean
