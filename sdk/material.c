@@ -2,6 +2,12 @@
 
 #include "material.h"
 
+const char *
+material_getname(uintptr_t material)
+{
+	return VFN(const char *(*)(uintptr_t), VMT(material), 0)(material);
+}
+
 void
 material_alphamodulate(uintptr_t material, float alpha)
 {

@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "sdk/studiorender.h"
+
 typedef struct {
 	uintptr_t *client;
 	uintptr_t *cvar;
@@ -15,7 +17,7 @@ typedef struct {
 	uintptr_t *modelrender;
 	uintptr_t *prediction;
 	uintptr_t *surface;
-	uintptr_t *studiorender;
+	StudioRender *studiorender;
 } Intf;
 
 void intf_init(void);

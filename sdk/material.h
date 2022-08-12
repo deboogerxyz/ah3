@@ -11,6 +11,7 @@ typedef enum {
 	MAT_WIREFRAME = (1 << 28),
 } MaterialVarFlag;
 
+const char *material_getname(uintptr_t material);
 void material_alphamodulate(uintptr_t material, float alpha);
 void material_colormodulate(uintptr_t material, Color col);
 void material_setvarflag(uintptr_t material, MaterialVarFlag flag, char on);

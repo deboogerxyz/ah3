@@ -251,6 +251,11 @@ isplayingdemo(void *this)
 static void
 drawmodelexecute(void *this, void *ctx, void *state, ModelRenderInfo *info, Matrix3x4 *custombonetoworld)
 {
+	if (studiorender_isforcedmatoverride()) {
+		hk_orig_drawmodelexecute(ctx, state, info, custombonetoworld);
+		return;
+	}
+
 	if (!chams_render(ctx, state, info, custombonetoworld))
 		hk_orig_drawmodelexecute(ctx, state, info, custombonetoworld);
 
