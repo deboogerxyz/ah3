@@ -4,7 +4,7 @@ alienhook (version 3) for Counter-Strike: Global Offensive
 
 Written in C99.
 
-## Features
+## Features (List is not up to date!)
 
 * Configs in JSON
 * Simple GUI
